@@ -109,3 +109,27 @@ fetch('http://localhost:3000/api/products')
 //recupération des canapés depuis le fichier JSON//
 const reponse = await fetch('models/Product.js');
 const canapes = await reponse.json();
+
+for (let i=0; i<canapes.length; i++) {
+//création des balises //
+const article = canapes[i];
+
+const imageElement = document.createElement("img");
+imageElement.src = article.image;
+
+const nomElement = document.createElement("h2");
+nomElement.innerText = article.nom;
+
+const descriptionElement = document.createElement ("p");
+descriptionElement.innerText = article.description;
+
+//Rattachement de nos balises au DOM//
+const sectionItems = document.querySelector(".items");
+//rattachement de la balise article a la section items//
+sectionItems.appendChild(canapesElement);
+
+canapesElement.appendChild(imageElement);
+canapesElement.appendChild(nomElement);
+canapesElement.appendChild(descriptionElement);
+
+}
