@@ -29,7 +29,8 @@ fetch('http://localhost:3000/api/products')
 .catch(function(err){
 });
 
-/* tableau des donnees json etape 3*/
+/***etape 3** */
+/* tableau des donnees json */
 [
   {
     "colors":["Blue","White","Black"],
@@ -104,3 +105,7 @@ fetch('http://localhost:3000/api/products')
     "altTxt":"Photo d'un canapé rose, trois places"
   }
 ]
+
+//recupération des canapés depuis le fichier JSON//
+const reponse = await fetch('models/Product.js');
+const canapes = await reponse.json();
