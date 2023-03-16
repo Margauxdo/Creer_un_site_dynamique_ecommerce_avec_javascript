@@ -31,7 +31,7 @@ fetch('http://localhost:3000/api/products')
 
 /***etape 3** */
 /* tableau des donnees json */
-[
+ const kanaps = [
   {
     "colors":["Blue","White","Black"],
     "_id":"107fb5b75607497b96722bda5b504926",
@@ -107,14 +107,15 @@ fetch('http://localhost:3000/api/products')
 ]
 
 //recupération des canapés depuis le fichier JSON//
-const reponse = await fetch('../../../back/models/Product.js');
-const canapes = await reponse.json();
+const reponse = await fetch('.../back/models/Product.js');
+const kanap = await reponse.json();
 
-for (let i=0; i<canapes.length; i++) {
+for (let kanap of kanaps) {
+  console.log ('couleur du canape'+ kanaps.colors + 'ajout de identifiant' + kanaps._id + 'ajout du nom du canape' + kanaps.name + 'ajout du prix' + kanaps.price + "lien de l'image" + kanaps.imageUrl + 'description' + kanaps.description + 'description pour SEO' + kanaps.altTxt );}
 //Création d'une balise dédie aux canape//
-const canapesElement= createElement("article")
+const kanapsElement= createElement("article")
 //création des balises //
-const article = canapes[i];
+const article = kanap[i];
 
 const imageUrlElement = document.createElement("img");
 imageUrlElement.src = article.imageUrl;
@@ -128,10 +129,9 @@ descriptionElement.innerText = article.description;
 //Rattachement de nos balises au DOM//
 const sectionItems = document.querySelector(".items");
 //rattachement de la balise article a la section items//
-sectionItems.appendChild (canapesElement);
+sectionItems.appendChild (kanapsElement);
 
-canapesElement.appendChild(imageUrlElement);
-canapesElement.appendChild(nameElement);
-canapesElement.appendChild(descriptionElement);
+kanapsElement.appendChild(imageUrlElement);
+kanapsElement.appendChild(nameElement);
+kanapsElement.appendChild(descriptionElement);
 
-}
