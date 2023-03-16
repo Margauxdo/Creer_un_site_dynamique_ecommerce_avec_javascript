@@ -114,11 +114,11 @@ for (let i=0; i<canapes.length; i++) {
 //création des balises //
 const article = canapes[i];
 
-const imageElement = document.createElement("img");
-imageElement.src = article.image;
+const imageUrlElement = document.createElement("img");
+imageUrlElement.src = article.imageUrl;
 
-const nomElement = document.createElement("h2");
-nomElement.innerText = article.nom;
+const nameElement = document.createElement("h2");
+nameElement.innerText = article.name;
 
 const descriptionElement = document.createElement ("p");
 descriptionElement.innerText = article.description;
@@ -126,7 +126,7 @@ descriptionElement.innerText = article.description;
 //Rattachement de nos balises au DOM//
 const sectionItems = document.querySelector(".items");
 //rattachement de la balise article a la section items//
-sectionItems.appendChild(canapesElement);
+sectionItems.appendChild (canapesElement);
 
 canapesElement.appendChild(imageElement);
 canapesElement.appendChild(nomElement);
