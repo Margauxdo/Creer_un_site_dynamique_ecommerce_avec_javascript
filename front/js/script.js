@@ -120,7 +120,7 @@ const article = kanap[i];
 const imageUrlElement = document.createElement("img");
 imageUrlElement.src = article.imageUrl;
 
-const nameElement = document.createElement("h2");
+const nameElement = document.createElement("h3");
 nameElement.innerText = article.name;
 
 const descriptionElement = document.createElement ("p");
