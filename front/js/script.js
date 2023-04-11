@@ -30,12 +30,27 @@ fetch('http://localhost:3000/api/products')
 });
 
 /***etape 3** */
-/* recup la reponse de l'API */
+/* recup la reponse de l'API grace a fetch et then*/
 fetch("http://localhost:3000/api/products")
 .then (response => response.json())
-.then (responseProduct => console.log(responseProduct))
+.then (responseProduct => console.table(responseProduct))
 
-/*  Intégration de chaque produits dans la page acceuil a partir du DOM */
+/*  recuperation des donnees */
 
+const imageUrl = document.getElementsByName('img');
 
+fetch('http://localhost:3000/api/products')
+  .then(response => {
+    console.log(response);
+
+    if(response.ok) {
+      response.json().then( data =>{
+         imageUrl.src = data[0].url
+    })
+  }else{
+    console.log("ERREUR");
+    document.getElementsByName('erreur').innerHTML = "Erreur, oups!!"
+
+  }
+})
  
