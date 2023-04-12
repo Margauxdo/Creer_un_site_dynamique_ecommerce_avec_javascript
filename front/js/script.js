@@ -31,67 +31,38 @@ fetch('http://localhost:3000/api/products')
 
 /***etape 3** */
 /* recup la reponse de l'API grace a fetch et then*/
-fetch("http://localhost:3000/api/products")
-.then (response => response.json())
-.then (responseProduct => console.table(responseProduct))
-
-/*  recuperation des donnees de l'image*/
-
 const imageUrl = document.getElementsByName('img');
 
-
-fetch('http://localhost:3000/api/products')
-  .then(response => {
-    console.log(response);
-
-    if(response.ok) {
-      response.json().then( data =>{
-         imageUrl.src = data[0].url
+fetch("http://localhost:3000/api/products")
+.then (response =>{
+  if (response.ok){
+    response.json()
+.then (data => {
+      imageUrl.src = data [0].url
     })
-  }else{
-    console.log("ERREUR");
-    document.getElementsByName('erreur').innerHTML = "Erreur, oups!!"
+  } else {
+      console.log("ERREUR");
+      document.getElementsByName('erreur').innerHTML = "Erreur, oups!"
+  //*creation de balise *//
+      const product = kanap [0];
 
-  }
+      const imageUrlElement =  document.createElement("img");
+      imageUrlElement.src = product.imageUrl;
+
+      const nameElement = document.createElement ("h3");
+      nameElement.innerText = product.name;
+
+      const descriptionElement = document.createElement ("p");
+      descriptionElement.innerText = product.description;
+
+      //* ratache les balises au DOM*//
+      const sectionItems = document.querySelector (".items");
+
+      sectionItems.appendChild(imageUrlElement);
+      sectionItems.appendChild(nameElement);
+      sectionItems.appendChild(descriptionElement);
+
+
+    }
 })
 
-/*le titre*/
-
-const _id = document.getElementsByName('title');
-
-
-fetch('http://localhost:3000/api/products')
-  .then(response => {
-    console.log(response);
-
-    if(response.ok) {
-      response.json().then( data =>{
-         _id.title = data[0].innerHTML
-    })
-  }else{
-    console.log("ERREUR");
-    document.getElementsByName('erreur').innerHTML = "Erreur, oups!!"
-
-  }
-})
-
-/* la description*/
-
-const description = document.getElementsByName('description');
-
-
-fetch('http://localhost:3000/api/products')
-  .then(response => {
-    console.log(response);
-
-    if(response.ok) {
-      response.json().then( data =>{
-         _id.description = data[0].innerHTML
-    })
-  }else{
-    console.log("ERREUR");
-    document.getElementsByName('erreur').innerHTML = "Erreur, oups!!"
-
-  }
-})
- 
