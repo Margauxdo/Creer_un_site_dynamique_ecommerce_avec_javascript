@@ -43,7 +43,13 @@ fetch("http://localhost:3000/api/products")
   } else {
       console.log("ERREUR");
       document.getElementsByName('erreur').innerHTML = "Erreur, oups!"
-  //*creation de balise *//
+  
+
+
+  for (let i =0; i< kanap.lenght; i++){
+    const kanapElement = document.createElement("article");
+
+      //*creation de balise *//
       const product = kanap [0];
 
       const imageUrlElement =  document.createElement("img");
@@ -55,14 +61,16 @@ fetch("http://localhost:3000/api/products")
       const descriptionElement = document.createElement ("p");
       descriptionElement.innerText = product.description;
 
+
+    
       //* ratache les balises au DOM*//
-      const sectionItems = document.querySelector (".items");
+      sectionItems.appendChild(kanapElement);
 
-      sectionItems.appendChild(imageUrlElement);
-      sectionItems.appendChild(nameElement);
-      sectionItems.appendChild(descriptionElement);
+      kanapElement.appendChild(imageUrlElement);
+      kanapElement.appendChild(nameElement);
+      kanapElement.appendChild(descriptionElement);
 
 
-    }
+    }}
 })
 
