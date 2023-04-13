@@ -14,12 +14,10 @@ fetchAPI();
 
     const lienElement = document.createElement("a");
     lienElement.href = "./product.html?id=" + products._id; //* url du lien du produit + _id pcq id varie *//
-    const appendArticle = document.getElementById('Items').appendChild(lienElement);
+    const appendArticle = document.getElementById('items').appendChild(lienElement);
     console.log(products._id);
 
     const articleElement = document.createElement("article");
     appendArticle.appendChild(articleElement);
-
-
   }
  }
