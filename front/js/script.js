@@ -1,76 +1,25 @@
-fetch('http://localhost:3000/api/products');
-
-const obj={
-    "name": "kanap-backend",
-    "version": "1.0.0",
-    "description": "",
-    "main": "server.js",
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-      "express": "^4.16.4",
-      "uuid": "^3.3.2"
-    }
-  }
-
-  
-fetch('http://localhost:3000/api/products') 
-.then(function(response){
-    if(response.ok){
-        return response.json();
-    }
-})
-.then(function(value){
-    console.log(value);
-})
-.catch(function(_err){
-});
-
-/***etape 3** */
-/* recup la reponse de l'API grace a fetch et then*/
-const imageUrl = document.getElementsByName('img');
-
+//* fonction fetchAPI avec fetch et uen promise then *//
+function fetchAPI() {
 fetch("http://localhost:3000/api/products")
-.then (response =>{
-  if (response.ok){
-    response.json()
-.then (data => {
-      imageUrl.src = data [0].url
-    })
-  } else {
-      console.log("ERREUR");
-      document.getElementsByName('erreur').innerHTML = "Erreur, oups!"
-  
-
-
-  for (let i =0; i< kanap.lenght; i++){
-    const kanapElement = document.createElement("article");
-
-      //*creation de balise *//
-      const product = kanap [0];
-
-      const imageUrlElement =  document.createElement("img");
-      imageUrlElement.src = product.imageUrl;
-
-      const nameElement = document.createElement ("h3");
-      nameElement.innerText = product.name;
-
-      const descriptionElement = document.createElement ("p");
-      descriptionElement.innerText = product.description;
-
-
-    
-      //* ratache les balises au DOM*//
-      sectionItems.appendChild(kanapElement);
-
-      kanapElement.appendChild(imageUrlElement);
-      kanapElement.appendChild(nameElement);
-      kanapElement.appendChild(descriptionElement);
-
-
-    }}
+.then ((response) => response.json())
+.then((data) => {
+  showProducts(data)
 })
+}
 
+fetchAPI();
+ //*fonction qui relie les produits au data*//
+ function showProducts(data) {
+  for (products of data){
+
+    const lienElement = document.createElement("a");
+    lienElement.href = "./product.html?id=" + products._id; //* url du lien du produit + _id pcq id varie *//
+    const appendArticle = document.getElementById('Items').appendChild(lienElement);
+    console.log(products._id);
+
+    const articleElement = document.createElement("article");
+    appendArticle.appendChild(articleElement);
+
+
+  }
+ }
