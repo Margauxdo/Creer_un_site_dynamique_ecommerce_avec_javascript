@@ -22,7 +22,8 @@ fetchAPI();
 
     const imageElement = document.createElement("img"); /* creation de image */
     imageElement.src = products.imageUrl;
-    imageElement.width="200";
+    imageElement.width="300";
+    imageElement.height = "200";
     appendArticle.appendChild(imageElement);
 
     const productNameElement = document.createElement("h3"); /* creation du titre */
