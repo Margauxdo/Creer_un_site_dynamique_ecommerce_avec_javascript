@@ -35,8 +35,33 @@ fetchAPI();
     productDescriptionElement.innerText = products.description;
     appendArticle.appendChild(productDescriptionElement);
 
-
-
-    
   }
  }
+
+ //**-etape 4 - faire un lien entre un produit de la page acceuil et la page produit */
+
+//*recup de id dans url */
+
+function queryStringProduct(){
+
+  const queryString_url_id = window.location.search;
+  console.log(queryString_url_id);
+
+  //*extraire id*/
+  const urlSearchParams = new URLSearchParams (queryString_url_id);
+  console.log(urlSearchParams);
+
+  const kanap01Id = urlSearchParams.get("id");
+  console.log(kanap01Id);
+
+}
+
+function displayKanapArticle(article){
+  cloneElt.getElementById("items").href +="?id" + article.displayKanapArticle
+  console.log(article)
+}
+
+function getArticleId(){
+  return new URL (location.href).searchParams.get("id")
+
+}
