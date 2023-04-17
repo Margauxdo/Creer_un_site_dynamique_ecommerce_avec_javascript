@@ -38,7 +38,7 @@ fetchAPI();
   }
  }
 
- //**-etape 4 - faire un lien entre un produit de la page acceuil et la page produit */
+ //**-etape 4 et 5- faire un lien entre un produit de la page acceuil et la page produit */
 
 //*recup de id dans url */
 
