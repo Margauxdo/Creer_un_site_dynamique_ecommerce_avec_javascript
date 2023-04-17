@@ -17,13 +17,18 @@ fetchAPI();
     const appendArticle = document.getElementById('items').appendChild(lienElement);/*items est enfant du lien a */
     console.log(products._id);
 
+
     const articleElement = document.createElement("article"); /*cree article */
     appendArticle.appendChild(articleElement);
-
+    
     const imageElement = document.createElement("img"); /* creation de image */
     imageElement.src = products.imageUrl;
     imageElement.width="300";
     imageElement.height = "200";
+    
+ 
+
+
     appendArticle.appendChild(imageElement);
     console.log(products.imageUrl);
 
@@ -37,6 +42,7 @@ fetchAPI();
 
   }
  }
+
 
  //**-etape 4 et 5- faire un lien entre un produit de la page acceuil et la page produit */
 
