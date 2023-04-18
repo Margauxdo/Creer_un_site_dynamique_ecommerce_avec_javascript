@@ -12,6 +12,7 @@ fetchAPI();
  function showProducts(data) {
   for (products of data){
 
+
     const lienElement = document.createElement("a"); //**ajout du lien qui englobe les infos */
     lienElement.href = "./product.html?id=" + products._id; //* url du lien du produit + _id pcq id varie *//
     const appendArticle = document.getElementById('items').appendChild(lienElement);/*items est enfant du lien a */
@@ -19,55 +20,35 @@ fetchAPI();
 
 
     const articleElement = document.createElement("article"); /*cree article */
-    appendArticle.appendChild(articleElement);
+    appendArticle.appendChild(articleElement);/*article est enfant de apenarticle*/
     
     const imageElement = document.createElement("img"); /* creation de image */
-    imageElement.src = products.imageUrl;
-    imageElement.width="300";
+    imageElement.src = products.imageUrl;/*on relie la source de image */
+    imageElement.width="300";/*on modifie la largeur de image*/
     imageElement.height = "200";
-    
+    /*on modifie la hauteur de image*/
  
 
 
-    appendArticle.appendChild(imageElement);
+    appendArticle.appendChild(imageElement);/*image est enfant de la constance a^ppendArticle*/
     console.log(products.imageUrl);
 
     const productNameElement = document.createElement("h3"); /* creation du titre */
-    productNameElement.innerText = products.name;
-    appendArticle.appendChild(productNameElement);
+    productNameElement.innerText = products.name; 
+    appendArticle.appendChild(productNameElement);/*le titre est enfant de la constance appendArticle*/
 
     const productDescriptionElement = document.createElement("p");/*creation de la description*/
     productDescriptionElement.innerText = products.description;
-    appendArticle.appendChild(productDescriptionElement);
+    appendArticle.appendChild(productDescriptionElement);/* la description est enfant de la constance appendArticle*/
+
 
   }
  }
 
+ 
 
- //**-etape 4 et 5- faire un lien entre un produit de la page acceuil et la page produit */
 
-//*recup de id dans url */
 
-function queryStringProduct(){
 
-  const queryString_url_id = window.location.search;
-  console.log(queryString_url_id);
 
-  //*extraire id*/
-  const urlSearchParams = new URLSearchParams (queryString_url_id);
-  console.log(urlSearchParams);
 
-  const kanap01Id = urlSearchParams.get("id");
-  console.log(kanap01Id);
-
-}
-
-function displayKanapArticle(article){
-  cloneElt.getElementById("items").href +="?id" + article.displayKanapArticle
-  console.log(article)
-}
-
-function getArticleId(){
-  return new URL (location.href).searchParams.get("id")
-
-}
