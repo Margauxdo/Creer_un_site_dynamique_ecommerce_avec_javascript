@@ -12,7 +12,7 @@ function fetchAPI() {
    // const lienElement = document.createElement("a"); 
     //lienElement.href = "./product.html?id=" + products._id;
 
-/*recupere id de chaque page produits*/
+/* -etape-  recupere id de chaque page produits*/
     function showKanap(data){ //*on creer une fonction pour recuperer ide de chque page*//
     for (products of data){//*faire une boucle pour recuperer ensemble des id pour chaque page */
 const queryStr = 'id=' + products._id /*mon id renommer*/
@@ -30,20 +30,11 @@ console.log(productKanap.toString())
     }
 }
 
+//**recupere id du produit a afficher**//
+function getKanapId(){
+    new URL (location.href).searchParams.get("id")
+}
 
 
 
-    //**-etape 4 et 5- faire un lien entre un produit de la page acceuil et la page produit */
-
-
-    //*recup de id dans url */
-//(async function (){
-   // const productsId = getProductsId()
-    //console.log(products)
-    //const products = Products(productsId)
-    //hydrateProducts(products)
-//})
-    //*recuperer la clé de la newURL*//
-    //function getproductsId(){
-        //return new URL (location.href).searchParams.get("id")
-    //}
+    
