@@ -12,14 +12,14 @@ function fetchAPI() {
    // const lienElement = document.createElement("a"); 
     //lienElement.href = "./product.html?id=" + products._id;
 
-/* -etape-  recupere id de chaque page produits*/
-    function showKanap(data){ //*on creer une fonction pour recuperer ide de chque page*//
+/* -etape 4-  lien entre les produits d el apage acceuil et les pages produits*/
+    function showKanap(data){ //*on creer une fonction pour recuperer id de chaque page*//
     for (products of data){//*faire une boucle pour recuperer ensemble des id pour chaque page */
 const queryStr = 'id=' + products._id /*mon id renommer*/
 const productKanap = new URLSearchParams(queryStr)/*constance pour construire la nouvelle chaine de caractere avec searchparams */
 
 const productId = productKanap.get('id=') 
-console.log("Value for 'id': ${productId}")
+console.log("Value for 'id': ${productId}") /**je verifie la valeur par id **/
     
 
 for(const [key , value] of productKanap) {
@@ -30,11 +30,12 @@ console.log(productKanap.toString())
     }
 }
 
-//**recupere id du produit a afficher**//
+//** etape 5 recupere id du produit a afficher**//
 function getKanapId(){
     new URL (location.href).searchParams.get("id")
 }
 
+//**etape 6 Inserer un produit et details dans la page produit*/
 
 
     

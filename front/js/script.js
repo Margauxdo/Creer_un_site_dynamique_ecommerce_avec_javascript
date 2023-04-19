@@ -18,10 +18,12 @@ fetchAPI();
     const appendArticle = document.getElementById('items').appendChild(lienElement);/*items est enfant du lien a */
     console.log(products._id);
 
+    
+
 
     const articleElement = document.createElement("article"); /*cree article */
     appendArticle.appendChild(articleElement);/*article est enfant de apenarticle*/
-    
+   
     const imageElement = document.createElement("img"); /* creation de image */
     imageElement.src = products.imageUrl;/*on relie la source de image */
     imageElement.width="300";/*on modifie la largeur de image*/
@@ -30,16 +32,16 @@ fetchAPI();
  
 
 
-    appendArticle.appendChild(imageElement);/*image est enfant de la constance a^ppendArticle*/
+    articleElement.appendChild(imageElement);/*image est enfant de article*/
     console.log(products.imageUrl);
 
     const productNameElement = document.createElement("h3"); /* creation du titre */
     productNameElement.innerText = products.name; 
-    appendArticle.appendChild(productNameElement);/*le titre est enfant de la constance appendArticle*/
+    articleElement.appendChild(productNameElement);/*le titre est enfant de article*/
 
     const productDescriptionElement = document.createElement("p");/*creation de la description*/
     productDescriptionElement.innerText = products.description;
-    appendArticle.appendChild(productDescriptionElement);/* la description est enfant de la constance appendArticle*/
+    articleElement.appendChild(productDescriptionElement);/* la description est enfant de article*/
 
 
   }
