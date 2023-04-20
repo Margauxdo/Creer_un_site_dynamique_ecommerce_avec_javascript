@@ -26,6 +26,14 @@ const fetchArticle = () => {     //**constance pour recuperer un seul produit en
       //articleImg.setAttribute("src",`$'{data.imageUrl}`)
       
       const articleDescription = (document.getElementById("description").innerText = data.description)
+    
+      //on va cree une constance avec les differentes options de couleurs//
+      const articleOptionsColors = document.getElementById("colors")
+      for (color in data.colors){ //on utilise la boucle for in pour recuperer les couleurs dans le data //
+        //je reprend la constance articleOptionsColors ou je lui ajoute du html , on reprend le code html ou on y integre une possibilité de couleurs dans les couleurs du data//
+        articleOptionsColors.innerHTML += `<option value = "${data.colors[color]}">${data.colors[color]}</option>`
+      }
+    
     })
 
 }
