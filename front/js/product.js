@@ -1,7 +1,36 @@
 const paramsProduct = new URL (document.location).searchParams // creation new url avec search params
 const id = paramsProduct.get("id")//cree une onstance id, jenvoie ma constante paramproducts vers id pour recupere id de ma page//
 
-console.log(id)
+const url = `http://localhost:3000/api/products/${id}` // on cree une constante url on y met le lien de api avec ${id}, id varie en fonction des produits//
+//console.log(url) // on constate url de la page avec le id a cote 
+
+const fetchArticle = () => {     //**constance pour recuperer un seul produit en faisant appel a api */
+    fetch(url)        //on fait appel a api//
+    .then (function(response) { // on utilise then pour avoir une reponse //
+
+     return response.json()   //on fait un retour a la reponse en json//
+    })  // on utilise une deuxieme fois then pour acceder au data de api //
+    .then(function(data)  {
+
+      const appendProduct = document.getElementsByClassName('item')
+      
+      const articleTitle = (document.getElementById("title").innerText = data.name) //on cree une constante pour recuperer le titre qui est appele title en html et data.name, dans le date il est appele name//
+      const articlePrice = (document.getElementById("price").innerText = data.price)
+      //on doit crée la balise de image qui n'existe pas//
+      const articleImg = document.createElement("img")
+      articleImg.src = data.imageUrl
+      console.log(articleImg)
+      //on selection avec queryselector ou image doit est positionné en fonction prodcut;html, qui est enfant de la const image articleImg//
+      //document.querySelector(".item_img").appendProduct(articleImg)
+      //ajoute url de image //
+      //articleImg.setAttribute("src",`$'{data.imageUrl}`)
+      
+      const articleDescription = (document.getElementById("description").innerText = data.description)
+    })
+
+}
+
+fetchArticle()
 
 
 /**ajout de la fonction fecth pour connecter api a la page produit */
