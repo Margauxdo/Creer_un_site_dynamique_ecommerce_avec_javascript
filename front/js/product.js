@@ -1,10 +1,10 @@
 const paramsProduct = new URL (document.location).searchParams // creation new url avec search params
-const id = paramsProduct.get("id")//cree une onstance id, jenvoie ma constante paramproducts vers id pour recupere id de ma page//
+const id = paramsProduct.get("id")//cree une variable id, jenvoie ma constante paramproducts vers id pour recupere id de ma page//
 
-const url = `http://localhost:3000/api/products/${id}` // on cree une constante url on y met le lien de api avec ${id}, id varie en fonction des produits//
+const url = `http://localhost:3000/api/products/${id}` // on cree une variable url on y met le lien de api avec ${id}, id varie en fonction des produits//
 //console.log(url) // on constate url de la page avec le id a cote 
 
-const fetchArticle = () => {     //**constance pour recuperer un seul produit en faisant appel a api */
+const fetchArticle = () => {     //**variable pour recuperer un seul produit en faisant appel a api */
     fetch(url)        //on fait appel a api//
     .then (function(response) { // on utilise then pour avoir une reponse //
 
@@ -12,31 +12,62 @@ const fetchArticle = () => {     //**constance pour recuperer un seul produit en
     })  // on utilise une deuxieme fois then pour acceder au data de api //
     .then(function(data)  {
 
-      const appendProduct = document.getElementsByClassName('item')
+      const appendProduct = document.getElementsByClassName('item') //on cree une variable afin de recuperer emplacement des elements//
       
-      const articleTitle = (document.getElementById("title").innerText = data.name) //on cree une constante pour recuperer le titre qui est appele title en html et data.name, dans le date il est appele name//
-      const articlePrice = (document.getElementById("price").innerText = data.price)
+      const articleTitle = (document.getElementById("title").innerText = data.name) //on cree une variable pour recuperer le titre qui est appele title en html et data.name, dans le date il est appele name//
+      const articlePrice = (document.getElementById("price").innerText = data.price)  //on cree une variable pour recup le prix//
       //on doit crée la balise de image qui n'existe pas//
       const articleImg = document.createElement("img")
       articleImg.src = data.imageUrl
-      console.log(articleImg)
+      //
+      //console.log(articleImg)
       //on selection avec queryselector ou image doit est positionné en fonction prodcut;html, qui est enfant de la const image articleImg//
       //document.querySelector(".item_img").appendProduct(articleImg)
       //ajoute url de image //
       //articleImg.setAttribute("src",`$'{data.imageUrl}`)
       
-      const articleDescription = (document.getElementById("description").innerText = data.description)
+      const articleDescription = (document.getElementById("description").innerText = data.description) //on cree une variable pour recuperer la description//
     
-      //on va cree une constance avec les differentes options de couleurs//
+      //on va cree une variable avec les differentes options de couleurs//
       const articleOptionsColors = document.getElementById("colors")
       for (color in data.colors){ //on utilise la boucle for in pour recuperer les couleurs dans le data //
         //je reprend la constance articleOptionsColors ou je lui ajoute du html , on reprend le code html ou on y integre une possibilité de couleurs dans les couleurs du data//
         articleOptionsColors.innerHTML += `<option value = "${data.colors[color]}">${data.colors[color]}</option>`
       }
+
+      //on créé une variable pour acceder au bouton du panier // 
+      const addToCart = document.getElementById("addToCart")
+      //des on clique sur le bouton ca enregistre les evenment//
+      addToCart.addEventListener ("click",() =>{
+        const productsToCart = {
+          quantity : document.getElementById("quantity").value , //on veut recup la valeur renseigner dans le panier par utilisateur du nombre de canape en recuperant id du html//
+          colors : document.getElementById("colors").value, //on veut recup la valeur renseigner dans le panier par utilisateur de la couleur du canape//
+          id : id //on veut recup id du produit//
+          
+        }
+        //console.log(productsToCart)
+
+
+
+      })
+      
     
     })
 
 }
+
+//on sort de la fonction pour ajouter tout ca au localstorage//
+localStorageProductsToCart = []
+//pour recup dans le localstorage si item addtocart est pas nul on peut recuperer//
+if(localStorage.getItem('addTocart')) {
+  localStorageProductsToCart()
+}
+else{
+
+} 
+
+
+
 
 fetchArticle()
 
