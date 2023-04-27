@@ -58,7 +58,36 @@ function localStorageToCart (){
       id : id //on veut recup id du produit//
     }
     console.log(productsToCart);
-  })
+  
+
+
+productsLocalStorage = []//on a cree un tableau productsLocalStorage//
+if(localStorage.getItem("addToCart") !==null)
+  //si ce qu'on recupere par le bouton dans le,localstorage est nul //
+  {
+    productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
+    //si on veut recuperer dans le localstorage par le bouton un ojet json//
+    productsLocalStorage.push(addToCart);
+    //si on veut rajouter dans le tableau objet addToCart//
+    productsLocalStorage.setItem("addToCart", JSON.stringify(productsLocalStorage))
+    //si on veut ajouter une ligne au tableau a partir du bouton addToCart, on veut transformer objet javascript en chaine JSON a partir du tableau//
+
+  }
+
+else{
+  productsLocalStorage.push(productsToCart);
+  //alors on va rajouter dans le tableau les produits avec la variable qui définis la quantité, id et la couleur//
+  productsLocalStorage.setItem("addToCart", JSON.stringify(productsLocalStorage))
+  //et on va ajouter une ligne au tableau a partir du bouton addToCart, on veut transformer objet javascript en chaine JSON a partir du tableau//
+
+  //getItem = obtenir ce qu'il y a dans le localStorage//
+  //setItem = ajouter une nouvelle ligne(produit) dans le localStorage//
+  //local.push() = rajouter dans un tableau//
+  //JSON.stringify = transformer un objet javascript en chaine json//
+  //JSON.parse = transformer un chaine JSON en objet JSON//
+  //parse()=>objet// 
+}
+})
 }
 
 
