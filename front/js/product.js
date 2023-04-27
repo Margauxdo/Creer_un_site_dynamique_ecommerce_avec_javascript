@@ -87,6 +87,7 @@ else{
   //JSON.parse = transformer un chaine JSON en objet JSON//
   //parse()=>objet// 
 }
+console.log(productsLocalStorage);
 })
 }
 
