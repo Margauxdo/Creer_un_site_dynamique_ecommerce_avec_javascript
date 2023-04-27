@@ -57,23 +57,19 @@ function localStorageToCart (){
       colors : document.getElementById("colors").value, //on veut recup la valeur renseigner dans le panier par utilisateur de la couleur du canape//
       id : id //on veut recup id du produit//
     }
-    //console.log(productsToCart);
+    console.log(productsToCart);
   
-
-
 productsLocalStorage = []//on a cree un tableau productsLocalStorage//
 if(localStorage.getItem("addToCart") !==null)
   //si ce qu'on recupere par le bouton dans le,localstorage est nul //
   {
     productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
     //on recuperera dans le localstorage en transformant le bouton du panier en ojet json//
-    productsLocalStorage.push(addToCart);
-    //on rajoute dans le tableau objet addtocart, au click du panier //
+    productsLocalStorage.push(productsToCart);
+    //on rajoute dans le tableau la quantité la couleur et id afin de pouvoir ajouter un nouvel evenment au nouveau click //
     localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage))
     //on ajoute au localstorage une ligne au tableau a partir du bouton panier, on veut transformer objet javascript en chaine JSON a partir du tableau//
-
   }
-
 else{
   productsLocalStorage.push(productsToCart);
   //alors on va rajouter dans le tableau les produits avec la variable qui définis la quantité, id et la couleur//
@@ -91,6 +87,3 @@ console.log(productsLocalStorage);
 })
 }
 
-
-
-//photo qui esplique le localstorage, reflechir a la fonction comment la realiser pour acceder au localstorage//
