@@ -63,12 +63,4 @@ function localStorageToCart (){
 
 
 
-//on sort de la fonction pour ajouter tout ca au localstorage//
-//localStorageProductsToCart = []
-//pour recup dans le localstorage si item addtocart est pas nul on peut recuperer//
-//if(localStorage.getItem('addTocart')) {
-//localStorageProductsToCart()
-//}
-//else{
-
-//} 
+//photo qui esplique le localstorage, reflechir a la fonction comment la realiser pour acceder au localstorage//
