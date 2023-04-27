@@ -15,6 +15,7 @@ const fetchArticle = () => {     //**variable pour recuperer un seul produit en 
       optionColorskanap(data)
       
       
+      
 const appendProduct = document.getElementsByClassName('item') //on cree une variable afin de recuperer emplacement des elements//
       
 const articleTitle = (document.getElementById("title").innerText = data.name) //on cree une variable pour recuperer le titre qui est appele title en html et data.name, dans le date il est appele name//
@@ -47,6 +48,8 @@ fetchArticle()
 localStorageToCart()
 
 
+
+
 function localStorageToCart (){
   //on créé une variable pour acceder au bouton du panier // 
   const addToCart = document.getElementById("addToCart")
@@ -58,6 +61,8 @@ function localStorageToCart (){
       id : id //on veut recup id du produit//
     }
     console.log(productsToCart);
+
+    //variable fenetre pop up pour la confirmation de la commande afin acceder a la page panier//
   
 productsLocalStorage = []//on a cree un tableau productsLocalStorage//
 if(localStorage.getItem("addToCart") !==null)
@@ -76,6 +81,8 @@ else{
   localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage))
   //et on va ajouter une ligne au tableau du localstorage a partir du bouton addToCart, on veut transformer objet javascript en chaine JSON a partir du tableau//
 
+
+
   //getItem = obtenir ce qu'il y a dans le localStorage//
   //setItem = ajouter une nouvelle ligne(produit) dans le localStorage//
   //local.push() = rajouter dans un tableau//
@@ -84,6 +91,7 @@ else{
   //parse()=>objet// 
 }
 console.log(productsLocalStorage);
+window.location.href="cart.html";// acceder a la page panier//
 })
 }
 
