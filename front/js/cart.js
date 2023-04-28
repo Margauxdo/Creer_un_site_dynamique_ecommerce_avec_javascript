@@ -1,9 +1,8 @@
-function fetchAPI() {
-    fetch("http://localhost:3000/api/products")
-    .then ((response) => response.json())
-    .then((data) => {
-      
-    })
-    }
-    
-    fetchAPI();
+productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
+//je copie la declaration de la variable dans laquelle on met la cle et la valeur qui sont dans le localstorage//
+console.log(productsLocalStorage);
+//on verifie et on recupere les données du local storage//
+
+//****************AFFICHAGE DES PRODUITS**************//
+const kanapCart = document.getElementsByClassName(".cart_item");
+console.log(kanapCart);
