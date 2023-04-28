@@ -71,13 +71,17 @@ if(localStorage.getItem("addToCart") !==null)
     productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
     //on recuperera dans le localstorage en transformant le bouton du panier en ojet json//
     productsLocalStorage.push(productsToCart);
+    //ajout du if si couelur et id est la mm on push//
     //on rajoute dans le tableau la quantité la couleur et id afin de pouvoir ajouter un nouvel evenment au nouveau click //
     localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage))
     //on ajoute au localstorage une ligne au tableau a partir du bouton panier, on veut transformer objet javascript en chaine JSON a partir du tableau//
   }
 else{
-  productsLocalStorage.push(productsToCart);
   //alors on va rajouter dans le tableau les produits avec la variable qui définis la quantité, id et la couleur//
+   if(productsToCart(colors) !== productsToCart(id))//si la couleur est identique a id
+  localStorage.push(productsToCart)//on push les produits dans le localstorage
+  else(localStorage.removeItem(productsToCart))//sinon on supprime les produits//
+   
   localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage))
   //et on va ajouter une ligne au tableau du localstorage a partir du bouton addToCart, on veut transformer objet javascript en chaine JSON a partir du tableau//
 
@@ -91,7 +95,7 @@ else{
   //parse()=>objet// 
 }
 console.log(productsLocalStorage);
-window.location.href="cart.html";// acceder a la page panier//
+
 })
 }
 
