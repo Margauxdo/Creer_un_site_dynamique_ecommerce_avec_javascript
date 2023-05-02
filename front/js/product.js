@@ -1,10 +1,9 @@
 const paramsProduct = new URL (document.location).searchParams // creation new url avec search params
 const id = paramsProduct.get("id")//cree une variable id, jenvoie ma constante paramproducts vers id pour recupere id de ma page//
-
 const url = `http://localhost:3000/api/products/${id}` // on cree une variable url on y met le lien de api avec ${id}, id varie en fonction des produits//
 //console.log(url) // on constate url de la page avec le id a cote 
 
-const fetchArticle = () => {     //**variable pour recuperer un seul produit en faisant appel a api */
+const  fetchArticle = () => {     //**variable pour recuperer un seul produit en faisant appel a api */
     fetch(url)        //on fait appel a api//
     .then (function(response) { // on utilise then pour avoir une reponse //
 
@@ -65,59 +64,52 @@ function localStorageToCart (){
     
     //variable fenetre pop up pour la confirmation de la commande afin acceder a la page panier//
   
-productsLocalStorage = []//on a cree un tableau productsLocalStorage//
+let productsLocalStorage = [];//on a cree un tableau productsLocalStorage//
 if(localStorage.getItem("addToCart") !==null)
   //si ce qu'on recupere par le bouton dans le,localstorage est nul //
   {
     productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
-    //on recuperera dans le localstorage en transformant le bouton du panier en ojet json//
-    productsLocalStorage.push(productsToCart);
-    //on rajoute dans le tableau la quantité la couleur et id afin de pouvoir ajouter un nouvel evenment au nouveau click //
-  
-    
-    localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage))
-    //on ajoute au localstorage une ligne au tableau a partir du bouton panier, on veut transformer objet javascript en chaine JSON a partir du tableau//
+    //si le localstorage contient deja des produits on le recupere dans un tableau//
   }
-else{
-  //alors on va rajouter dans le tableau les produits avec la variable qui définis la quantité, id et la couleur//
-
-//Recupere les produits existants dans le localStorage//
-let productInTheLocalStorage = JSON.parse(localStorage.getItem('addToCart'))||[];
-//Je verifie dans le localstorage si il existe un produit avec le même ID et la même couleur//
-let productFind = false;
-productInTheLocalStorage.forEach(function(data){
-  if(data.id===productsToCart.id && data.colors ===productsToCart.colors){
-    //si un produit avec la même couleur et le même id existe , ajoute la quantité et je met a jour dans le localstorage//
-    data.quantity += localStorageToCart.quantity;
-    localStorage.setItem('addToCart', JSON.stringify(productInTheLocalStorage));
-    productFind=true;
+  let productFind = false;
+    //on initialise une variable pour savoir si il est deja dans le localstorage //
+  
+  productsLocalStorage.forEach(function(productsLocalStorage){
+    if(
+      productsLocalStorage.id === productsToCart.id &&
+      productsLocalStorage.color === productsToCart.color
+    ){
+      //si un produit avec la meme id et l meme couleur dans le localstorage//
+      productsToCart.quantity += localStorageToCart.quantity;
+      productFind=true;
   }
 });
-
-//si aucun produit avec le même id et la même couleur n'a ete truvé alors ajoute le nouveau produit au tableau//
 if(!productFind){
-  productInTheLocalStorage.push(productsToCart);
-  localStorage.setItem('addToCart', JSON.stringify(productInTheLocalStorage));
-   console.log(`
-   _id : ${data._id}
-   quantity : ${data.quantity}
-  colors : ${data.colors}`);
+  //si le produit n'a pas été trouve dans le localstorage on l'ajoute au tableau//
+productsLocalStorage.push(productsToCart);
 }
+let totalQuantity = 0;
+// On initialise une variable pour stocker la quantité totale de produits dans le panier//
+productsLocalStorage.forEach(function (productsLocalStorage){
+totalQuantity += productsLocalStorage.quantity;
+//on calcule la quantité totale de produits dans le panier en les additionnannt//
+  });
+localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
+//on enregistre le tableau productslocalstorage dans le localstorage//
 
-  localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage))
-  //et on va ajouter une ligne au tableau du localstorage a partir du bouton addToCart, on veut transformer objet javascript en chaine JSON a partir du tableau//
+localStorage.setItem("totalQuantity", totalQuantity);
+//on enregistre la quantité total dans le localstorage
 
 
-
+  console.log(productsLocalStorage);
+ 
+  
+  //localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage))
+  
   //getItem = obtenir ce qu'il y a dans le localStorage//
   //setItem = ajouter une nouvelle ligne(produit) dans le localStorage//
   //local.push() = rajouter dans un tableau//
   //JSON.stringify = transformer un objet javascript en chaine json//
   //JSON.parse = transformer un chaine JSON en objet JSON//
   //parse()=>objet// 
-}
-console.log(productsLocalStorage);
-
-})
-}
-
+  })}
