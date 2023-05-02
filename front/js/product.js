@@ -81,31 +81,29 @@ if(localStorage.getItem("addToCart") !==null)
 else{
   //alors on va rajouter dans le tableau les produits avec la variable qui définis la quantité, id et la couleur//
 
-  productsLocalStorage.push(productsToCart.quantity);
-  //boucle forEach pour parcourir le localstorage//
-  Object.keys(localStorage).forEach(function(key){
-   //recup de objet JSON pour chaque cle dans le localstorage// 
-    let produit =JSON.parse(localStorage.getItem(key));
-    //verif de id et de la couleur
-    if(data._id == productsToCart.id && data.colors == productsToCart.colors){
-      //modif de la quantité pour ce produit//
-      data.quantity == productsToCart.quantity;
-      //enreistrement de la mise a jour dans le localstorage//
-      localStorage.setItem(key, JSON.stringify(produit));
-    }else{
-      //cela signifie id ne correspondt pas donc on l'affiche//
-  console.log(`_id : ${data._id}
-  quantity : ${data.quantity}
-  colors : ${data.colors}`);
-    }
-    
+//Recupere les produits existants dans le localStorage//
+let productInTheLocalStorage = JSON.parse(localStorage.getItem('addToCart'))||[];
+//Je verifie dans le localstorage si il existe un produit avec le même ID et la même couleur//
+let productFind = false;
+productInTheLocalStorage.forEach(function(data){
+  if(data.id===productsToCart.id && data.colors ===productsToCart.colors){
+    //si un produit avec la même couleur et le même id existe , ajoute la quantité et je met a jour dans le localstorage//
+    data.quantity += localStorageToCart.quantity;
+    localStorage.setItem('addToCart', JSON.stringify(productInTheLocalStorage));
+    productFind=true;
   }
-  )
-  //productsToCart.array.forEach(product => {
-    //console.log(product.quantity);
-  //if (productsToCart.quality === productsToCart.id) {
-   // localStorage.push(productsToCart.quantity)
-   //} })
+});
+
+//si aucun produit avec le même id et la même couleur n'a ete truvé alors ajoute le nouveau produit au tableau//
+if(!productFind){
+  productInTheLocalStorage.push(productsToCart);
+  localStorage.setItem('addToCart', JSON.stringify(productInTheLocalStorage));
+   console.log(`
+   _id : ${data._id}
+   quantity : ${data.quantity}
+  colors : ${data.colors}`);
+}
+
   localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage))
   //et on va ajouter une ligne au tableau du localstorage a partir du bouton addToCart, on veut transformer objet javascript en chaine JSON a partir du tableau//
 
