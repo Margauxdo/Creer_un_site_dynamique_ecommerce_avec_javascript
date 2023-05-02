@@ -62,9 +62,7 @@ function localStorageToCart (){
     }
     console.log(productsToCart);
 
-    //localStorageToCart(function(productsToCart){
-      //console.log(productsToCart.quantity);
-    //})
+    
     //variable fenetre pop up pour la confirmation de la commande afin acceder a la page panier//
   
 productsLocalStorage = []//on a cree un tableau productsLocalStorage//
@@ -84,11 +82,30 @@ else{
   //alors on va rajouter dans le tableau les produits avec la variable qui définis la quantité, id et la couleur//
 
   productsLocalStorage.push(productsToCart.quantity);
-  productsToCart.array.forEach(product => {
-    console.log(product.quantity);
-  if (productsToCart.quality === productsToCart.id) {
-    localStorage.push(productsToCart.quantity)
-    } })
+  //boucle forEach pour parcourir le localstorage//
+  Object.keys(localStorage).forEach(function(key){
+   //recup de objet JSON pour chaque cle dans le localstorage// 
+    let produit =JSON.parse(localStorage.getItem(key));
+    //verif de id et de la couleur
+    if(data._id == productsToCart.id && data.colors == productsToCart.colors){
+      //modif de la quantité pour ce produit//
+      data.quantity == productsToCart.quantity;
+      //enreistrement de la mise a jour dans le localstorage//
+      localStorage.setItem(key, JSON.stringify(produit));
+    }else{
+      //cela signifie id ne correspondt pas donc on l'affiche//
+  console.log(`_id : ${data._id}
+  quantity : ${data.quantity}
+  colors : ${data.colors}`);
+    }
+    
+  }
+  )
+  //productsToCart.array.forEach(product => {
+    //console.log(product.quantity);
+  //if (productsToCart.quality === productsToCart.id) {
+   // localStorage.push(productsToCart.quantity)
+   //} })
   localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage))
   //et on va ajouter une ligne au tableau du localstorage a partir du bouton addToCart, on veut transformer objet javascript en chaine JSON a partir du tableau//
 
