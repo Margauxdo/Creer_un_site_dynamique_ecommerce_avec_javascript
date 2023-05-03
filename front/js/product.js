@@ -77,7 +77,7 @@ if(localStorage.getItem("addToCart") !==null)
   productsLocalStorage.forEach(function(productsLocalStorage){
     if(
       productsLocalStorage.id === productsToCart.id &&
-      productsLocalStorage.color === productsToCart.color
+      productsLocalStorage.color === productsToCart.colors
     ){
       //si un produit avec la meme id et l meme couleur dans le localstorage//
       productsToCart.quantity += localStorageToCart.quantity;
@@ -104,7 +104,7 @@ localStorage.setItem("totalQuantity", totalQuantity);
   console.log(productsLocalStorage);
  
   
-  //localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage))
+  localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage))
   
   //getItem = obtenir ce qu'il y a dans le localStorage//
   //setItem = ajouter une nouvelle ligne(produit) dans le localStorage//
