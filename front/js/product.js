@@ -65,7 +65,7 @@ function localStorageToCart (){
     //variable fenetre pop up pour la confirmation de la commande afin acceder a la page panier//
   
 let productsLocalStorage = [];//on a cree un tableau productsLocalStorage//
-if(localStorage.getItem("addToCart") !==null)
+if(localStorage.getItem("addToCart") !==null )
   //si ce qu'on recupere par le bouton dans le,localstorage est nul //
   {
     productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
@@ -77,10 +77,10 @@ if(localStorage.getItem("addToCart") !==null)
   productsLocalStorage.forEach(function(productsLocalStorage){
     if(
       productsLocalStorage.id === productsToCart.id &&
-      productsLocalStorage.color === productsToCart.colors
+      productsLocalStorage.colors === productsToCart.colors
     ){
       //si un produit avec la meme id et l meme couleur dans le localstorage//
-      productsToCart.quantity += localStorageToCart.quantity;
+      productsToCart.quantity += productsLocalStorage.quantity;
       productFind=true;
   }
 });

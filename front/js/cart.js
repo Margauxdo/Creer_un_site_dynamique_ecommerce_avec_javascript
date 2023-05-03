@@ -12,6 +12,11 @@ if(productsLocalStorage === null){
 }else{
     console.log("Votre panier n'est pas vide")
     //si on ajout un produit il est ecris dans la cnsole que le panier n'est pas vide//
+    //si utilisateur a ajouté plusieurs produits avec la même id et même couleurs on va les aditionné sur la même ligne //
+    //alors que si utilisateur a pris deux produits avec la meme id qui n'ont pas la même couleur on les ajoutera sur la ligne du dessous//
+    //on dois addittioné les quantité et les prix  afin avoir le prix total//
+    //etant dans le panier utilisateur a la possibilité ajouté, modifié ou de supprimer des produits//
+    //on affichera un tableau avec les produits selectionné et leurs images en faisant appel a api//
 }
 
 
