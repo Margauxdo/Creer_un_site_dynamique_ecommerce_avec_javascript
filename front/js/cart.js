@@ -14,24 +14,20 @@ if(productsLocalStorage === null){
     //si on ajout un produit il est ecris dans la cnsole que le panier n'est pas vide//
     }
 
-  //j'utilise map afin de recuperer id des produits dans api dans un ordre specifique//
+  //j'utilise map afin de recuperer id des produits dans api dans un ordre specifique + Promise.all afin effectuer les requêtes en paralleles//
     Promise.all(
         productsLocalStorage.map((id) => {
     return fetch("http://localhost:3000/api/products")
         .then ((response) => response.json())
         .then((data) => {
-          productsCart(data)
-    
-        
+            console.log(data);
         })
-    }))
+        }
+    ))//tous les produits ont été recuperer depuis api//
        
     
 
-        function productsCart(){
 
-        }
-    
     //recuperer les element du panier dans api--fetch chaque url dans un boucle//recuperer chaque id chaque article
     //si je rajoute un tel produit frace au localstorage source premier en fonction de id on dois recupere api, regarder utiliser map, faire attention a ordre//
     //map et boucle for foreach//
