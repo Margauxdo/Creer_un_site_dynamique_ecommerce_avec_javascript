@@ -109,4 +109,9 @@ console.log(localStorage);
   //JSON.parse = transformer un chaine JSON en objet JSON//
   //parse()=>objet// 
   //parseInt = transformer en chiffre pour un calcul//
-  })}
+
+  //quand on clique sur le bouton panier on acceder directement a la page panier//
+  window.location.href ="cart.html";
+  })
+  
+  }
