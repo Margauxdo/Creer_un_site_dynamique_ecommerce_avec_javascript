@@ -41,21 +41,23 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
             console.log(productQuantity);
 
             const productColor = document.createElement('p');
-            productColor.textContent = `Couleur : ${product.color}`;
+            productColor.textContent = `Couleur : ${product.colors}`;
             productDiv.appendChild(productColor);
             console.log(productColor);
 
-//  Ajouter le produit a la page panier//
+           const productImage = document.createElement('img');
+          productImage.src = data.imageUrl;
+          productDiv.appendChild(productImage);
+          productImage.width='300';
+          console.log(productImage);
+
+//  Ajouter le produit a la page panier en liant la variable qui situe les elements du panier et la variable qui positionne articles//
             cartProduct.appendChild(productDiv);
           }
           )
         }
         )
-//******MODIFIER LA COULEUR POU LA DEFINIR EN ASSOCIANT A API ET AJOUTER LA PHOTO ET AFFICHER */
-
-            //productDiv.innerHTML = cartProduct;
-            
-          }
+ }//tous les elements du produit ont été ajouté a la page d'acceuil//
     
   
   
