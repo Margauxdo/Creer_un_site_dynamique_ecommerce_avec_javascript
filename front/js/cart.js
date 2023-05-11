@@ -10,6 +10,8 @@ if (!productsLocalStorage || productsLocalStorage.length === 0) {
 const infoUsers = document.createElement("p");
 infoUsers.textContent = "Votre  panier est vide";
 cartProduct.appendChild(infoUsers);
+infoUsers.style.textAlign = "center";
+
 //message pour informer utilisateur que le panier est vide//
   }else {
     console.log("mon panier n'est pas vide!!");//sinon mon panier n'est pas vide//
@@ -20,79 +22,102 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
       .then ((response) => response.json())
           .then((data) => {
   //cree une div pour afficher le produit//
-            const productDiv = document.createElement('article');
-            productDiv.classList.add('cart__item');
-            console.log(productDiv);
-  //afficher le nom et le prix du produit//
-            const productName = document.createElement('h2');
-            productName.textContent = data.name;
-            productDiv.appendChild(productName);
-            console.log(productName);
+            const cartItem = document.createElement('article');
+            cartItem.classList.add('cart');
+            console.log(cartItem);
 
-            const productPrice = document.createElement('p');
-            productPrice.textContent = `${data.price} € `;
-            productDiv.appendChild(productPrice);
-            console.log(productPrice);
+  //afficher l'image, le titre, la quantité, la couleur de produit depuis le localstorage
+  const cartItemImg = document.createElement('img');
+  cartItemImg.src = data.imageUrl;
+  cartItem.appendChild(cartItemImg);
+  cartItemImg.width='400';
+  console.log(cartItemImg);
 
-  //afficher la quantité, la couleur de produit depuis le localstorage
-            const productQuantity = document.createElement('p');
-            productQuantity.textContent = `Quantité : ${product.quantity}`;
-            productDiv.appendChild(productQuantity);
-            console.log(productQuantity);
+  const productName = document.createElement('h2');
+  productName.textContent = data.name;
+  cartItem.appendChild(productName);
+  console.log(productName);
 
-            const productColor = document.createElement('p');
-            productColor.textContent = `Couleur : ${product.colors}`;
-            productDiv.appendChild(productColor);
-            console.log(productColor);
+  const productColor = document.createElement('p');
+  productColor.textContent = `Couleur : ${product.colors}`;
+  cartItem.appendChild(productColor);
+  console.log(productColor);
 
-           const productImage = document.createElement('img');
-          productImage.src = data.imageUrl;
-          productDiv.appendChild(productImage);
-          productImage.width='300';
-          console.log(productImage);
+  const productPrice = document.createElement('p');
+  productPrice.textContent = `${data.price} € `;
+  cartItem.appendChild(productPrice);
+  console.log(productPrice);
+
+  const cartContentDescription = document.createElement('div');
+  cartContentDescription.classList.add('cart__item__content__description');
+  cartContentDescription.appendChild(productName);
+  cartContentDescription.appendChild(productColor);
+  cartContentDescription.appendChild(productPrice);
+  console.log(cartContentDescription);
+
+  const productQuantity = document.createElement('p');
+  productQuantity.textContent = `Quantité : ${product.quantity}`;
+  cartItem.appendChild(productQuantity);
+  console.log(productQuantity);
 
 //  Ajouter le produit a la page panier en liant la variable qui situe les elements du panier et la variable qui positionne articles//
-            cartProduct.appendChild(productDiv);
-          }
-          )
-        }
-        )
- }//tous les elements du produit ont été ajouté a la page d'acceuil//
-    
-  
-  
-    //function imageShow(data){
-    //const productImage = document.createElement("img");
-    //productImage.src = data.imageUrl;/*on relie la source de image */
-    //const cartItemImage = document.querySelector(".cart__item__img");
-    //cartItemImage.appendChild(productImage);
-    //console.log(cartItemImage);
-   //}
+            cartProduct.appendChild(cartItem);
+            cartProduct.appendChild(cartItemImg);
+            cartProduct.appendChild(cartContentDescription);
+            cartProduct.appendChild(productQuantity);
+        
+ //tous les elements du produit ont été ajouté a la page d'acceuil//
 
-    
-
-      
+ //creation des bouton ajouter et supprimer//
 
 
-    /*on modifie la hauteur de image*/
+//ajouter le bouton a la page panier//
  
-
-
-    //articleElement.appendChild(imageElement);/*image est enfant de article*/
-    //onsole.log(products.imageUrl);
-    //ajout des paniers de api //
-    //image//prix
+ 
+ //creation du bouton modifier//
+ //const editItem = document.createElement('input');
+ //editItem.value = `Modifier`;
+ //editItem.addEventListener(`click`,()=>{
   
+ //})
+
+//créé un variable pour ajouter un element supprimer//
+const deleteBtn = document.createElement('button');
+//ajouter le texte supprimer//
+deleteBtn.textContent = `Supprimer`;
+//ajouter une evenemnt click quand la souris va sur element supprimer//
+deleteBtn.addEventListener("click",(event) => {
+event.preventDefault();//pour eviter que quand on clique sur supprimer la page se recharge automatiquement//
+ //je recupere element parent de cart__item//
+ const parentItem = event.currentTarget.closest('.cart__item');
+ if(parentItem){ //si l'element parent//
+ //je recup la valeur de data.id et data.colord//
+ const id = parentItem.getAttribute('data-id');
+ const color = parentItem.getAttribute('data-color');   
+
+//trouver index du produit selectionne dans le tableau du localstorage pour comparer son id et sa couleur au produit qui se trouve dans la boucle foreach// 
+   //utilise findindex , la fonction callback parcourt tout le tableau jusqua ce que le retour soit positif//
+   let idCheckdelete = productsLocalStorage.findIndex((p)=>p.id === id && p.colors === color);
+    //si le produit est dans le tableau localstorage//
+    if(idCheckdelete !== -1){
+      //supprimer les produits dans le localstorage
+      //utilise splice il retire et modifie les element du tableau il sagit du localstorage//
+      productsLocalStorage.splice(idCheckdelete, 1);
+      //mettre a jour le localstorage avec le nouveau tableau
+      localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage));
+      //supprimer article de la page panier//
+      parentItem.removeChild(parentItem.lastChild);
+      cartProduct.removeChild(parentItem);
+    }
+  }
+  });
+//ajouter le bouton suppression a article panier//
+cartItem.appendChild(deleteBtn);//bouton suppresion est enfant de article//
+cartProduct.appendChild(cartItem);  //article est enfant de la section cart//
+});
+})}
 
 
-
-//tous les produits ont été recuperer depuis api//
-    //une boucle pour afficher les produits//
-    
-
-
-    //etant dans le panier utilisateur a la possibilité ajouté, modifié ou de supprimer des produits//
-    //on affichera un tableau avec les produits selectionné et leurs images en faisant appel a api//
 
 
 
