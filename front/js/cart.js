@@ -78,6 +78,26 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
  const editItem = document.createElement('input');
  editItem.value = `Modifier`;
  editItem.addEventListener(`click`,()=>{
+  if (editItem) {
+    //creatin du bouton + pour ajouter le produit//
+    const addButon = document.createElement('button');
+    addButon.value = '+';
+    addButon.addEventListener('click', () => {
+      //ajout du code pour ajouter un ou plusieurs produits jusqu'a 100//
+    })
+    //creation du bouton - pour retirir des produits//
+    const removeButon = document.createElement('buton');
+    removeButon.value = '-';
+    removeButon.addEventListener('click', () =>{
+      //ajouter le code pour retirer un produit//
+    })
+   
+  } else {
+    //on ajoute les bouton a la page panier //
+    const editButon = document.querySelector('.cart__item__content__settings__quantity');
+    editButon.appendChild(addButon);
+    editButon.appendChild(removeButon);
+  }//pourquoi le bouton + ou - ne s'affiche pas ? //
   //si j'ajoute ou je retire un ou plusieurs produits//
   //ajoute un bouton + pour ajouter et un bouton - pour retirer//
   //alors il sera retirer ou ajouter du localstorage etde la page panier//
@@ -115,7 +135,7 @@ deleteBtn.addEventListener("click",(event) => {
   });
 //ajouter le bouton suppression a article panier//
 cartItem.appendChild(deleteBtn);//bouton suppresion est enfant de article//
-cartItem.appendChild(editItem);
+//cartItem.appendChild(editItem);
 });
 })}
 
