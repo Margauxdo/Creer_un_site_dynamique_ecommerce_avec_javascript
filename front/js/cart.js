@@ -75,11 +75,13 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
  
  
  //creation du bouton modifier//
- //const editItem = document.createElement('input');
- //editItem.value = `Modifier`;
- //editItem.addEventListener(`click`,()=>{
-  
- //})
+ const editItem = document.createElement('input');
+ editItem.value = `Modifier`;
+ editItem.addEventListener(`click`,()=>{
+  //si j'ajoute ou je retire un ou plusieurs produits//
+  //ajoute un bouton + pour ajouter et un bouton - pour retirer//
+  //alors il sera retirer ou ajouter du localstorage etde la page panier//
+ })
 
 //créé un variable pour ajouter un element supprimer//
 const deleteBtn = document.createElement('button');
@@ -87,17 +89,17 @@ const deleteBtn = document.createElement('button');
 deleteBtn.textContent = `Supprimer`;
 //ajouter une evenemnt click quand la souris va sur element supprimer//
 deleteBtn.addEventListener("click",(event) => {
-event.preventDefault();//pour eviter que quand on clique sur supprimer la page se recharge automatiquement//
- //je recupere element parent de cart__item//
- const parentItem = event.currentTarget.closest('.cart__item');
+//event.preventDefault();//pour eviter que quand on clique sur supprimer la page se recharge automatiquement//
+ //je recupere element parent de cart__item, element du panier a supprimer//
+ const parentItem = event.currentTarget.closest('.cart__item__content__settings__delete');
  if(parentItem){ //si l'element parent//
- //je recup la valeur de data.id et data.colord//
+ //je recup la valeur de data.id et data.colord, id et la couelur du produit a supprimer//
  const id = parentItem.getAttribute('data-id');
  const color = parentItem.getAttribute('data-color');   
 
-//trouver index du produit selectionne dans le tableau du localstorage pour comparer son id et sa couleur au produit qui se trouve dans la boucle foreach// 
+//trouver indice du produit selectionne dans le tableau du localstorage pour comparer son id et sa couleur au produit qui se trouve dans la boucle foreach// 
    //utilise findindex , la fonction callback parcourt tout le tableau jusqua ce que le retour soit positif//
-   let idCheckdelete = productsLocalStorage.findIndex((p)=>p.id === id && p.colors === color);
+   //let idCheckdelete = productsLocalStorage.findIndex((p)=>p.id === id && p.colors === color);
     //si le produit est dans le tableau localstorage//
     if(idCheckdelete !== -1){
       //supprimer les produits dans le localstorage
@@ -106,14 +108,14 @@ event.preventDefault();//pour eviter que quand on clique sur supprimer la page s
       //mettre a jour le localstorage avec le nouveau tableau
       localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage));
       //supprimer article de la page panier//
-      parentItem.removeChild(parentItem.lastChild);
       cartProduct.removeChild(parentItem);
+      //productsLocalStorage.removeChild(parentItem);//on supprime l'element parent//
     }
   }
   });
 //ajouter le bouton suppression a article panier//
 cartItem.appendChild(deleteBtn);//bouton suppresion est enfant de article//
-cartProduct.appendChild(cartItem);  //article est enfant de la section cart//
+cartItem.appendChild(editItem);
 });
 })}
 
