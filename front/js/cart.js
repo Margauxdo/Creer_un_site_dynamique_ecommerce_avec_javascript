@@ -21,14 +21,14 @@ productsLocalStorage.forEach(product => {
 fetch(`http://localhost:3000/api/products/${product.id}`)   
       .then ((response) => response.json())
           .then((data) => {
-            showProductsCart(data, product)
+            showProductsCart(data, product);
           
           });
+         
         });
-        
+    
       }
        
-      
 
 
 //mettre dans un function////fonction supprimer et une modifier//pas les mettre dans fetch//
@@ -39,18 +39,18 @@ const cartItem = document.createElement('article');
 cartItem.classList.add('cart');
 console.log(cartItem);
 
-  //je cree une variable pour afficher image//
+  //afficher image//
   const cartItemImg = document.createElement('img');
   cartItemImg.src = data.imageUrl;
   cartItem.appendChild(cartItemImg);
   cartItemImg.width='400';
 
-  //je cree une variable pour afficher le titre du produit//
+  //afficher le titre du produit//
   const productName = document.createElement('h2');
   productName.textContent = data.name;
   cartItem.appendChild(productName);
 
-  //je cree une variable pour afficher la ou les couleurs du produit//
+  //afficher la ou les couleurs du produit//
   const productColor = document.createElement('p');
   productColor.textContent = `Couleur : ${product.colors}`;
   cartItem.appendChild(productColor);
@@ -67,45 +67,52 @@ console.log(cartItem);
   cartContentDescription.appendChild(productColor);
   cartContentDescription.appendChild(productPrice);
 
-  //je cree une variable pour afficher la quantité du produit//
+   //je cree une div ou on va positionner la quantité et la qunatité modifier//
+  const productEdit = document.createElement('div');
+  productEdit.classList.add('.cart__item__content__settings__quantity');
+
+  //afficher la quantité du produit//
   const productQuantity = document.createElement('p');
   productQuantity.textContent = `Quantité : ${product.quantity}`;
   cartItem.appendChild(productQuantity);
 
-  //je cree une variable pour afficher la div ou va se situer element supprimer//
+  //cree un div pour afficher element supprimer//
   const productDelete = document.createElement('div');
   productDelete.classList.add('.cart__item__content__settings__delete');
 
-  //je cree une variable pour afficher input ou on va pouvoir modifier le produit//
+  //creer un input pour modifier la quantité du produit//
   const valueQtity = document.createElement('input');
   valueQtity.querySelector('.itemQuantity');
   //cree un element input de ty^pe number en ajoutant les valeurs//
   valueQtity.setAttribute("type","number");
-  valueQtity.setAttribute("class","itemQuantity");
+  valueQtity.setAttribute("class","cart__item__content__settings__quantity");
   valueQtity.setAttribute("name","itemQuantity");
   valueQtity.setAttribute("min","1");
   valueQtity.setAttribute("max","100");
   valueQtity.setAttribute("value",product.quantity);//ajout la valeur qui correspondt a la quantité choisir//
+  productEdit.appendChild(productQuantity);
+  productEdit.appendChild(valueQtity);
 
   //créé un variable pour ajouter un element supprimer//
 const deleteItem = document.createElement('p');
 deleteItem.classList.add('.deleteItem');
-deleteItem.innerHTML = `Supprimer`;
+deleteItem.textContent = `Supprimer`;
 deleteItem.appendChild(productDelete);
 //j'appel la fonction deletecart au click//s
 deleteItem.addEventListener("click",deleteCart);
 
-
-  //je cree une div ou on va positionner la quantité et la qunatité modifier//
-  const productEdit = document.createElement('div');
-  productEdit.classList.add('.cart__item__content__settings__quantity');
-  productEdit.appendChild(productQuantity);
-  productEdit.appendChild(valueQtity);
-  
 //je cree une div pour positionner element supprimer et modifier//
 const cartContentSetting = document.createElement('div');
 cartContentSetting.classList.add('.cart__item__content__settings');
 cartContentSetting.appendChild(productEdit);
+
+
+ //je cree une div ou on va positionner la quantité et la qunatité modifier//
+  //const productEdit = document.createElement('div');
+  //productEdit.classList.add('.cart__item__content__settings__quantity');
+
+  
+
 
 //  Ajouter le produit a la page panier en liant la variable qui situe les elements du panier et la variable qui positionne articles//
             cartProduct.appendChild(cartItem);
@@ -116,12 +123,64 @@ cartContentSetting.appendChild(productEdit);
             cartContentSetting.appendChild(productEdit);//ajout des produits modifie a la div qui les englobe
             cartItem.appendChild(cartContentSetting);
             cartItem.appendChild(deleteItem);
+//appeler la fonction modifier et supprimer//
 
             
           }
           
 
 function editCart() {
+
+  //Selectionner tous les element du panier avec la class cart//
+  const editContent = document.querySelectorAll('.cart');
+  //Parcourir chaque element du panier//
+  editContent.forEach(cartItem =>{
+    //Selectionne input pour la qunatité et element supprimer//
+    const quantityInput = cartItem.querySelector('.itemQuantity');
+    const deleteElement = cartItem.querySelector('.deleteItem');
+
+    //Ajouter un evenement pour le changement de quantité//
+    quantityInput.addEventListener('change',(event)=>{
+      //recuperer les nouvelle qunatité en tant que nombre 
+      const newQuantity = parseInt(event.target.value);
+
+      //Recuperer id du produit et sa couleur actuel//
+      const productId = cartItem.dataset.productId;
+      const productColor = cartItem.dataset.productColor;
+
+      //mettre a jour la quantité dans le localstorage//
+      const productsLocalStorageQuantity = JSOn.parse(localStorage.getItem('addToCart'));
+      const updateProducts = productsLocalStorageQuantity.map((product)=>{
+        //Verifier si id et la couleur du produit correspondent a element actuel//
+        if(product.id ===productId && product.color === productColor){
+          product.quantity = newQuantity;
+        }
+        return product;
+      });
+      localStorage.setItem('addToCart',JSON.stringify(updateProducts));
+      //Mettre a jour la quantité dans le DOM//
+      const quantityElement = cartItem.querySelector('.cart__item__content__settings__quantity');
+      quantityElement.textContent =`Quantité: ${newQuantity}`;
+    });
+  });
+  //Ajouter un evenemnet pour le bouton suppression//
+    deleteElement.addEventListener('click',() => {
+      //Recup id et la couleur du produit actuel//
+      const productId = cartItem.dataset.productId;
+      const productColor = cartItem.dataset.productColor;
+
+      //Supprimer le produit du localstorage//
+      const productsLocalStorageQuantity = JSON.parse(localStorage.getItem('addtocart'));
+      const updateProducts = productsLocalStorageQuantity.filter(
+        (product) => product.id !== productId ||product.color !== productColor
+      );
+      });
+      localStorage.setItem('addToCart', JSON.stringify(updateProducts));
+
+      //Supprimer le produit du DOM//
+      cartItem.remove();
+   
+      
 
 
 }
@@ -169,102 +228,10 @@ deleteContent.forEach(deleteItem => {
 
       }
     });
-    }
-//appel de la fonction updatecart lors du rechargement d ela page//
-window.addEventListener("load", updateCart);
-    
+    }  
   });
+  //appel de la fonction updatecart lors du rechargement d ela page//
+window.addEventListener("load", updateCart);
 });
 }
-
-//ajouter le bouton suppression a article panier//
-//cartItem.appendChild(deleteBtn);//bouton suppresion est enfant de article//
-//cartItem.appendChild(editItem);
-//créé un variable pour ajouter un element supprimer//
-//const deleteItem = document.createElement('p');
-//le texte supprimer se situe dans la balmise deleItem //
-//deleteItem.querySelector('.deleteItem');
-//deleteItem.innerHTML = `Supprimer`;
-//console.log(deleteItem);
-//cartProduct.appendChild(deleteItem);
-
-
-
-
-
-    
-
-
-
- //tous les elements du produit ont été ajouté a la page d'acceuil//
-
- //creation des bouton ajouter et supprimer//
-
-
-//ajouter le bouton a la page panier//
- 
- 
- //creation du bouton modifier// 
- //const editItem = document.createElement('input');
- //editItem.value = `Modifier`;
- //editItem.addEventListener(`click`,()=>{
-  //if (editItem) {
-    //creatin du bouton + pour ajouter le produit//
-    //const addButon = document.createElement('button');
-    //addButon.value = '+';
-    //addButon.addEventListener('click', () => {
-      //ajout du code pour ajouter un ou plusieurs produits jusqu'a 100//
-    //})
-    //creation du bouton - pour retirir des produits//
-    //const removeButon = document.createElement('buton');
-    //removeButon.value = '-';
-    //removeButon.addEventListener('click', () =>{
-      //ajouter le code pour retirer un produit//
-    //})
-   
-  //} else {
-    //on ajoute les bouton a la page panier //
-    //const editButon = document.querySelector('.cart__item__content__settings__quantity');
-    //editButon.appendChild(addButon);
-    //editButon.appendChild(removeButon);
-  //}//pourquoi le bouton + ou - ne s'affiche pas ? //
-  //si j'ajoute ou je retire un ou plusieurs produits//
-  //ajoute un bouton + pour ajouter et un bouton - pour retirer//
-  //alors il sera retirer ou ajouter du localstorage etde la page panier//
- //})
-
-
-//deleteBtn.textContent = `Supprimer`;
-//ajouter une evenemnt click quand la souris va sur element supprimer//
-//deleteBtn.addEventListener("click",(event) => {
-//event.preventDefault();//pour eviter que quand on clique sur supprimer la page se recharge automatiquement//
- //je recupere element parent de cart__item, element du panier a supprimer//
- //const parentItem = event.currentTarget.closest('.cart__item__content__settings__delete');
- //if(parentItem){ //si l'element parent//
- //je recup la valeur de data.id et data.colord, id et la couelur du produit a supprimer//
- //const id = parentItem.getAttribute('data-id');
- //const color = parentItem.getAttribute('data-color');   
-
-//trouver indice du produit selectionne dans le tableau du localstorage pour comparer son id et sa couleur au produit qui se trouve dans la boucle foreach// 
-   //utilise findindex , la fonction callback parcourt tout le tableau jusqua ce que le retour soit positif//
-   //let idCheckdelete = productsLocalStorage.findIndex((p)=>p.id === id && p.colors === color);
-    //si le produit est dans le tableau localstorage//
-    //if(idCheckdelete !== -1){
-      //supprimer les produits dans le localstorage
-      //utilise splice il retire et modifie les element du tableau il sagit du localstorage//
-      //productsLocalStorage.splice(idCheckdelete, 1);
-      //mettre a jour le localstorage avec le nouveau tableau
-      //localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage));
-      //supprimer article de la page panier//
-      //cartProduct.removeChild(parentItem);
-      //productsLocalStorage.removeChild(parentItem);//on supprime l'element parent//
-    //}
-  //}
-  //});
-//ajouter le bouton suppression a article panier//
-//cartItem.appendChild(deleteBtn);//bouton suppresion est enfant de article//
-//cartItem.appendChild(editItem);
-//});
-//})}
-
 
