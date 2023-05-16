@@ -62,7 +62,7 @@ console.log(cartItem);
 
   //je cree une variable pour mettre dans la description le nom, la couleur et le prix//
   const cartContentDescription = document.createElement('div');
-  cartContentDescription.classList.add('cart__item__content__description');
+  cartContentDescription.classList.add('.cart__item__content__description');
   cartContentDescription.appendChild(productName);
   cartContentDescription.appendChild(productColor);
   cartContentDescription.appendChild(productPrice);
@@ -89,27 +89,31 @@ console.log(cartItem);
 
   //créé un variable pour ajouter un element supprimer//
 const deleteItem = document.createElement('p');
-deleteItem.classList.add('deleteItem');
+deleteItem.classList.add('.deleteItem');
 deleteItem.innerHTML = `Supprimer`;
-//deleteItem.appendChild(productDelete);
+deleteItem.appendChild(productDelete);
+//j'appel la fonction deletecart au click//s
+deleteItem.addEventListener("click",deleteCart());
 
 
   //je cree une div ou on va positionner la quantité et la qunatité modifier//
   const productEdit = document.createElement('div');
-  productEdit.classList.add('cart__item__content__settings__quantity');
+  productEdit.classList.add('.cart__item__content__settings__quantity');
   productEdit.appendChild(productQuantity);
   productEdit.appendChild(valueQtity);
   
 //je cree une div pour positionner element supprimer et modifier//
 const cartContentSetting = document.createElement('div');
-cartContentSetting.classList.add('cart__item__content__settings');
+cartContentSetting.classList.add('.cart__item__content__settings');
 cartContentSetting.appendChild(productEdit);
 
 //  Ajouter le produit a la page panier en liant la variable qui situe les elements du panier et la variable qui positionne articles//
             cartProduct.appendChild(cartItem);
             cartItem.appendChild(cartItemImg);
-            cartItem.appendChild(cartContentDescription);
-            cartItem.appendChild(productQuantity);
+            cartItem.appendChild(cartContentDescription);//ajout de la div desciption a article
+            productEdit.appendChild(productQuantity);//ajout la qtité au produit modifié
+            productEdit.appendChild(valueQtity);//ajout d ela valeur de la quantité au produit modifie
+            cartContentSetting.appendChild(productEdit);//ajout des produits modifie a la div qui les englobe
             cartItem.appendChild(cartContentSetting);
             cartItem.appendChild(deleteItem);
 
@@ -142,17 +146,36 @@ deleteContent.forEach(deleteItem => {
       //supprime les produits dans le localstorage en utlisant splice//
       productsLocalStorage.splice(idCheckDelete, 1);
       //mettre a jour dans le local storage//
-      localStorage.setItem("addTocart",JSON.stringify(productsLocalStorage) );
+      localStorage.setItem("addToCart",JSON.stringify(productsLocalStorage) );
 
       //supprimer article de la page panier//
-      parentNode.removeChild(parentItem);
+      parentItem.parentNode.removeChild(parentItem);
 
   
-    }  
+    } 
+    
+    //variable pour mettre a jour le panier en supprimant les produits du DOM qui ne sont plus present dns le localstorage//
+    const updateCart = document.querySelectorAll(".cart__item");
+    //selectionne tous les elements du panier//
+    updateCart.forEach((cartItem) =>{
+      const idDom = cartItem.getAttribute("data-id");
+      const colorDom = cartItem.getAttribute("data-color");
+      //recupere id et la couleur du produit dans le panier//
+      const productexists = productsLocalStorage.some((product((product) => product.idDom === id && product.colorDom ===color)));
+      //verif si le produit est present dans le localstorage en comparant son id et sa couleur avec les produits du localstorage//
+      if(!productexists){
+        //si le produit n'existe pas dans le localstorage alors il sera supprime du DOM//
+        cartProduct.removeChild(cartItem);
+
+      }
+    });
     }
+//appel de la fonction updatecart lors du rechargement d ela page//
+window.addEventListener("load", updateCart);
+    
   });
-})
- 
+});
+}
 
 //ajouter le bouton suppression a article panier//
 //cartItem.appendChild(deleteBtn);//bouton suppresion est enfant de article//
@@ -164,7 +187,7 @@ deleteContent.forEach(deleteItem => {
 //deleteItem.innerHTML = `Supprimer`;
 //console.log(deleteItem);
 //cartProduct.appendChild(deleteItem);
-}
+
 
 
 
