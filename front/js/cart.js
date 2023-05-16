@@ -22,11 +22,13 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
       .then ((response) => response.json())
           .then((data) => {
             showProductsCart(data, product)
+          
           });
         });
+        
       }
        
-
+      
 
 
 //mettre dans un function////fonction supprimer et une modifier//pas les mettre dans fetch//
@@ -72,11 +74,11 @@ console.log(cartItem);
 
   //je cree une variable pour afficher la div ou va se situer element supprimer//
   const productDelete = document.createElement('div');
-  productDelete.classList.add('cart__item__content__settings__delete');
+  productDelete.classList.add('.cart__item__content__settings__delete');
 
   //je cree une variable pour afficher input ou on va pouvoir modifier le produit//
   const valueQtity = document.createElement('input');
-  valueQtity.querySelector('itemQuantity');
+  valueQtity.querySelector('.itemQuantity');
   //cree un element input de ty^pe number en ajoutant les valeurs//
   valueQtity.setAttribute("type","number");
   valueQtity.setAttribute("class","itemQuantity");
@@ -87,7 +89,7 @@ console.log(cartItem);
 
   //créé un variable pour ajouter un element supprimer//
 const deleteItem = document.createElement('p');
-deleteItem.querySelector('.deleteItem');
+deleteItem.classList.add('deleteItem');
 deleteItem.innerHTML = `Supprimer`;
 //deleteItem.appendChild(productDelete);
 
@@ -105,19 +107,56 @@ cartContentSetting.appendChild(productEdit);
 
 //  Ajouter le produit a la page panier en liant la variable qui situe les elements du panier et la variable qui positionne articles//
             cartProduct.appendChild(cartItem);
-            cartProduct.appendChild(cartItemImg);
-            cartProduct.appendChild(cartContentDescription);
-            cartProduct.appendChild(productQuantity);
-            cartProduct.appendChild(cartContentSetting);
-            cartProduct.appendChild(deleteItem);
+            cartItem.appendChild(cartItemImg);
+            cartItem.appendChild(cartContentDescription);
+            cartItem.appendChild(productQuantity);
+            cartItem.appendChild(cartContentSetting);
+            cartItem.appendChild(deleteItem);
+
+            
           }
+          
 
 function editCart() {
-  const cartItem = document.createElement('article');
-cartItem.classList.add('cart');
+
 
 }
 function deleteCart() {
+const deleteContent = document.querySelectorAll('.cart__item__content__settings__delete');
+//des on supprime un produit on cree une boucle evenement//
+deleteContent.forEach(deleteItem => {
+  deleteItem.addEventListener("click",(event) => {
+    event.preventDefault();
+    const parentItem = event.currentTarget.closest('.cart__item');
+    
+    if(parentItem)//si element parent//
+    {//je recup la valeur de data.id et data.color//
+      const id = parentItem.getAttribute('data-id');
+      const color = parentItem.getAttribute('data-color');
+
+      //trouver indice du produit selectionne dans le tableau du localstorage pour comparer son id et sa couleur au produit qui se trouve dans la boucle foreach// 
+      //utilise findindex , la fonction callback parcourt tout le tableau jusqua ce que le retour soit positif//
+    let idCheckDelete = productsLocalStorage.findIndex((p) => p.id === id && p.colors ===color);
+    //si le produit est dans le localstorage//
+    if (idCheckDelete !== -1){
+      //supprime les produits dans le localstorage en utlisant splice//
+      productsLocalStorage.splice(idCheckDelete, 1);
+      //mettre a jour dans le local storage//
+      localStorage.setItem("addTocart",JSON.stringify(productsLocalStorage) );
+
+      //supprimer article de la page panier//
+      parentNode.removeChild(parentItem);
+
+  
+    }  
+    }
+  });
+})
+ 
+
+//ajouter le bouton suppression a article panier//
+//cartItem.appendChild(deleteBtn);//bouton suppresion est enfant de article//
+//cartItem.appendChild(editItem);
 //créé un variable pour ajouter un element supprimer//
 //const deleteItem = document.createElement('p');
 //le texte supprimer se situe dans la balmise deleItem //
