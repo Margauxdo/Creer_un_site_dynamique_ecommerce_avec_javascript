@@ -85,7 +85,7 @@ console.log(cartItem);
   valueQtity.setAttribute("name","itemQuantity");
   valueQtity.setAttribute("min","1");
   valueQtity.setAttribute("max","100");
-  valueQtity.setAttribute("value","42")
+  valueQtity.setAttribute("value",product.quantity);//ajout la valeur qui correspondt a la quantité choisir//
 
   //créé un variable pour ajouter un element supprimer//
 const deleteItem = document.createElement('p');
@@ -93,7 +93,7 @@ deleteItem.classList.add('.deleteItem');
 deleteItem.innerHTML = `Supprimer`;
 deleteItem.appendChild(productDelete);
 //j'appel la fonction deletecart au click//s
-deleteItem.addEventListener("click",deleteCart());
+deleteItem.addEventListener("click",deleteCart);
 
 
   //je cree une div ou on va positionner la quantité et la qunatité modifier//
@@ -158,10 +158,10 @@ deleteContent.forEach(deleteItem => {
     const updateCart = document.querySelectorAll(".cart__item");
     //selectionne tous les elements du panier//
     updateCart.forEach((cartItem) =>{
-      const idDom = cartItem.getAttribute("data-id");
-      const colorDom = cartItem.getAttribute("data-color");
+      const id = cartItem.getAttribute("data-id");
+      const color = cartItem.getAttribute("data-color");
       //recupere id et la couleur du produit dans le panier//
-      const productexists = productsLocalStorage.some((product((product) => product.idDom === id && product.colorDom ===color)));
+      const productexists = productsLocalStorage.some((product((product) => product.id === id && product.colors ===color)));
       //verif si le produit est present dans le localstorage en comparant son id et sa couleur avec les produits du localstorage//
       if(!productexists){
         //si le produit n'existe pas dans le localstorage alors il sera supprime du DOM//
