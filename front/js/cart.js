@@ -82,7 +82,8 @@ console.log(cartItem);
 
   //creer un input pour modifier la quantité du produit//
   const valueQtity = document.createElement('input');
-  valueQtity.querySelector('cart__item__content__settings__quantity');//modif//
+  valueQtity.querySelector('.cart__item__content__settings__quantity');
+  valueQtity.classList.add('.cart__item__content__settings__quantity');
   //cree un element input de ty^pe number en ajoutant les valeurs//
   valueQtity.setAttribute("type","number");
   valueQtity.setAttribute("class","cart__item__content__settings__quantity");
@@ -143,6 +144,7 @@ function editCart() {
     const deleteElement = cartItem.querySelector('.deleteItem');
 
     //Ajouter un evenement pour le changement de quantité//
+    if(quantityInput){
     quantityInput.addEventListener('change',(event)=>{
       //recuperer les nouvelle qunatité en tant que nombre 
       const newQuantity = parseInt(event.target.value);
@@ -165,7 +167,9 @@ function editCart() {
       const quantityElement = cartItem.querySelector('.cart__item__content__settings__quantity');
       quantityElement.textContent =`Quantité: ${newQuantity}`;
     });
-  });
+}
+  
+  if(deleteElement){
   //Ajouter un evenemnet pour le bouton suppression//
     deleteElement.addEventListener('click',() => {
       //Recup id et la couleur du produit actuel//
@@ -185,11 +189,11 @@ function editCart() {
       cartItem.remove();
    
     });   
-
-
+  }
 }
+  )}
 function deleteCart() {
-const deleteContent = document.querySelectorAll('cart__item__content__settings__delete');
+const deleteContent = document.querySelectorAll('.cart__item__content__settings__delete');
 //des on supprime un produit on cree une boucle evenement//
 deleteContent.forEach(deleteItem => {
   deleteItem.addEventListener("click",(event) => {
@@ -218,7 +222,7 @@ deleteContent.forEach(deleteItem => {
     } 
     
     //variable pour mettre a jour le panier en supprimant les produits du DOM qui ne sont plus present dns le localstorage//
-    const updateCart = document.querySelectorAll("cart__item");
+    const updateCart = document.querySelectorAll(".cart__item");
     //selectionne tous les elements du panier//
     updateCart.forEach((cartItem) =>{
       const id = cartItem.getAttribute("data-id");
