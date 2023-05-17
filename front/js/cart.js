@@ -1,5 +1,5 @@
  const productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
-//Je recupere le donnees stocké dans le localStoarge avec la cle addToCart  et utilise la methode JSOn.parse , je socke les produits recement ajoutés au panier et je peut les recup dans la page panier//
+//Je recupere le donnees stocké dans le localStoge avec la cle addToCart  et utilise la methode JSON.parse , je socke les produits recement ajoutés au panier et je peut les recup dans la page panier//
 
      const cartProduct = document.querySelector("#cart__items");
      console.log(cartProduct);
@@ -22,13 +22,13 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
       .then ((response) => response.json())
           .then((data) => {
             showProductsCart(data, product);
-          
-          });
+            
          
         });
     
-      }
-       
+      })
+      
+    };   
 
 
 //mettre dans un function////fonction supprimer et une modifier//pas les mettre dans fetch//
@@ -62,14 +62,14 @@ console.log(cartItem);
 
   //je cree une variable pour mettre dans la description le nom, la couleur et le prix//
   const cartContentDescription = document.createElement('div');
-  cartContentDescription.classList.add('.cart__item__content__description');
+  cartContentDescription.classList.add('cart__item__content__description');
   cartContentDescription.appendChild(productName);
   cartContentDescription.appendChild(productColor);
   cartContentDescription.appendChild(productPrice);
 
    //je cree une div ou on va positionner la quantité et la qunatité modifier//
   const productEdit = document.createElement('div');
-  productEdit.classList.add('.cart__item__content__settings__quantity');
+  productEdit.classList.add('cart__item__content__settings__quantity');
 
   //afficher la quantité du produit//
   const productQuantity = document.createElement('p');
@@ -78,11 +78,11 @@ console.log(cartItem);
 
   //cree un div pour afficher element supprimer//
   const productDelete = document.createElement('div');
-  productDelete.classList.add('.cart__item__content__settings__delete');
+  productDelete.classList.add('cart__item__content__settings__delete');
 
   //creer un input pour modifier la quantité du produit//
   const valueQtity = document.createElement('input');
-  valueQtity.querySelector('.itemQuantity');
+  valueQtity.querySelector('cart__item__content__settings__quantity');//modif//
   //cree un element input de ty^pe number en ajoutant les valeurs//
   valueQtity.setAttribute("type","number");
   valueQtity.setAttribute("class","cart__item__content__settings__quantity");
@@ -95,7 +95,7 @@ console.log(cartItem);
 
   //créé un variable pour ajouter un element supprimer//
 const deleteItem = document.createElement('p');
-deleteItem.classList.add('.deleteItem');
+deleteItem.classList.add('deleteItem');
 deleteItem.textContent = `Supprimer`;
 deleteItem.appendChild(productDelete);
 //j'appel la fonction deletecart au click//s
@@ -103,8 +103,9 @@ deleteItem.addEventListener("click",deleteCart);
 
 //je cree une div pour positionner element supprimer et modifier//
 const cartContentSetting = document.createElement('div');
-cartContentSetting.classList.add('.cart__item__content__settings');
-cartContentSetting.appendChild(productEdit);
+cartContentSetting.classList.add('cart__item__content__settings');
+cartContentSetting.appendChild(deleteItem);//mmodif
+cartItem.appendChild(cartContentSetting);//modif
 
 
  //je cree une div ou on va positionner la quantité et la qunatité modifier//
@@ -124,7 +125,8 @@ cartContentSetting.appendChild(productEdit);
             cartItem.appendChild(cartContentSetting);
             cartItem.appendChild(deleteItem);
 //appeler la fonction modifier et supprimer//
-
+editCart();
+deleteCart();
             
           }
           
@@ -135,6 +137,7 @@ function editCart() {
   const editContent = document.querySelectorAll('.cart');
   //Parcourir chaque element du panier//
   editContent.forEach(cartItem =>{
+    
     //Selectionne input pour la qunatité et element supprimer//
     const quantityInput = cartItem.querySelector('.itemQuantity');
     const deleteElement = cartItem.querySelector('.deleteItem');
@@ -149,7 +152,7 @@ function editCart() {
       const productColor = cartItem.dataset.productColor;
 
       //mettre a jour la quantité dans le localstorage//
-      const productsLocalStorageQuantity = JSOn.parse(localStorage.getItem('addToCart'));
+      const productsLocalStorageQuantity = JSON.parse(localStorage.getItem('addToCart'));
       const updateProducts = productsLocalStorageQuantity.map((product)=>{
         //Verifier si id et la couleur du produit correspondent a element actuel//
         if(product.id ===productId && product.color === productColor){
@@ -174,18 +177,19 @@ function editCart() {
       const updateProducts = productsLocalStorageQuantity.filter(
         (product) => product.id !== productId ||product.color !== productColor
       );
-      });
+     
       localStorage.setItem('addToCart', JSON.stringify(updateProducts));
+    
 
       //Supprimer le produit du DOM//
       cartItem.remove();
    
-      
+    });   
 
 
 }
 function deleteCart() {
-const deleteContent = document.querySelectorAll('.cart__item__content__settings__delete');
+const deleteContent = document.querySelectorAll('cart__item__content__settings__delete');
 //des on supprime un produit on cree une boucle evenement//
 deleteContent.forEach(deleteItem => {
   deleteItem.addEventListener("click",(event) => {
@@ -214,7 +218,7 @@ deleteContent.forEach(deleteItem => {
     } 
     
     //variable pour mettre a jour le panier en supprimant les produits du DOM qui ne sont plus present dns le localstorage//
-    const updateCart = document.querySelectorAll(".cart__item");
+    const updateCart = document.querySelectorAll("cart__item");
     //selectionne tous les elements du panier//
     updateCart.forEach((cartItem) =>{
       const id = cartItem.getAttribute("data-id");
@@ -229,9 +233,10 @@ deleteContent.forEach(deleteItem => {
       }
     });
     }  
-  });
-  //appel de la fonction updatecart lors du rechargement d ela page//
+     //appel de la fonction updatecart lors du rechargement d ela page//
 window.addEventListener("load", updateCart);
+  });
+ 
 });
 }
 
