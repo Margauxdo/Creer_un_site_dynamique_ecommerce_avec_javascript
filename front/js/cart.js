@@ -36,95 +36,111 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
 function showProductsCart(data, product) {
 //cree une div pour afficher le produit//
 const cartItem = document.createElement('article');
-cartItem.classList.add('cart');
+cartItem.classList.add('.cart__item');
+cartItem.dataset.id = product.id;
+cartItem.dataset.colors = product.colors;
 console.log(cartItem);
 
   //afficher image//
-  const cartItemImg = document.createElement('img');
-  cartItemImg.src = data.imageUrl;
-  cartItem.appendChild(cartItemImg);
-  cartItemImg.width='400';
+  const cartItemImg = document.createElement('div');
+  cartItemImg.classList.add('.cart__item__img');
+  const image = document.createElement('img');
+  image.src = data.imageUrl;
+  image.alt = data.altTxt;
+  cartItem.appendChild(image);
 
+
+  //cree la div qui comprend le titre, couleur, prix quantité et bouton supprimer//
+  const cartContent = document.createElement('div');
+  cartContent.classList.add('.cart__item__content');
+
+    //je cree une variable pour mettre dans la description le nom, la couleur et le prix//
+    const cartContentDescription = document.createElement('div');
+    cartContentDescription.classList.add('cart__item__content__description');
+  
   //afficher le titre du produit//
   const productName = document.createElement('h2');
   productName.textContent = data.name;
   cartItem.appendChild(productName);
-
   //afficher la ou les couleurs du produit//
   const productColor = document.createElement('p');
   productColor.textContent = `Couleur : ${product.colors}`;
   cartItem.appendChild(productColor);
-
   //je cree une variable pour afficher le prix du produit//
   const productPrice = document.createElement('p');
   productPrice.textContent = `${data.price} € `;
   cartItem.appendChild(productPrice);
 
-  //je cree une variable pour mettre dans la description le nom, la couleur et le prix//
-  const cartContentDescription = document.createElement('div');
-  cartContentDescription.classList.add('cart__item__content__description');
-  cartContentDescription.appendChild(productName);
-  cartContentDescription.appendChild(productColor);
-  cartContentDescription.appendChild(productPrice);
+  //je cree une div pour positionner element supprimer et modifier//
+const cartContentSetting = document.createElement('div');
+cartContentSetting.classList.add('cart__item__content__settings');
 
    //je cree une div ou on va positionner la quantité et la qunatité modifier//
   const productEdit = document.createElement('div');
   productEdit.classList.add('cart__item__content__settings__quantity');
-
   //afficher la quantité du produit//
   const productQuantity = document.createElement('p');
   productQuantity.textContent = `Quantité : ${product.quantity}`;
   cartItem.appendChild(productQuantity);
+    //creer un input pour modifier la quantité du produit//
+    const valueQtity = document.createElement('input');
+    valueQtity.querySelector('.cart__item__content__settings__quantity');
+    valueQtity.classList.add('.cart__item__content__settings__quantity');
+    //cree un element input de ty^pe number en ajoutant les valeurs//
+    valueQtity.setAttribute("type","number");
+    valueQtity.setAttribute("class","itemquantity");
+    valueQtity.setAttribute("name","itemQuantity");
+    valueQtity.setAttribute("min","1");
+    valueQtity.setAttribute("max","100");
+    valueQtity.setAttribute("value",product.quantity);//ajout la valeur qui correspondt a la quantité choisir//
 
   //cree un div pour afficher element supprimer//
   const productDelete = document.createElement('div');
   productDelete.classList.add('cart__item__content__settings__delete');
-
-  //creer un input pour modifier la quantité du produit//
-  const valueQtity = document.createElement('input');
-  valueQtity.querySelector('.cart__item__content__settings__quantity');
-  valueQtity.classList.add('.cart__item__content__settings__quantity');
-  //cree un element input de ty^pe number en ajoutant les valeurs//
-  valueQtity.setAttribute("type","number");
-  valueQtity.setAttribute("class","cart__item__content__settings__quantity");
-  valueQtity.setAttribute("name","itemQuantity");
-  valueQtity.setAttribute("min","1");
-  valueQtity.setAttribute("max","100");
-  valueQtity.setAttribute("value",product.quantity);//ajout la valeur qui correspondt a la quantité choisir//
-  productEdit.appendChild(productQuantity);
-  productEdit.appendChild(valueQtity);
-
   //créé un variable pour ajouter un element supprimer//
-const deleteItem = document.createElement('p');
-deleteItem.classList.add('deleteItem');
-deleteItem.textContent = `Supprimer`;
-deleteItem.appendChild(productDelete);
+  const deleteItem = document.createElement('p');
+  deleteItem.classList.add('deleteItem');
+  deleteItem.textContent = `Supprimer`;
+
 //j'appel la fonction deletecart au click//s
 deleteItem.addEventListener("click",deleteCart);
 
-//je cree une div pour positionner element supprimer et modifier//
-const cartContentSetting = document.createElement('div');
-cartContentSetting.classList.add('cart__item__content__settings');
-cartContentSetting.appendChild(deleteItem);//mmodif
-cartItem.appendChild(cartContentSetting);//modif
+
 
 
  //je cree une div ou on va positionner la quantité et la qunatité modifier//
   //const productEdit = document.createElement('div');
   //productEdit.classList.add('.cart__item__content__settings__quantity');
 
-  
+
 
 
 //  Ajouter le produit a la page panier en liant la variable qui situe les elements du panier et la variable qui positionne articles//
             cartProduct.appendChild(cartItem);
             cartItem.appendChild(cartItemImg);
-            cartItem.appendChild(cartContentDescription);//ajout de la div desciption a article
-            productEdit.appendChild(productQuantity);//ajout la qtité au produit modifié
-            productEdit.appendChild(valueQtity);//ajout d ela valeur de la quantité au produit modifie
-            cartContentSetting.appendChild(productEdit);//ajout des produits modifie a la div qui les englobe
-            cartItem.appendChild(cartContentSetting);
-            cartItem.appendChild(deleteItem);
+            cartItem.appendChild(image);//
+            cartItemImg.appendChild(image);
+            cartItem.appendChild(cartContent);
+            cartItem.appendChild(cartContentDescription);
+            cartContent.appendChild(cartContentDescription);
+            cartItem.appendChild(productName);//
+            cartContentDescription.appendChild(productName);
+            cartItem.appendChild(productColor);//
+            cartContentDescription.appendChild(productColor);
+            cartItem.appendChild(productPrice);//
+            cartContentDescription.appendChild(productPrice);
+            cartItem.appendChild(cartContentSetting);//
+            cartContent.appendChild(cartContentSetting);
+            cartItem.appendChild(productEdit);//
+            cartContentSetting.appendChild(productEdit);
+            cartItem.appendChild(productDelete);//
+            cartContentSetting.appendChild(productDelete);
+            cartItem.appendChild(productQuantity);//
+            productEdit.appendChild(productQuantity);
+            cartItem.appendChild(valueQtity);//
+            productEdit.appendChild(valueQtity);
+            cartItem.appendChild(deleteItem);//
+            productDelete.appendChild(deleteItem);
 //appeler la fonction modifier et supprimer//
 editCart();
 deleteCart();
