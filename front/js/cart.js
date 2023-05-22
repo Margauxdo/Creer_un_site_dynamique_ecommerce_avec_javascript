@@ -220,65 +220,50 @@ function editCart() {
  });
 }
 function deleteCart() {
-const deleteContent = document.querySelectorAll('.deleteItem');
+const deleteElements = document.querySelectorAll('.deleteItem');
 //des on supprime un produit on cree une boucle evenement//
- deleteContent.forEach(deleteItem => {
-   deleteItem.addEventListener("click",(event) => {
+ deleteElements.forEach(deleteElement => {
+   deleteElement.addEventListener("click",(event) => {
      event.preventDefault();
-     const parentItem = event.currentTarget.closest('.cart__item');
+     //trouver element parent le plus proche de element suppression//
+     const cartItem = deleteElement.closest('.cart__item');
     
-     if(parentItem)//si element parent//
+     if(cartItem)//si element parent//
      {
-      //je recup la valeur de data.id et data.color//
-       const id = parentItem.getAttribute('data-id');
-       const color = parentItem.getAttribute('data-color');
+      //je recup id et sa couleur depuis le data//
+       const productId = cartItem.dataset.id;
+       const productColor = cartItem.dataset.colors;
 
-      //trouver indice du produit selectionne dans le tableau du localstorage pour comparer son id et sa couleur au produit qui se trouve dans la boucle foreach// 
-      //utilise findindex , la fonction callback parcourt tout le tableau jusqua ce que le retour soit positif//
-     let idCheckDelete = productsLocalStorage.findIndex((p) => p.id === id && p.colors ===color);
-    //si le produit est dans le localstorage//
-     if (idCheckDelete !== -1){
-      //supprime les produits dans le localstorage en utlisant splice//
-       productsLocalStorage.splice(idCheckDelete, 1);
-      //mettre a jour dans le local storage//
-       localStorage.setItem("addToCart",JSON.stringify(productsLocalStorage) );
+      //Supprimer le produit du localstorage//
+      const updatedCart = productsLocalStorage.filter(product => product.id !== productId || product.colors !== productColor);
+      localStorage.setItem('addToCart', JSON.stringify(updatedCart));
 
-      //supprimer article de la page panier//
-       parentItem.parentNode.removeChild(parentItem);
-
-  
-     } 
-    
-    //variable pour mettre a jour le panier en supprimant les produits du DOM qui ne sont plus present dns le localstorage//
-    const cartItemElement = document.createElement('article'); 
-    //const cartItem = document.querySelectorAll(".cart__item");
-    
-    //selectionne tous les elements du panier//
-     cartItemElement.forEach((cartItem) =>{
-       const id = cartItem.getAttribute("data-id");
-       const color = cartItem.getAttribute("data-color");
-      //recupere id et la couleur du produit dans le panier//
-       const productexists = productsLocalStorage.some((product((product) => product.id === id && product.color ===color)));
-      //verif si le produit est present dans le localstorage en comparant son id et sa couleur avec les produits du localstorage//
-       if(!productexists){
-        //si le produit n'existe pas dans le localstorage alors il sera supprime du DOM//
-         cartProduct.removeChild(cartItemElement);
-
-       }})
-     
-    }
-     
-    }
-    
- )
-
-  });
+      //Supprimer le produit du DOM//
+      cartItem.remove();
   
   }
+   
+
+      //Mettre a jour le panier en supprimant les produits du DOM qui ne sont plus dans le localstorage//
+      const cartItems = document.querySelectorAll('.cart__item');
+      cartItems.forEach(item =>{
+        const itemId = item.dataset.id;
+        const itemColor = item.dataset.colors;
+
+      //Verifier si le produit existe encore dans le localstorage en comparant son ID et sa couleur//
+       const productExists = productsLocalStorage.some(product => product.id == itemId && product.colors == itemColor);
+       
+       if(!productExists){
+        //Si le produit n'existe plus le supprimer du DOM//
+        item.remove();
+       }
+      })
+  
+   });
+ }
+)}
      
-
-
- 
- 
-
-
+  
+      //finir en notifiant que en actualisant la page l article qui a ete supprimer reste supprimer dans le panier//
+     
+   
