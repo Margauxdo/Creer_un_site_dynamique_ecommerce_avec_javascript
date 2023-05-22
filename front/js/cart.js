@@ -143,7 +143,7 @@ function editCart() {
    editContent.forEach(cartItem =>{
     
     //Selectionne input pour la qunatité et element supprimer//
-     const quantityInput = cartItem.querySelector('.cart__item__content__settings');
+     const quantityInput = cartItem.querySelector('.cart__item__content__settings__quantity');
      const deleteElement = cartItem.querySelector('.cart__item__content__settings__delete');
 
     //Ajouter un evenement pour le changement de quantité//
@@ -154,19 +154,20 @@ function editCart() {
 
       //Recuperer id du produit et sa couleur actuel//
        const productId = cartItem.dataset.productId;
-       const productColor = cartItem.dataset.productColors;
+       const productColor = cartItem.dataset.productColor;
 
       //mettre a jour la quantité dans le localstorage//
-       const productsLocalStorageQuantity = JSON.parse(localStorage.getItem('addToCart'));
+       const productsLocalStorageQuantity = JSON.parse(localStorage.getItem("addToCart"));
        const updateProducts = productsLocalStorageQuantity.map((product)=>{
         //Verifier si id et la couleur du produit correspondent a element actuel//
-         if(product.id ===productId && product.color === productColors){
+         if(product.id ===productId && product.color === productColor){
            product.quantity = newQuantity;
          }
          return product;
        });
-       localStorage.setItem('addToCart',JSON.stringify(updateProducts));
-      //Mettre a jour la quantité dans le DOM//
+       localStorage.setItem("addToCart",JSON.stringify(updateProducts));
+      
+       //Mettre a jour la quantité dans le DOM//
        const quantityElement = cartItem.querySelector('.cart__item__content__settings__quantity');
        quantityElement.textContent =`Quantité: ${newQuantity}`;
      });
@@ -177,24 +178,47 @@ function editCart() {
      deleteElement.addEventListener('click',() => {
       //Recup id et la couleur du produit actuel//
        const productId = cartItem.dataset.productId;
-       const productColor = cartItem.dataset.productColors;
+       const productColor = cartItem.dataset.productColor;
 
       //Supprimer le produit du localstorage//
-       const productsLocalStorageQuantity = JSON.parse(localStorage.getItem('addtocart'));
+       const productsLocalStorageQuantity = JSON.parse(localStorage.getItem("addToCart"));
        const updateProducts = productsLocalStorageQuantity.filter(
-         (product) => product.id !== productId ||product.color !== productColors
-       );
-     
-       localStorage.setItem('addToCart', JSON.stringify(updateProducts));
+         (product) => { 
+          return product.id !== productId ||product.color !== productColor
+         
+        });
+       localStorage.setItem("addToCart", JSON.stringify(updateProducts));
     
-
+     
       //Supprimer le produit du DOM//
        cartItem.remove();
    
      });   
   }
- }
-  )}
+ });
+ //Mettre a jour dans le localstorage avant de quitter la page ou de la recharger//
+ window.addEventListener('change',() =>{
+  //recup tous les element avec la classe'cart__item'//
+  const products = Array.from(editContent).map((cartItem) =>{
+    //Recup id du produit depuis l'attribut 'data-productId' de lement du panier//
+    const productId = cartItem.dataset.productId;
+    //recup la couleur du produit depuis le panier//
+    const productColor = cartItem.dataset.productColor;
+    //Recup l'element de la quantité depuis sa classe//
+    const quantityElement = cartItem.querySelector('.cart__item__content__settings__quantity');
+    //Extraire la quantité depuis le texte de element de quantité //
+    const quantity = parseInt(quantityElement.textContent.split(':')[1]);
+    //Créé un objet contenant id, la couleur et la quantité du produit qui a ete modifié//
+    return{
+      id: productId,
+      color: productColor,
+      quantity: quantity
+    };
+  });
+  //Mettre a jour le localstorage avec les produits mis a jour//
+  localStorage.setItem('addtoCart', JSON.stringify(products));
+ });
+}
 function deleteCart() {
 const deleteContent = document.querySelectorAll('.deleteItem');
 //des on supprime un produit on cree une boucle evenement//
@@ -234,7 +258,7 @@ const deleteContent = document.querySelectorAll('.deleteItem');
        const id = cartItem.getAttribute("data-id");
        const color = cartItem.getAttribute("data-color");
       //recupere id et la couleur du produit dans le panier//
-       const productexists = productsLocalStorage.some((product((product) => product.id === id && product.colors ===color)));
+       const productexists = productsLocalStorage.some((product((product) => product.id === id && product.color ===color)));
       //verif si le produit est present dans le localstorage en comparant son id et sa couleur avec les produits du localstorage//
        if(!productexists){
         //si le produit n'existe pas dans le localstorage alors il sera supprime du DOM//
