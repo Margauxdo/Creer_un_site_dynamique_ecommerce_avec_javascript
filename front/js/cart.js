@@ -36,23 +36,23 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
 function showProductsCart(data, product) {
 //cree une div pour afficher le produit//
 const cartItem = document.createElement('article');
-cartItem.classList.add('.cart__item');
+cartItem.classList.add('cart__item');
 cartItem.dataset.id = product.id;
 cartItem.dataset.colors = product.colors;
 console.log(cartItem);
 
   //afficher image//
   const cartItemImg = document.createElement('div');
-  cartItemImg.classList.add('.cart__item__img');
+  cartItemImg.classList.add('cart__item__img');
   const image = document.createElement('img');
   image.src = data.imageUrl;
   image.alt = data.altTxt;
-  cartItem.appendChild(image);
+  cartItem.appendChild(cartItemImg);
 
 
   //cree la div qui comprend le titre, couleur, prix quantité et bouton supprimer//
   const cartContent = document.createElement('div');
-  cartContent.classList.add('.cart__item__content');
+  cartContent.classList.add('cart__item__content');
 
     //je cree une variable pour mettre dans la description le nom, la couleur et le prix//
     const cartContentDescription = document.createElement('div');
@@ -85,7 +85,7 @@ cartContentSetting.classList.add('cart__item__content__settings');
     //creer un input pour modifier la quantité du produit//
     const valueQtity = document.createElement('input');
     valueQtity.querySelector('.cart__item__content__settings__quantity');
-    valueQtity.classList.add('.cart__item__content__settings__quantity');
+    valueQtity.classList.add('cart__item__content__settings__quantity');
     //cree un element input de ty^pe number en ajoutant les valeurs//
     valueQtity.setAttribute("type","number");
     valueQtity.setAttribute("class","itemquantity");
@@ -106,7 +106,6 @@ cartContentSetting.classList.add('cart__item__content__settings');
 //  Ajouter le produit a la page panier en liant la variable qui situe les elements du panier et la variable qui positionne articles//
             cartProduct.appendChild(cartItem);
             cartItem.appendChild(cartItemImg);
-            //cartItem.appendChild(image);//
             cartItemImg.appendChild(image);
             cartItem.appendChild(cartContent);
             cartItem.appendChild(cartContentDescription);
@@ -139,13 +138,13 @@ deleteCart();
 function editCart() {
 
   //Selectionner tous les element du panier avec la class cart//
-  const editContent = document.querySelectorAll('.cart');
+  const editContent = document.querySelectorAll('.cart__item');
   //Parcourir chaque element du panier//
    editContent.forEach(cartItem =>{
     
     //Selectionne input pour la qunatité et element supprimer//
-     const quantityInput = cartItem.querySelector('.itemQuantity');
-     const deleteElement = cartItem.querySelector('.deleteItem');
+     const quantityInput = cartItem.querySelector('.cart__item__content__settings');
+     const deleteElement = cartItem.querySelector('.cart__item__content__settings__delete');
 
     //Ajouter un evenement pour le changement de quantité//
      if(quantityInput){
@@ -155,13 +154,13 @@ function editCart() {
 
       //Recuperer id du produit et sa couleur actuel//
        const productId = cartItem.dataset.productId;
-       const productColor = cartItem.dataset.productColor;
+       const productColor = cartItem.dataset.productColors;
 
       //mettre a jour la quantité dans le localstorage//
        const productsLocalStorageQuantity = JSON.parse(localStorage.getItem('addToCart'));
        const updateProducts = productsLocalStorageQuantity.map((product)=>{
         //Verifier si id et la couleur du produit correspondent a element actuel//
-         if(product.id ===productId && product.color === productColor){
+         if(product.id ===productId && product.color === productColors){
            product.quantity = newQuantity;
          }
          return product;
@@ -178,12 +177,12 @@ function editCart() {
      deleteElement.addEventListener('click',() => {
       //Recup id et la couleur du produit actuel//
        const productId = cartItem.dataset.productId;
-       const productColor = cartItem.dataset.productColor;
+       const productColor = cartItem.dataset.productColors;
 
       //Supprimer le produit du localstorage//
        const productsLocalStorageQuantity = JSON.parse(localStorage.getItem('addtocart'));
        const updateProducts = productsLocalStorageQuantity.filter(
-         (product) => product.id !== productId ||product.color !== productColor
+         (product) => product.id !== productId ||product.color !== productColors
        );
      
        localStorage.setItem('addToCart', JSON.stringify(updateProducts));
