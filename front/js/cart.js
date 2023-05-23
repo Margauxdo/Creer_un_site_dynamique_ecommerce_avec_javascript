@@ -29,9 +29,6 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
       })
       
     };   
-
-
-//mettre dans un function////fonction supprimer et une modifier//pas les mettre dans fetch//
   
 function showProductsCart(data, product) {
 //cree une div pour afficher le produit//
@@ -131,6 +128,9 @@ cartContentSetting.classList.add('cart__item__content__settings');
 //appeler la fonction modifier et supprimer//
 editCart();
 deleteCart();
+//Appel de la fonction le total des quantites 
+getTotalQuantity();
+
             
           }
           
@@ -218,6 +218,7 @@ function editCart() {
   //Mettre a jour le localstorage avec les produits mis a jour//
   localStorage.setItem('addtoCart', JSON.stringify(products));
  });
+
 }
 function deleteCart() {
 const deleteElements = document.querySelectorAll('.deleteItem');
@@ -261,9 +262,39 @@ const deleteElements = document.querySelectorAll('.deleteItem');
   
    });
  }
-)}
-     
+ 
+)
+
+}
+function getTotalQuantity() {
+
+  // Recup des elments avec les id "totalprice" et "totalQuantity"//
+  const totalPriceElement = document.querySelector('#totalPrice');
+  const totalQuantityElement =  document.querySelector('#totalQuantity');
+
+  //Exemple de valeur pour la quantité total et pour le prix total//
+  const totalQuantity = 2;
+  const totalPrice = 1234.00;
+
+  //Recup des quantités et des prix existants dans le localstorage//
+  let storedQuantity = localStorage.getItem('totalQuantity');
+  let storedPrice = localStorage.getItem('totalPrice');
+
+//verification et conversion des valeurs recupere en nombre//
+//si storedquantity n'est pas null, NaN, ou uen valeur non numerique, la conversion en nombre sera faite sinon par defaut 0//
+  storedQuantity = parseInt(storedQuantity) || 0;
+  //si storedprice n'est ps nul , Nan, version string la decimal sera effectue ou valeur par defaut 0//
+storedPrice = parseFloat(storedPrice) || 0.0;
+
+
   
-      //finir en notifiant que en actualisant la page l article qui a ete supprimer reste supprimer dans le panier//
-     
-   
+  //calcul de la quantité total et du prix total//
+  const sumQuantity = totalQuantity + storedQuantity;
+  const sumPrice = totalPrice + storedPrice;
+
+  //Mise a jour des elements HTML avec les valeurs calcules//
+  totalQuantityElement.textContent = sumQuantity;
+  totalPriceElement.textContent = sumPrice;
+ 
+}
+//reussir a additionner les quantite et les prix total//
