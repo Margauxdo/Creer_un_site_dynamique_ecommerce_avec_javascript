@@ -272,29 +272,39 @@ function getTotalQuantity() {
   const totalPriceElement = document.querySelector('#totalPrice');
   const totalQuantityElement =  document.querySelector('#totalQuantity');
 
-  //Exemple de valeur pour la quantité total et pour le prix total//
-  const totalQuantity = 2;
-  const totalPrice = 1234.00;
+  //Initialisation des variables pour la quantité total et le prix total//
+  let sumQuantity = 0;
+  let sumPrice = 0;
+  let totalArticles = 0;
 
-  //Recup des quantités et des prix existants dans le localstorage//
-  let storedQuantity = localStorage.getItem('totalQuantity');
-  let storedPrice = localStorage.getItem('totalPrice');
+  //Parcours des produits dans le localstorage//
+  productsLocalStorage.forEach(product => {
+    //conversion de la quantité en nombre en utilisant number//
+    const quantity = Number(product.quantity);
+    //ajout de la quantité à la somme des quantites//
+    sumQuantity += quantity;
 
-//verification et conversion des valeurs recupere en nombre//
-//si storedquantity n'est pas null, NaN, ou uen valeur non numerique, la conversion en nombre sera faite sinon par defaut 0//
-  storedQuantity = parseInt(storedQuantity) || 0;
-  //si storedprice n'est ps nul , Nan, version string la decimal sera effectue ou valeur par defaut 0//
-storedPrice = parseFloat(storedPrice) || 0.0;
+    //Verif si le prix du produit est en chaie de caratere ou nombre//
+    const productPrice = parseFloat(product.price);
 
-
+    //calcul du prix total en multipliant le prix par la quantité//
+    sumPrice += productPrice * quantity;
   
-  //calcul de la quantité total et du prix total//
-  const sumQuantity = totalQuantity + storedQuantity;
-  const sumPrice = totalPrice + storedPrice;
+    totalArticles += quantity;
+  
+  
+  });
 
+
+
+  //Mise a jour des valeurs dans le localstorage avec les nouvelles sommes//
+  localStorage.setItem('totalQuantity',sumQuantity);
+  localStorage.setItem('totalPrice', sumPrice);
+  
   //Mise a jour des elements HTML avec les valeurs calcules//
   totalQuantityElement.textContent = sumQuantity;
-  totalPriceElement.textContent = sumPrice;
- 
+  totalPriceElement.textContent = sumPrice.toFixed(2);
 }
-//reussir a additionner les quantite et les prix total//
+
+
+ 
