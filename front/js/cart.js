@@ -85,7 +85,7 @@ cartContentSetting.classList.add('cart__item__content__settings');
     valueQtity.classList.add('cart__item__content__settings__quantity');
     //cree un element input de ty^pe number en ajoutant les valeurs//
     valueQtity.setAttribute("type","number");
-    valueQtity.setAttribute("class","itemquantity");
+    valueQtity.setAttribute("class","itemQuantity");
     valueQtity.setAttribute("name","itemQuantity");
     valueQtity.setAttribute("min","1");
     valueQtity.setAttribute("max","100");
@@ -139,18 +139,26 @@ function editCart() {
 
   //Selectionner tous les element du panier avec la class cart//
   const editContent = document.querySelectorAll('.cart__item');
-  //Parcourir chaque element du panier//
-   editContent.forEach(cartItem =>{
-    
-    //Selectionne input pour la qunatité et element supprimer//
-     const quantityInput = cartItem.querySelector('.cart__item__content__settings__quantity');
-     const deleteElement = cartItem.querySelector('.cart__item__content__settings__delete');
+  console.log(editContent);
+
+   //Slectionner element quantité et supprimer// 
+    const quantityInput = document.querySelectorAll('.itemQuantity');
+     console.log(quantityInput);
+     const deleteElement = document.querySelectorAll('.deleteItem');
+     console.log(deleteElement);
+
+     //Parcourir chaque element dans le panier//
+    for (let a = 0; a < editContent.length; a++){
+      console.log(editContent); 
+      const cartItem = editContent[a];//element actuel du panier//
+      console.log(cartItem);
 
     //Ajouter un evenement pour le changement de quantité//
-     if(quantityInput){
-     quantityInput.addEventListener('change',(event)=>{
+     if(quantityInput[a]){
+     quantityInput[a].addEventListener('change',(event)=>{
       //recuperer les nouvelle qunatité en tant que nombre 
        const newQuantity = parseInt(event.target.value);
+       console.log(newQuantity);
 
       //Recuperer id du produit et sa couleur actuel//
        const productId = cartItem.dataset.productId;
@@ -158,6 +166,7 @@ function editCart() {
 
       //mettre a jour la quantité dans le localstorage//
        const productsLocalStorageQuantity = JSON.parse(localStorage.getItem("addToCart"));
+       console.log(productsLocalStorageQuantity);
        const updateProducts = productsLocalStorageQuantity.map((product)=>{
         //Verifier si id et la couleur du produit correspondent a element actuel//
          if(product.id ===productId && product.color === productColor){
@@ -170,33 +179,35 @@ function editCart() {
        //Mettre a jour la quantité dans le DOM//
        const quantityElement = cartItem.querySelector('.cart__item__content__settings__quantity');
        quantityElement.textContent =`Quantité: ${newQuantity}`;
+       console.log(quantityElement);
      });
  }
   
-   if(deleteElement){
+  //Ajouter un evenement pour le bouton supression//
+   if(deleteElement[a]){
   //Ajouter un evenemnet pour le bouton suppression//
-     deleteElement.addEventListener('click',() => {
+     deleteElement[a].addEventListener('click',() => {
       //Recup id et la couleur du produit actuel//
        const productId = cartItem.dataset.productId;
        const productColor = cartItem.dataset.productColor;
 
       //Supprimer le produit du localstorage//
        const productsLocalStorageQuantity = JSON.parse(localStorage.getItem("addToCart"));
+       console.log(productsLocalStorageQuantity);
        const updateProducts = productsLocalStorageQuantity.filter(
          (product) => { 
-          return product.id !== productId ||product.color !== productColor
+          return product.id !== productId ||product.color !== productColor;
          
         });
+        console.log(updateProducts);
        localStorage.setItem("addToCart", JSON.stringify(updateProducts));
     
-     
-      //Supprimer le produit du DOM//
+//Supprimer le produit du DOM//
        cartItem.remove();
-   
-     });   
+   });   
   }
- });
- //Mettre a jour dans le localstorage avant de quitter la page ou de la recharger//
+};
+ //Mettre a jour dans le localstorage des que l'on modifie une quantité//
  window.addEventListener('change',() =>{
   //recup tous les element avec la classe'cart__item'//
   const products = Array.from(editContent).map((cartItem) =>{
@@ -206,8 +217,10 @@ function editCart() {
     const productColor = cartItem.dataset.productColor;
     //Recup l'element de la quantité depuis sa classe//
     const quantityElement = cartItem.querySelector('.cart__item__content__settings__quantity');
+    console.log(quantityElement);
     //Extraire la quantité depuis le texte de element de quantité //
     const quantity = parseInt(quantityElement.textContent.split(':')[1]);
+    console.log(quantity);
     //Créé un objet contenant id, la couleur et la quantité du produit qui a ete modifié//
     return{
       id: productId,
