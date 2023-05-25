@@ -111,7 +111,7 @@ console.log(localStorage);
   //parseInt = transformer en chiffre pour un calcul//
 
   //quand on clique sur le bouton panier on acceder directement a la page panier//
-  window.location.href ="cart.html";
+  //window.location.href ="cart.html";
   })
   
   }
