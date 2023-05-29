@@ -162,7 +162,8 @@ function editCart() {
       //Recuperer id du produit et sa couleur actuel//
        const productId = cartItem.dataset.productId;
        const productColor = cartItem.dataset.productColor;
-
+      console.log(productId);
+      console.log(productColor);
       //mettre a jour la quantité dans le localstorage//
        const productsLocalStorageQuantity = JSON.parse(localStorage.getItem("addToCart"));
        console.log(productsLocalStorageQuantity);
@@ -174,7 +175,7 @@ function editCart() {
          return product;
        });
        localStorage.setItem("addToCart",JSON.stringify(updateProducts));
-      
+      console.log(updateProducts);
        //Mettre a jour la quantité dans le DOM//
        const quantityElement = cartItem.querySelector('.cart__item__content__settings__quantity');
        quantityElement.textContent =`Quantité: ${newQuantity}`;
@@ -240,24 +241,30 @@ function editCart() {
 function deleteCart() {
 const deleteElements = document.querySelectorAll('.deleteItem');
 //des on supprime un produit on cree une boucle evenement//
+console.log(deleteElements);
  deleteElements.forEach(deleteElement => {
    deleteElement.addEventListener("click",(event) => {
      event.preventDefault();
      //trouver element parent le plus proche de element suppression//
      const cartItem = deleteElement.closest('.cart__item');
-    
+    console.log(cartItem);
+
      if(cartItem)//si element parent//
      {
       //je recup id et sa couleur depuis le data//
        const productId = cartItem.dataset.id;
+       console.log(productId);
        const productColor = cartItem.dataset.colors;
+       console.log(productColor);
 
        //Ajouter la declaration de la variable productsLocalStorage//
        const productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
+       console.log(productsLocalStorage);
 
       //Supprimer le produit du localstorage//
       const updatedCart = productsLocalStorage.filter(product => product.id !== productId || product.colors !== productColor);
       localStorage.setItem('addToCart', JSON.stringify(updatedCart));
+      console.log(updatedCart);
 
       //Supprimer le produit du DOM//
       cartItem.remove();
@@ -267,13 +274,17 @@ const deleteElements = document.querySelectorAll('.deleteItem');
 
       //Mettre a jour le panier en supprimant les produits du DOM qui ne sont plus dans le localstorage//
       const cartItems = document.querySelectorAll('.cart__item');
+      console.log(cartItems);
       cartItems.forEach(item =>{
         const itemId = item.dataset.id;
+        console.log(itemId);
         const itemColor = item.dataset.colors;
+        console.log(itemColor);
 
       //Verifier si le produit existe encore dans le localstorage en comparant son ID et sa couleur//
        const productExists = productsLocalStorage.some(product => product.id == itemId && product.colors == itemColor);
-       
+       console.log(productExists);
+
        if(!productExists){
         //Si le produit n'existe plus le supprimer du DOM//
         item.remove();
@@ -292,55 +303,97 @@ function getTotalQuantity() {
   //Recup tous les elements du panier avec la calss cart__item//
   const cartItems = document.querySelectorAll('.cart__item');
 
-  let totalArticles = 0;
+  let totalQuantityArticles = 0;
+  console.log(totalQuantityArticles);
 
   //Parcourir chaque element du panier //
   cartItems.forEach(item => {
 
     //recup la qtite de article//
-    const quantityElement = item.querySelector('.cart__item__content__settings__quantity');
-    const quantity = parseInt(quantityElement.textContent.split(':')[1]);
+    const quantityElement = item.querySelector('.cart__item__content__settings__quantity input');
+    console.log(quantityElement);
+    const quantity = parseInt(quantityElement.value);
+    console.log(quantity);
 
     //Ajouter la quantité a la quantité totale//
-    totalArticles += quantity;
+    totalQuantityArticles += quantity;
   });
  
 
   //Mettre a jour le HTML qui correspondt a la qtite//
   const totalQuantityElement = document.querySelector('#totalQuantity');
-  totalQuantityElement.textContent = totalArticles;
+  console.log(totalQuantityElement);
+  totalQuantityElement.textContent = totalQuantityArticles;
   calculateTotalPrice();
 
 }
 function calculateTotalPrice() {
   //Selectionner tous les element du panier//
-  const cartItems = document.querySelectorAll('.cart__item');
+  const cartItems = document.querySelectorAll('.cart__item__content__description');
 
   //Initialiser la variable totalPrice à 0//
   let totalPrice = 0;
+  console.log(totalPrice);
+  let totalQuantity =0;
+  console.log(totalQuantity);
   //Parcourir chaque element du panier//
   cartItems.forEach(item => {
 
-    //Selectionner element du prix du produit dans chaque element du panier//
-    const productPriceElement = item.querySelector('.cart__item__content__description > p');
-    //Selectionner element de la quantité dans chaque elemnt du panier//
-    const quantityElement = item.querySelector('.cart__item__content__settings__quantity');
+    //Selectionner le prix dans la description de chaque produit//
+    const priceElement = item.querySelector('p:last-child');
+    console.log(priceElement);
+    //Recup le texte du prix à partir de element selectionne//
+    const priceText = priceElement.innerText;
+    console.log(priceText);
+    //Convertir le texte du prix en nombre en supprimant le symbole € + les espaces supplémentaires//
+    const price = parseFloat(priceText.replace('€','').trim());
+    console.log(price);
 
-    //Extraire le prix en tant que nombre a virgule
-    const productPrice = parseFloat(productPriceElement.textContent);
-    //extraire la quantité en tant que nombre//
+    //Selectionne element de la uantite de chaque produit//
+    const quantityElement = item.closest('.cart__item').querySelector('.cart__item__content__settings__quantity input');
+    console.log(quantityElement);
+    //Obtenir la quantite a partir de la valeur du produit//
     const quantity = parseInt(quantityElement.value);
+    console.log(quantity);
 
-    //Calculer le sous total en multipliant le prix par la qunatité 
-    subTotal = productPrice * quantity;
-    //Ajouter le sous total au prix//
-    totalPrice += subTotal;
-  });
+    //calcul du prix en multipliant le prix par la quantiite//
+    const productTotal = price * quantity;
+
+    //Ajouter le prix total//
+    totalPrice += productTotal;
+
+    //Ajouter la quantité au totalQuantity//
+    totalQuantity += quantity;
+
+    });
+
+    //Mettre  ajour le prix total dans le localstorage//
+    const productsLocalStorage = JSON.parse(localStorage.getItem('addToCart'));
+    console.log(productsLocalStorage);
+    const updatedProducts = productsLocalStorage.map(product =>{
+      const productTotal = totalPrice * (product.quantity / totalQuantity);
+      console.log(productTotal);
+      product.price = productTotal;
+      return product;
+
+    });
+    console.log(updatedProducts);
+
+    localStorage.setItem('addToCart', JSON.stringify(updatedProducts));
+ 
 //Selectionner le prix total dans le HTML
   const totalPriceElement = document.querySelector('#totalPrice');
+  console.log(totalPriceElement);
   //Mettre a jour le contenur le element prix avec le prix total arrondi a deux decimal//
   totalPriceElement.textContent = totalPrice.toFixed(2);
+  
+  //Mettre  ajour la quantite totale dans le DOM//
+  const totalQuantityElement = document.querySelector('#totalQuantity');
+  totalQuantityElement.textContent = totalQuantity;
+  console.log(totalQuantityElement);
 }
+
+
 
 
  //prix total NaN modifier en nombre//
