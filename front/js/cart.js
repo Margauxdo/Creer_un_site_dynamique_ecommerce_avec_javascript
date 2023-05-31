@@ -28,7 +28,8 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
     
       })
       
-    };   
+    };  
+     
   
 function showProductsCart(data, product) {
 //cree une div pour afficher le produit//
@@ -130,8 +131,9 @@ editCart();
 deleteCart();
 //Appel de la fonction le total des quantites 
 getTotalQuantity();
+validationForms();
             
-          }
+  }
           
 
 function editCart() {
@@ -246,6 +248,7 @@ function editCart() {
  });
  //Mettre a jour la quantité totale dans le localstorage et le DOM//
  getTotalQuantity();
+ 
 
 }
 function deleteCart() {
@@ -381,8 +384,39 @@ function calculateTotalPrice() {
   totalQuantityElement.textContent = totalQuantity;
   console.log(totalQuantityElement);
 }
+function validationForms() {
+  //recup la ref vers element du prenom//
+  const firstNameInput = document.getElementById('firstName');
+  console.log(firstNameInput);
+  //recup la ref vers erreur du message//
+  const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
+  console.log(firstNameErrorMsg);
+
+  //Ajouter un ecouteur evenement sur la soumission du formulaire//
+  document.querySelector('.cart__order__form').addEventListener('submit', function(event){
+
+    //Verifier si le prenom constient au moins 3 lettres//
+    if (firstNameInput.value .trim() === "" || firstNameInput.value.length > 3 || !/^a-zA-Z]+$/.test(firstNameInput.value)) {
+      //Affichage du message erreur//
+      firstNameErrorMsg.textContent = " ceci est un message d'erreur";
+      //Empecher la soumission du formulaire//
+      false;
+      event.preventDefault();
+    }
+
+  else{
+    firstNameErrorMsg.textContent =" Valide ";
+    //Autorisation de la soumission du formulaire //
+    return true;
+  }
+});
+
+  
+}
+
+// Corriger pour que j utilise get afin que avant la soumission si le prenom a moins de trois lettre il repond false  avec un message "erreur" alors que si il repond 5 lettre il repond truc avec un message d" valide"
 
 
 
 
- //si je modifie ou supprime une quantité il ya pas de mise a jour dans le localstorage//
+ //valider la commande//
