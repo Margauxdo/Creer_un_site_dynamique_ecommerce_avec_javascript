@@ -134,7 +134,7 @@ cartContentSetting.classList.add('cart__item__content__settings');
 
   //Appel des fonctions//
   editCart();
-  //deleteCart();
+  deleteCart();
   //getTotalQuantity();
   //calculateTotalPrice();
   //validationForms();
@@ -148,36 +148,40 @@ function editCart() {
    const editContent = document.querySelectorAll('.cart__item');
    console.log(editContent);
 
-     //Parcourir chaque element dans le DOM)//
+     //Parcourir chaque element dans le panier(le DOM)//
      for (let a = 0; a < editContent.length; a++){
 
         //element actuel du panier//
         const cartItem = editContent[a];
        console.log(cartItem);
 
+       //Selectionner element entree de la quantite//
        const quantityInput = cartItem.querySelector('.itemQuantity');
        console.log(quantityInput);
+       //Selectionner element de supression//
        const deleteElement = cartItem.querySelector('.deleteItem');
        console.log(deleteElement);
+       //recuperer id a partir de l'attribut data//
+       const productId = cartItem.dataset.productId;
+       console.log(productId);
 
-       //Ajouter un gestionnaire evenement pour le changement de quantité//
-      quantityInput.addEventListener('click',(event)=>{
-        let currentQuantity = parseInt(quantityInput.value);
-        console.log(currentQuantity);
+       //Ajouter un evenement pour le changement de quantité//
+      quantityInput.addEventListener('change',(event)=>{
+      //recuperer la quantité en tant que nombre//
+      const newQuantity = parseInt(event.target.value);
+      console.log(newQuantity)
 
-        currentQuantity += 0;
-        quantityInput.value = currentQuantity;
+       //mettre a jour la quantité dans le localstorage avec une cle basé sur ID//
+        localStorage.setItem(`addToCart_${productId}_quantity`, newQuantity);
 
-        //Mettre a jour dans le localstorage//
-        localStorage.setItem('quantity', currentQuantity);
-        console.log(localStorage);
-
-        //Mettre a jour dans le DOM//
+        // Sélectionner l'élément d'affichage de la quantité dans le DOM//
         const quantityDisplay = cartItem.querySelector('.cart__item__content__settings__quantity');
-        //quantityDisplay.textContent = currentQuantity;
-      })
-    }
+        quantityDisplay.textContent = ` Quantité : ${newQuantity}`;
+        
+    });
   }
+}
+  
        
 
 
@@ -190,15 +194,17 @@ function editCart() {
 
 
 
-//function deleteCart() {
+function deleteCart() {
 const deleteElements = document.querySelectorAll('.deleteItem');
-//des on supprime un produit on cree une boucle evenement//
 console.log(deleteElements);
+
+//des on supprime un produit on cree une boucle evenement//
  deleteElements.forEach(deleteElement => {
    deleteElement.addEventListener("click",(event) => {
-     event.preventDefault();
+    event.preventDefault();
+
      //trouver element parent le plus proche de element suppression//
-     const cartItem = deleteElement.closest('.cart__item');
+    const cartItem = deleteElement.closest('.cart__item');
     console.log(cartItem);
 
      if(cartItem)//si element parent//
@@ -213,12 +219,12 @@ console.log(deleteElements);
        let productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
        console.log(productsLocalStorage);
 
+      //Supprimer le produit du DOM//
+      cartItem.remove();
+
       //Supprimer le produit du localstorage//
       productsLocalStorage = productsLocalStorage.filter(product => product.id !== productId || product.colors !== productColor);
       localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
-
-      //Supprimer le produit du DOM//
-      cartItem.remove();
   
   }
   
@@ -226,7 +232,7 @@ console.log(deleteElements);
       });
   
 
-//}
+}
 
 
 
@@ -360,7 +366,7 @@ console.log(deleteElements);
 
 //Appel des functions//
 editCart();
-//deleteCart();
+deleteCart();
 //getTotalQuantity();
 //calculateTotalPrice();
 //validationForms();
