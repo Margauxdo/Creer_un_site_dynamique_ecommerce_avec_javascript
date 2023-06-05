@@ -384,12 +384,6 @@ calculateTotalPrice();
 
 
 
- //valider la commande//
-
-
- //revoir la function edit, appel tes element du DOM, ta condition, change la value, setItem la nouvelle valeur dans le localstorage, rechareg la page //
- //faire la qtite ttale//
- //calculate tatalprice revoir code etape par etape console log-pas mettre a jour dans le  localstorage//
-
+ //valider la commande/
 
  //regex dans un variable et faire un . test
