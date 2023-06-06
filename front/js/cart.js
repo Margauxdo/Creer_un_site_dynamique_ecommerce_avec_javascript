@@ -137,7 +137,7 @@ cartContentSetting.classList.add('cart__item__content__settings');
   deleteCart();
   getTotalQuantity();
   calculateTotalPrice();
-  //validationForms();
+  validationForms();
   }
           
 
@@ -319,31 +319,35 @@ function validationForms() {
   const form = document.querySelector('.cart__order__form');
   console.log(form);
   //Je selectionne le champ de saisie du prenom//
-  const firstNameInput = document.querySelector('firstName');
+  const firstNameInput = document.querySelector('#firstName');
   console.log(firstNameInput);
-  //
-  //recup la ref vers erreur du message//
-  //const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
-  //console.log(firstNameErrorMsg);
+  //selection element du message erreur//
+  const firstNameErrorMsg = document.querySelector('#firstNameErrorMsg');
+  console.log(firstNameErrorMsg);
 
-  //Ajouter un ecouteur evenement sur la soumission du formulaire//
-  //document.querySelector('.cart__order__form').addEventListener('submit', function(event){
+  //Ajouter un gestionnaire evenement a la soumission du formulaire //
+  form.addEventListener('submit', (event) =>{
+    //empeche le comportement par defaut du formulaire(soumission)//
+    event.preventDefault();
 
-    //Verifier si le prenom constient au moins 3 lettres//
-    //if (firstNameInput.value === "" || firstNameInput.value.length > 3 || !/^a-zA-Z]+$/.test(firstNameInput.value)) {
-      //Affichage du message erreur//
-      //firstNameErrorMsg.textContent = " ceci est un message d'erreur";
-      //Empecher la soumission du formulaire//
-      //false;
-      //event.preventDefault();
-    //}
+    //Recupere la valeur du prenom saisi//
+    const firstName = firstNameInput.value;
+    console.log(firstName);
+    //Definir expression reguliere pour verifier il y es au moins trois lettres//
+    const regex = /^[a-zA-Z]{3,}$/;
+    console.log(regex);
 
-  //else{
-    //firstNameErrorMsg.textContent =" Valide ";
-    //Autorisation de la soumission du formulaire //
-    //return true;
-  //}
-//});
+    //Je test si le prenom respecte bien expression reguliere //
+    if(regex.test(firstName)){
+      firstNameErrorMsg.textContent =" Valide ";
+    }else{
+      //le prenom ne respecte pas les trois lettres, je recupere le message erreur//
+      firstNameErrorMsg.textContent = 'Le prénom doit contenir au moins 3 lettres.';
+      console.log(firstNameErrorMsg);  
+      false; 
+  }})
+
+
 
   
 }
@@ -355,10 +359,4 @@ getTotalQuantity();
 calculateTotalPrice();
 validationForms();
 
-// Corriger pour que j utilise get afin que avant la soumission si le prenom a moins de trois lettre il repond false  avec un message "erreur" alors que si il repond 5 lettre il repond truc avec un message d" valide"
-
-
-
  //valider la commande/
-
- //regex dans un variable et faire un . test
