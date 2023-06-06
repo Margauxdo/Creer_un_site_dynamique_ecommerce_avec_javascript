@@ -149,21 +149,26 @@ function editCart() {
    console.log(editContent);
 
      //Parcourir chaque element dans le panier(le DOM)//
-     for (let a = 0; a < editContent.length; a++){
+     //for (let a = 0; a < editContent.length; a++){
+      editContent.forEach((cartItem) =>{
+
+      
 
         //element actuel du panier//
-        const cartItem = editContent[a];
-       console.log(cartItem);
+        //const cartItem = editContent[a];
+       //console.log(cartItem);
 
        //Selectionner element entree de la quantite//
-       const quantityInput = cartItem.querySelector('.itemQuantity');
+       const quantityInput = cartItem.querySelector('.cart__item__content__settings__quantity input');
        console.log(quantityInput);
+        
+       
        //Selectionner element de supression//
-       const deleteElement = cartItem.querySelector('.deleteItem');
-       console.log(deleteElement);
+       //const deleteElement = cartItem.querySelector('.deleteItem');
+       //console.log(deleteElement);
        //recuperer id a partir de l'attribut data//
-       const productId = cartItem.dataset.productId;
-       console.log(productId);
+       //const productId = cartItem.dataset.productId;
+       //console.log(productId);
 
        //Ajouter un evenement pour le changement de quantité//
       quantityInput.addEventListener('change',(event)=>{
@@ -171,16 +176,22 @@ function editCart() {
       const newQuantity = parseInt(event.target.value);
       console.log(newQuantity)
 
+      const productId = cartItem.dataset.productId;
+
        //mettre a jour la quantité dans le localstorage avec une cle basé sur ID//
         localStorage.setItem(`addToCart_${productId}_quantity`, newQuantity);
 
         // Sélectionner l'élément d'affichage de la quantité dans le DOM//
         const quantityDisplay = cartItem.querySelector('.cart__item__content__settings__quantity');
         quantityDisplay.textContent = ` Quantité : ${newQuantity}`;
-        
+
+        getTotalQuantity();
+        calculateTotalPrice();
+      });   
     });
   }
-}
+  
+
   
        
 
@@ -224,16 +235,16 @@ console.log(deleteElements);
       cartItem.remove();
 
       //Filtrer les produits du panier pour supprimer celui ou ceux qui correspondt à ID//
-      productsLocalStorage = productsLocalStorage.filter(product => product.productId !== productId && product.productColor !== productColor);
+      productsLocalStorage = productsLocalStorage.filter(product => product.id !== productId && product.color !== productColor);
       //Mettre a jour les données du panier dans le localstorage//
       localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
   
+      getTotalQuantity();
+      calculateTotalPrice();
   }
   
        });
       });
-  
-
 }
 
 
@@ -242,8 +253,8 @@ function getTotalQuantity() {
   //Recup tous les elements du panier avec la calss cart__item//
   const cartItems = document.querySelectorAll('.cart__item');
 
-  let totalQuantityArticles = 0;
-  console.log(totalQuantityArticles);
+  let totalQuantity = 0;
+  console.log(totalQuantity);
 
   //Parcourir chaque element du panier //
   cartItems.forEach(item => {
@@ -253,24 +264,41 @@ function getTotalQuantity() {
     console.log(quantityElement);
     const quantity = parseInt(quantityElement.value);
     console.log(quantity);
+    
      //recup le nombre article//
-     const numberArticlesElement = item.querySelector('.itemQuantity');
-     console.log(numberArticlesElement);
-     const numberArticles = parseInt(numberArticlesElement.textContent);
-     console.log(numberArticles);
+     //const numberArticlesElement = item.querySelector('.cart__item__content__settings__quantity input');
+     //console.log(numberArticlesElement);
+     //const numberArticles = parseInt(numberArticlesElement.value);
+     //console.log(numberArticles);
 
     //Ajouter la quantité de chaque article a la quantité totale//
-    totalQuantityArticles += quantity * numberArticles;
-  
+    totalQuantity +=  quantity;
+    console.log(totalQuantity);
+    
+    
     //Mettre a jour le HTML qui correspondt a la qtite//
     const totalQuantityElement = document.querySelector('#totalQuantity');
     console.log(totalQuantityElement);
-    totalQuantityElement.textContent = totalQuantityArticles;
+    totalQuantityElement.textContent = totalQuantity;
     console.log(quantity);
     console.log(totalQuantityElement);
-});
+  });
 
-}
+  //mettre a jour la quantite total dans le localstorage//
+  //localStorage.setItem('totalQuantity', totalQuantity);
+  //console.log(totalQuantity);
+
+  //evenement d ela modification de la quantite 
+  //document.addEventListener('change',function(event){
+    //const target = event.target;
+    //console.log(target);
+    //Verifier si element modifie est une quantite article//
+    //if(target.classList.contains('itemQuantity')){
+      //getTotalQuantity();
+    }
+
+
+
 
 
 
@@ -281,64 +309,70 @@ function calculateTotalPrice() {
   //Initialiser la variable totalPrice à 0//
   let totalPrice = 0;
   console.log(totalPrice);
-  let totalQuantity =0;
+  let totalQuantity = 0;
   console.log(totalQuantity);
   //Parcourir chaque element du panier//
   cartItems.forEach(item => {
 
     //Selectionner le prix dans la description de chaque produit//
-    const priceElement = item.querySelector('p:last-child');
+    const priceElement = item.querySelector('.cart__item__content__description p:last-child');
     console.log(priceElement);
     //Recup le texte du prix à partir de element selectionne//
-    const priceText = priceElement.innerText;
+    const priceText = priceElement.textContent;
     console.log(priceText);
     //Convertir le texte du prix en nombre en supprimant le symbole € + les espaces supplémentaires//
     const price = parseFloat(priceText);
     console.log(price);
 
     //Selectionne element de la quantite de chaque produit//
-    const quantityElement = item.closest('.cart__item').querySelector('.cart__item__content__settings__quantity input');
-    console.log(quantityElement);
+    //const quantityElement = item.querySelector('.cart__item__content__settings__quantity input.itemQuantity');
+    //console.log(quantityElement);
+
+    //verifier si le panier existe avant d'acceder a la valeur //
+    //if(priceElement && quantityElement){
 
     //Obtenir la quantite a partir de la valeur du produit//
-    const quantity = parseInt(quantityElement.value);
-    console.log(quantity);
+    //const quantity = parseInt(quantityElement.innerHTML);
+    //console.log(quantity);
 
     //calcul du prix en multipliant le prix par la quantiite//
-    const productTotal = price * quantity;
-    console.log(productTotal);
+    //const productTotal = price * quantity;
+    //console.log(productTotal);
 
     //Ajouter le prix total//
-    totalPrice += productTotal;
-    console.log(totalPrice);
+    //totalPrice += productTotal;
+    //console.log(totalPrice);
+    //}
+  });
 
     //Ajouter la quantité au totalQuantity//
-    totalQuantity += quantity;
-    console.log(totalQuantity);
-    });
+    //totalQuantity += quantity;
+    //console.log(totalQuantity);
+    //});
 
     //Mettre  ajour le prix total dans le localstorage//
-    const productsLocalStorage = JSON.parse(localStorage.getItem('addToCart'));
-    console.log(productsLocalStorage);
-    const updatedProducts = productsLocalStorage.map(product =>{
-      const productTotal = totalPrice * (product.quantity / totalQuantity);
-      console.log(productTotal);
-      product.price = productTotal;
-      console.log(productTotal);
-      return product;
-    });
-    console.log(updatedProducts);
+    //onst productsLocalStorage = JSON.parse(localStorage.getItem('addToCart'));
+    //console.log(productsLocalStorage);
+    //const updatedProducts = productsLocalStorage.map(product =>{
+      //const productTotal = totalPrice * (product.quantity / totalQuantity);
+      //console.log(productTotal);
+      //product.price = productTotal;
+      //console.log(productTotal);
+      //return product;
+    //});
+    //console.log(updatedProducts);
 
 //Selectionner le prix total dans le HTML
-  const totalPriceElement = document.querySelector('#totalPrice');
-  console.log(totalPriceElement);
+  //const totalPriceElement = document.querySelector('#totalPrice');
+  //console.log(totalPriceElement);
   //Mettre a jour le contenur le element prix avec le prix total arrondi a deux decimal//
-  totalPriceElement.textContent = totalPrice.toFixed(2);
+  //totalPriceElement.textContent = totalPrice.toFixed(2);
+  //console.log(totalPriceElement);
   
   //Mettre  ajour la quantite totale dans le DOM//
-  const totalQuantityElement = document.querySelector('#totalQuantity');
-  totalQuantityElement.textContent = totalQuantity;
-  console.log(totalQuantityElement);
+  //const totalQuantityElement = document.querySelector('#totalQuantity');
+  //totalQuantityElement.textContent = totalQuantity;
+  //console.log(totalQuantityElement);
 }
 
 
@@ -373,7 +407,7 @@ function calculateTotalPrice() {
   
 //}
 
-//Appel des functions//
+//Appel des functions pour initialiser le panier//
 editCart();
 deleteCart();
 getTotalQuantity();
@@ -387,3 +421,4 @@ calculateTotalPrice();
  //valider la commande/
 
  //regex dans un variable et faire un . test
+//************pourquoi quand je modifie la valeur elle est pas prise en compte***//
