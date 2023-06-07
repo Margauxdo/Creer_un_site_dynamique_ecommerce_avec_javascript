@@ -318,6 +318,8 @@ function validationForms() {
   //Selection du formulaire//
   const form = document.querySelector('.cart__order__form');
   console.log(form);
+
+
   //Je selectionne le champ de saisie du prenom//
   const firstNameInput = document.querySelector('#firstName');
   console.log(firstNameInput);
@@ -325,28 +327,106 @@ function validationForms() {
   const firstNameErrorMsg = document.querySelector('#firstNameErrorMsg');
   console.log(firstNameErrorMsg);
 
+  //je selectionne le champ du nom//
+  const lastNameInput = document.querySelector('#lastName');
+  console.log(lastNameInput);
+  //Je recup le message erreur du nom//
+  const lastNameErrorMsg = document.querySelector('#lastNameErrorMsg');
+  console.log(lastNameErrorMsg);
+
+  //je selectionne le champ de l'adresse postale//
+  const addressInput = document.querySelector('#address');
+  console.log(addressInput);
+  const addressErrorMsg = document.querySelector('#addressErrorMsg');
+  console.log(addressErrorMsg);
+
+  //je selectionne le champ de la ville//
+  const cityInput = document.querySelector('#city');
+  console.log(cityInput);
+  const cityErrorMsg = document.querySelector('#cityErrorMsg');
+  console.log(cityErrorMsg);
+
+  //Je selectionne adresse-email //
+  const emailInput = document.querySelector('#email');
+  console.log(emailInput);
+  const emailErrorMsg = document.querySelector('#emailErrorMsg');
+  console.log(emailErrorMsg);
+
+
   //Ajouter un gestionnaire evenement a la soumission du formulaire //
   form.addEventListener('submit', (event) =>{
     //empeche le comportement par defaut du formulaire(soumission)//
     event.preventDefault();
-
     //Recupere la valeur du prenom saisi//
     const firstName = firstNameInput.value;
     console.log(firstName);
     //Definir expression reguliere pour verifier il y es au moins trois lettres//
-    const regex = /^[a-zA-Z]{3,}$/;
-    console.log(regex);
-
+    const regexFirstName = /^[a-zA-Z]{3,}$/;
+    console.log(regexFirstName);
     //Je test si le prenom respecte bien expression reguliere //
-    if(regex.test(firstName)){
-      firstNameErrorMsg.textContent =" Valide ";
-    }else{
-      //le prenom ne respecte pas les trois lettres, je recupere le message erreur//
-      firstNameErrorMsg.textContent = 'Le prénom doit contenir au moins 3 lettres.';
-      console.log(firstNameErrorMsg);  
-      false; 
-  }})
+        if(regexFirstName.test(firstName)){
+        firstNameErrorMsg.textContent ='Valide';
+        }else{
+        //le prenom ne respecte pas les trois lettres, je recupere le message erreur//
+        firstNameErrorMsg.textContent = 'Le prénom doit contenir au moins 3 lettres.';
+        console.log(firstNameErrorMsg);  
+        false; 
+      }
+  
+  //Je recupere la valeur du nom saisi//
+  const lastName = lastNameInput.value;
+  console.log(lastName);
+  //Definir l'expression reguliere il y a minimum 5 lettres//
+  const regexLastName = /^[a-zA-Z]{5,}$/;
+  console.log(regexLastName);
+  if(regexLastName.test(lastName)){
+    lastNameErrorMsg.textContent = 'Valide';
+  }else{
+  lastNameErrorMsg.textContent = 'Le nom doit contenir au moins 5 lettres. ';
+  console.log(lastNameErrorMsg);
+  false;
+  }
 
+  //je recup adress postale//
+  const address = addressInput.value;
+  const regexAddress = /([0-9]{1,}) ?([a-zA-Z,\. ]*)$/;
+  console.log(regexAddress); 
+  if (regexAddress.test(address)) {
+    addressErrorMsg.textContent = 'Valide';
+  } else {
+      addressErrorMsg.textContent = 'Adresse postale doit être complete';
+      console.log(addressErrorMsg);
+      false;
+  }
+
+  //je recup le code postale et nom de la ville//
+  const city = cityInput.value;
+  const regexCity = /^[a-zA-Z]{2,}$/;
+  console.log(regexCity);
+  if (regexCity.test(city)) {
+    cityErrorMsg.textContent = 'Valide';
+  } else {
+    cityErrorMsg.textContent = 'La ville a un minimum de 2 lettres. ';
+    console.log(cityErrorMsg);
+    false;
+  }
+
+  //je recupere le mail//
+  const email = emailInput.value;
+  const regexEmail = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  console.log(regexEmail);
+  if (regexEmail.test(email)) {
+    emailErrorMsg.textContent = 'Valide';
+  } else {
+    emailErrorMsg.textContent = 'Adresse email doit être complete. ';
+    console.log(emailErrorMsg);
+    false;
+  }
+  
+    })
+
+
+    
 
 
   
