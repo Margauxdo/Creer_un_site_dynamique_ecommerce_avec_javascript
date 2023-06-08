@@ -138,6 +138,7 @@ cartContentSetting.classList.add('cart__item__content__settings');
   getTotalQuantity();
   calculateTotalPrice();
   validationForms();
+  orderConfirmation();
   }
           
 
@@ -483,6 +484,87 @@ console.log(order);
 
 
 
+function orderConfirmation(){
+//Recup des produits du local storage//
+const productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
+console.log(productsLocalStorage);
+
+//Recup l'élement DOM pour afficher les produits du panier(section pour ensemble des articles)//
+const cartProducts = document.querySelector('#cart__items');
+console.log(cartProducts);
+
+//verifier si le panier est vide//
+if (!productsLocalStorage || productsLocalStorage.length === 0) {
+  //si le panier est vide afficher un msge approprié à l'utilisateur//
+  const infoUsers = document.createElement("p");
+  infoUsers.textContent = " Votre panier est vide. ";
+  console.log(infoUsers);
+  cartProduct.appendChild(infoUsers);
+  infoUsers.style;textAlign = "center";
+} else {
+  //Si le panier n'est pas vide on passe la commande//
+
+  //Extraire les identifiants des produits du panier//
+  const productIds = productsLocalStorage.map(product => product.id);
+  console.log(productIds);
+
+  //Envoyer la commande au serveur lors de la soumission fu formulaire//
+  const orderForm = document.querySelector('.cart__order__form');
+  console.log(orderForm);
+  orderForm.addEventListener('submit', function(event){
+    event.preventDefault();
+    //Empeche le rechargement de la page lors de la soumission//
+
+
+  //Recup les valeurs du formulaire//
+  const firstName = document.querySelector('#firstName').value;
+  console.log(firstName);
+  const lastName = document.querySelector('#lastName').value;
+  console.log(lastName);
+  const address = document.querySelector('#address').value;
+  console.log(address);
+  const city = document.querySelector('#city').value;
+  console.log(city);
+  const email = document.querySelector('#email').value;
+  console.log(email);
+
+  //Creer objet "order" contenant les infos de contact et les identifiants des produits//
+  const order = {
+    contact: {
+      firstName: firstName,
+      lastName: lastName,
+      address: address,
+      city: city,
+      email: email
+    },
+    products: productIds
+  };
+  console.log(order);
+
+  //Envoyer la commande au serveur//
+  fetch("http://localhost:3000/api/products/order" , {
+    method:"POST",
+    headers: {
+      "Content-type": "application/json"
+    },
+    body: JSON.stringify(order)
+  })
+  .then(response => response.json())
+  .then(data => {
+    //Recup identifiant de la commande a partir de la reponse//
+    const orderId = data.orderId;
+    console.log(orderId);
+    console.log(" Numero de la commande :", orderId);
+  })
+  .catch(error =>{
+    //Gerer les erreur lors de l'envoi de la commande//
+    console.error("Erreur:", error);
+  });
+});
+}
+
+}
+
   
 
 
@@ -494,5 +576,6 @@ deleteCart();
 getTotalQuantity();
 calculateTotalPrice();
 validationForms();
+orderConfirmation();
 
 
