@@ -565,9 +565,19 @@ if (!productsLocalStorage || productsLocalStorage.length === 0) {
 
 }
 
-  
 
 
+function placeOrder() {
+ //fonction pour enregistrer la commande//
+ //Code pour enregistrer la commande et obtenir ID de commande//
+ const orderId = 'c4bb5df0-0609-11ee-9d50-fdb7c9e1bf6d';
+ console.log(orderId);
+ 
+ //redirection vers la page web avec Id de la commande//
+ window.location.href = 'http://127.0.0.1:5500/front/html/confirmation.html?id=${orderId}';
+ 
+
+}
 
 
 //Appel des functions pour initialiser le panier//
@@ -577,5 +587,6 @@ getTotalQuantity();
 calculateTotalPrice();
 validationForms();
 orderConfirmation();
+placeOrder();
 
 
