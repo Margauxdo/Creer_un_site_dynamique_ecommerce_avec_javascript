@@ -572,10 +572,18 @@ function placeOrder() {
  //Code pour enregistrer la commande et obtenir ID de commande//
  const orderId = 'c4bb5df0-0609-11ee-9d50-fdb7c9e1bf6d';
  console.log(orderId);
+
+ //Selectionner l'element envoyer//
+ const orderSubmit = document.getElementById('order');
+ console.log(orderSubmit);
+ //Ajouter un gestionnaire d'evenement au clic sur le bouton commander//
+ orderSubmit.addEventListener('click', function(event){
+  event.preventDefault();
+ 
  
  //redirection vers la page web avec Id de la commande//
  window.location.href = 'http://127.0.0.1:5500/front/html/confirmation.html?id=${orderId}';
- 
+})
 
 }
 
@@ -590,3 +598,4 @@ orderConfirmation();
 placeOrder();
 
 
+//lien vers la page confirmation le numero de confirmation dans url ne s'affiche pas//
