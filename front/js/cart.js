@@ -425,12 +425,68 @@ function validationForms() {
   
     })
 
+//Recuperer les produits depuis le loclstorage//
+const contactFromLocalStorage = JSON.parse(localStorage.getItem('contact'));
+console.log(contactFromLocalStorage);
+//Création de l'objet contact en récupérant les valeurs des champs du formulaire//
+const contact = {
+  firstName : firstNameInput.value,
+  lastName : lastNameInput.value,
+  address : addressInput.value,
+  city : cityInput.value,
+  email : emailInput.value
+};
+console.log(contact);
 
-    
+//Ajout de l'objet contact au local storage//
+localStorage.setItem('contact', JSON.stringify(contact));
+
+
+
+//Creer le tableau de produits//
+const products = [];
+console.log(products);
+
+
+// Sélectionner tous les éléments avec la classe 'cart__item'
+const cartItems = document.querySelectorAll('.cart__item');
+console.log(cartItems);
+// Parcourir chaque élément du panier (cartItems) pour récupérer les informations nécessaires//
+cartItems.forEach((item) => {
+  // Récupérer l'ID du produit à partir de l'attribut 'data-product-id'
+  const productId = item.dataset.productId;
+  console.log(productId);
+  // Récupérer l'ID du produit à partir de l'attribut 'data-product-id'
+  const productColor = item.dataset.productColor;
+  console.log(productColor);
+  // Récupérer la quantité du produit à partir de l'élément avec la classe 'itemQuantity'
+  const productQuantity = item.querySelector('.itemQuantity').value;
+
+  // Ajouter les informations du produit récupérées dans un nouvel objet et le pousser dans le tableau 'products'//
+  products.push({
+    id: productId,
+    color: productColor,
+    quantity: parseInt(productQuantity)
+  });
+  console.log(productQuantity);
+
+});
+
+//Création de l'objet order//
+const order = {
+  contact: contact,
+  products: products
+};
+console.log(order);
+
+}
+
 
 
   
-}
+
+
+
 
 //Appel des functions pour initialiser le panier//
 editCart();
@@ -439,4 +495,4 @@ getTotalQuantity();
 calculateTotalPrice();
 validationForms();
 
- //valider la commande/
+
