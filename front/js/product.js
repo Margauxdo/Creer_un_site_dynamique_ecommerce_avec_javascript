@@ -7,11 +7,11 @@ const  fetchArticle = () => {     //**variable pour recuperer un seul produit en
     fetch(url)        //on fait appel a api//
     .then (function(response) { // on utilise then pour avoir une reponse //
 
-     return response.json()   //on fait un retour a la reponse en json//
+     return response.json();   //on fait un retour a la reponse en json//
     })  // on utilise une deuxieme fois then pour acceder au data de api //
     .then(function(data)  {
-      imageKanap(data)
-      optionColorskanap(data)
+      imageKanap(data);
+      optionColorskanap(data);
       
       
       
@@ -29,6 +29,7 @@ function imageKanap(){
         console.log(articleImg)//on verifie//
 }
 const articleDescription = (document.getElementById("description").innerText = data.description) //on cree une variable pour recuperer la description//
+
 
 function optionColorskanap() {
       //on va cree une variable avec les differentes options de couleurs//
@@ -87,7 +88,7 @@ if(localStorage.getItem("addToCart") !==null )
       console.log(quantityToAdd);
       productsLocalStorage.quantity = quantityToAdd;
       console.log(productsLocalStorage.quantity);
-      localStorage.setItem('addTocart',JSON.stringify(productsLocalStorage));
+      localStorage.setItem('addToCart',JSON.stringify(productsLocalStorage));
       //on ajoute une ligne "addtocart"dans  le tableau du localstorage//
       productFind=true;
       //setitem addtocart//
@@ -102,7 +103,16 @@ localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
 //on ajoute une ligne dans  le tableau du localstorage//
 console.log(localStorage);
 
-  //getItem = obtenir ce qu'il y a dans le localStorage//
+
+  })
+  
+  }
+   
+
+
+
+
+   //getItem = obtenir ce qu'il y a dans le localStorage//
   //setItem = ajouter une nouvelle ligne(produit) dans le localStorage//
   //local.push() = rajouter dans un tableau//
   //JSON.stringify = transformer un objet javascript en chaine json//
@@ -112,6 +122,3 @@ console.log(localStorage);
 
   //quand on clique sur le bouton panier on acceder directement a la page panier//
   //window.location.href ="cart.html";
-  })
-  
-  }

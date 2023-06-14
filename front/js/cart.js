@@ -1,7 +1,8 @@
  //Recuperer les donnees du localstorage//
- const productsLocalStorage = JSON.parse(localStorage.getItem("addTocart"));
+ const productsLocalStorage = localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
+ //JSON.parse(localStorage.getItem("addTocart"));
 //Stocker les donnees mises a jour dans le localstorage//
-localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
+//localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
  
      const cartProduct = document.querySelector("#cart__items");
      console.log(cartProduct);
@@ -30,7 +31,7 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
     
       })
       //Appel des functions pour initialiser le panier//
-//editCart();
+
 deleteCart();
 getTotalQuantity();
 calculateTotalPrice();
@@ -95,7 +96,8 @@ cartContentSetting.classList.add('cart__item__content__settings');
   cartItem.appendChild(productQuantity);
     //creer un input pour modifier la quantité du produit//
     const valueQtity = document.createElement('input');
-    valueQtity.querySelector('.cart__item__content__settings__quantity');
+    document.querySelector('.cart__item__content__settings__quantity');
+    //valueQtity.querySelector('.cart__item__content__settings__quantity');
     valueQtity.classList.add('cart__item__content__settings__quantity');
     //cree un element input de ty^pe number en ajoutant les valeurs//
     valueQtity.setAttribute("type","number");
@@ -176,7 +178,8 @@ function editCart() {
       localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
 
       // Sélectionner l'élément d'affichage de la quantité dans le DOM//
-      const quantityDisplay = cartItem.querySelector('.itemQuantity');
+      const quantityDisplay = document.querySelector('.itemQuantity');
+      //const quantityDisplay = cartItem.querySelector('.itemQuantity');
       quantityDisplay.textContent = ` Quantité : ${newQuantity}`;
       console.log(quantityDisplay);
         
@@ -212,7 +215,7 @@ console.log(deleteElements);
        console.log(productColor);
 
        //Recup les donnees du panier depuis le localstorage//
-       //let productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
+      JSON.parse(localStorage.getItem("addToCart"));
        //console.log(productsLocalStorage);
 
       //Supprimer le produit du DOM//
@@ -244,7 +247,8 @@ function getTotalQuantity() {
   cartItems.forEach(item => {
 
     //recup la qtite de article//
-    const quantityElement = item.querySelector('.itemQuantity');
+    const quantityElement = document.querySelector('.itemQuantity');
+    //const quantityElement = item.querySelector('.itemQuantity');
     console.log(quantityElement);
     const quantity = parseInt(quantityElement.value);
     console.log(quantity);
@@ -279,7 +283,8 @@ function calculateTotalPrice() {
   cartItems.forEach(item => {
 
     //Selectionner le prix dans la description de chaque produit//
-    const priceElement = item.querySelector('.cart__item__content__description p:last-child');
+    const priceElement = document.querySelector('.cart__item__content__description p:last-child');
+    //const priceElement = item.querySelector('.cart__item__content__description p:last-child');
     console.log(priceElement);
     //Recup le texte du prix à partir de element selectionne//
     const priceText = priceElement.textContent;
@@ -289,7 +294,8 @@ function calculateTotalPrice() {
     console.log(price);
 
     //Selectionne element de la quantite de chaque produit//
-    const quantityElement = item.querySelector('.itemQuantity');
+    const quantityElement = document.querySelector('.itemQuantity');
+    //const quantityElement = item.querySelector('.itemQuantity');
     console.log(quantityElement);
     //Recuperer la valeur de la quantite //
     const quantity = quantityElement ? parseInt(quantityElement.value): 0;
@@ -463,7 +469,8 @@ cartItems.forEach((item) => {
   const productColor = item.dataset.productColor;
   console.log(productColor);
   // Récupérer la quantité du produit à partir de l'élément avec la classe 'itemQuantity'
-  const productQuantity = item.querySelector('.itemQuantity').value;
+  const productQuantity = document.querySelector('.itemQuantity').value;
+  //const productQuantity = item.querySelector('.itemQuantity').value;
 
   // Ajouter les informations du produit récupérées dans un nouvel objet et le pousser dans le tableau 'products'//
   products.push({
@@ -488,8 +495,8 @@ console.log(order);
 
 function orderConfirmation(){
 //Recup des produits du local storage//
-//const productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
-//console.log(productsLocalStorage);
+JSON.parse(localStorage.getItem("addToCart"));
+console.log(productsLocalStorage);
 
 //Recup l'élement DOM pour afficher les produits du panier(section pour ensemble des articles)//
 const cartProducts = document.querySelector('#cart__items');
