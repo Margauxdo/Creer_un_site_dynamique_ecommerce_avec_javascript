@@ -1,4 +1,6 @@
  const productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
+ //localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
+ //JSON.parse(localStorage.getItem("addToCart"));
 //Je recupere le donnees stocké dans le localStoge avec la cle addToCart  et utilise la methode JSON.parse , je socke les produits recement ajoutés au panier et je peut les recup dans la page panier//
 
      const cartProduct = document.querySelector("#cart__items");
@@ -27,7 +29,14 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
         });
     
       })
-      
+      //Appel des functions pour initialiser le panier//
+editCart();
+deleteCart();
+getTotalQuantity();
+calculateTotalPrice();
+validationForms();
+orderConfirmation();
+placeOrder();
     };  
      
   
@@ -132,13 +141,6 @@ cartContentSetting.classList.add('cart__item__content__settings');
             productDelete.appendChild(deleteItem);
             
 
-  //Appel des fonctions//
-  editCart();
-  deleteCart();
-  getTotalQuantity();
-  calculateTotalPrice();
-  validationForms();
-  orderConfirmation();
   }
           
 
@@ -169,15 +171,14 @@ function editCart() {
         const productId = cartItem.dataset.productId;
         console.log(productId);
       //mettre a jour la quantité dans le localstorage avec une cle basé sur ID//
-      localStorage.setItem(`addToCart_${productId}_quantity`, newQuantity);
+      localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
 
       // Sélectionner l'élément d'affichage de la quantité dans le DOM//
       const quantityDisplay = cartItem.querySelector('.itemQuantity');
       quantityDisplay.textContent = ` Quantité : ${newQuantity}`;
       console.log(quantityDisplay);
         
-      getTotalQuantity();
-      calculateTotalPrice();
+
         }
       });   
     }
@@ -209,8 +210,8 @@ console.log(deleteElements);
        console.log(productColor);
 
        //Recup les donnees du panier depuis le localstorage//
-       let productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
-       console.log(productsLocalStorage);
+       //let productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
+       //console.log(productsLocalStorage);
 
       //Supprimer le produit du DOM//
       cartItem.remove();
@@ -220,8 +221,7 @@ console.log(deleteElements);
       //Mettre a jour les données du panier dans le localstorage//
       localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
   
-      getTotalQuantity();
-      calculateTotalPrice();
+
   }
   
        });
@@ -427,8 +427,8 @@ function validationForms() {
     })
 
 //Recuperer les produits depuis le loclstorage//
-const contactFromLocalStorage = JSON.parse(localStorage.getItem('contact'));
-console.log(contactFromLocalStorage);
+//const contactFromLocalStorage = JSON.parse(localStorage.getItem('contact'));
+//console.log(contactFromLocalStorage);
 //Création de l'objet contact en récupérant les valeurs des champs du formulaire//
 const contact = {
   firstName : firstNameInput.value,
@@ -440,7 +440,7 @@ const contact = {
 console.log(contact);
 
 //Ajout de l'objet contact au local storage//
-localStorage.setItem('contact', JSON.stringify(contact));
+//localStorage.setItem('contact', JSON.stringify(contact));
 
 
 
@@ -486,8 +486,8 @@ console.log(order);
 
 function orderConfirmation(){
 //Recup des produits du local storage//
-const productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
-console.log(productsLocalStorage);
+//const productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
+//console.log(productsLocalStorage);
 
 //Recup l'élement DOM pour afficher les produits du panier(section pour ensemble des articles)//
 const cartProducts = document.querySelector('#cart__items');
@@ -588,14 +588,7 @@ function placeOrder() {
 }
 
 
-//Appel des functions pour initialiser le panier//
-editCart();
-deleteCart();
-getTotalQuantity();
-calculateTotalPrice();
-validationForms();
-orderConfirmation();
-placeOrder();
 
 
-//lien vers la page confirmation le numero de confirmation dans url ne s'affiche pas//
+
+//lien vers la page confirmation le numero de confirmation dans url ne s'affiche pas//z
