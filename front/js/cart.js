@@ -1,8 +1,8 @@
- const productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
- //localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
- //JSON.parse(localStorage.getItem("addToCart"));
-//Je recupere le donnees stocké dans le localStoge avec la cle addToCart  et utilise la methode JSON.parse , je socke les produits recement ajoutés au panier et je peut les recup dans la page panier//
-
+ //Recuperer les donnees du localstorage//
+ const productsLocalStorage = JSON.parse(localStorage.getItem("addTocart"));
+//Stocker les donnees mises a jour dans le localstorage//
+localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
+ 
      const cartProduct = document.querySelector("#cart__items");
      console.log(cartProduct);
 //je cree une variable pour preciser que les element se situeront dans la class "cart" dans le html
@@ -12,7 +12,7 @@ if (!productsLocalStorage || productsLocalStorage.length === 0) {
 const infoUsers = document.createElement("p");
 infoUsers.textContent = "Votre  panier est vide";
 cartProduct.appendChild(infoUsers);
-infoUsers.style.textAlign = "center";
+
 
 //message pour informer utilisateur que le panier est vide//
   }else {
@@ -24,13 +24,13 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
       .then ((response) => response.json())
           .then((data) => {
             showProductsCart(data, product);
-            
+            editCart();
          
         });
     
       })
       //Appel des functions pour initialiser le panier//
-editCart();
+//editCart();
 deleteCart();
 getTotalQuantity();
 calculateTotalPrice();
@@ -151,15 +151,17 @@ function editCart() {
    const editContent = document.querySelectorAll('.cart__item');
    console.log(editContent);
 
-     //Parcourir chaque element dans le panier(le DOM)//
-     for (let a = 0; a < editContent.length; a++){
+     
+           //Selectionner element entree de la quantite//
+           const quantityInput = document.querySelector('.itemQuantity');
+           console.log(quantityInput);
+           
+           //Parcourir chaque element dans le panier(le DOM)//
+     for (let a = 0; a < quantityInput.length; a++){
         //element actuel du panier//
-        const cartItem = editContent[a];
-        console.log(cartItem);
-
-        //Selectionner element entree de la quantite//
-        const quantityInput = cartItem.querySelector('.itemQuantity');
         console.log(quantityInput);
+
+
 
         //Ajouter un evenement pour le changement de quantité//
         quantityInput.addEventListener('change',(event)=>{
