@@ -1,8 +1,5 @@
  //Recuperer les donnees du localstorage//
- const productsLocalStorage = localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
- //JSON.parse(localStorage.getItem("addTocart"));
-//Stocker les donnees mises a jour dans le localstorage//
-//localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
+ let productsLocalStorage = JSON.parse(localStorage.getItem('addToCart')) || [];
  
      const cartProduct = document.querySelector("#cart__items");
      console.log(cartProduct);
@@ -33,8 +30,6 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
       //Appel des functions pour initialiser le panier//
 
 deleteCart();
-getTotalQuantity();
-calculateTotalPrice();
 validationForms();
 orderConfirmation();
 placeOrder();
@@ -187,12 +182,15 @@ function editCart() {
         }
       });   
     }
+    getTotalQuantity();
+    calculateTotalPrice();
   }
   
 
   
        
 function deleteCart() {
+  
   //Slectionner tous les elements de suppression//
 const deleteElements = document.querySelectorAll('.deleteItem');
 console.log(deleteElements);
@@ -202,9 +200,7 @@ console.log(deleteElements);
    deleteElement.addEventListener("click",(event) => {
     event.preventDefault();
 
-     //trouver element parent le plus proche de cart__item( de supression)//
-    const cartItem = deleteElement.closest('.cart__item');
-    console.log(cartItem);
+
 
     //verifier si l'élement parent existe//
      if(cartItem){
@@ -232,6 +228,7 @@ console.log(deleteElements);
        });
        
       });
+      
 }
 
 

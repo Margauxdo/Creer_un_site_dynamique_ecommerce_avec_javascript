@@ -1,7 +1,7 @@
-const paramsProduct = new URL (document.location).searchParams // creation new url avec search params
-const id = paramsProduct.get("id")//cree une variable id, jenvoie ma constante paramproducts vers id pour recupere id de ma page//
-const url = `http://localhost:3000/api/products/${id}` // on cree une variable url on y met le lien de api avec ${id}, id varie en fonction des produits//
-//console.log(url) // on constate url de la page avec le id a cote 
+const paramsProduct = new URL (document.location).searchParams; // creation new url avec search params
+const id = paramsProduct.get("id");//cree une variable id, jenvoie ma constante paramproducts vers id pour recupere id de ma page//
+const url = `http://localhost:3000/api/products/${id}`; // on cree une variable url on y met le lien de api avec ${id}, id varie en fonction des produits//
+console.log(url); // on constate url de la page avec le id a cote 
 
 const  fetchArticle = () => {     //**variable pour recuperer un seul produit en faisant appel a api */
     fetch(url)        //on fait appel a api//
@@ -15,10 +15,10 @@ const  fetchArticle = () => {     //**variable pour recuperer un seul produit en
       
       
       
-const appendProduct = document.getElementsByClassName('item') //on cree une variable afin de recuperer emplacement des elements//
+const appendProduct = document.getElementsByClassName('item'); //on cree une variable afin de recuperer emplacement des elements//
       
-const articleTitle = (document.getElementById("title").innerText = data.name) //on cree une variable pour recuperer le titre qui est appele title en html et data.name, dans le date il est appele name//
-const articlePrice = (document.getElementById("price").innerText = data.price)  //on cree une variable pour recup le prix//
+const articleTitle = (document.getElementById("title").innerText = data.name); //on cree une variable pour recuperer le titre qui est appele title en html et data.name, dans le date il est appele name//
+const articlePrice = (document.getElementById("price").innerText = data.price);  //on cree une variable pour recup le prix//
 
 //on doit crée la balise de image qui n'existe pas//
 function imageKanap(){
@@ -26,33 +26,33 @@ function imageKanap(){
       document.querySelector(".item__img").appendChild(articleImg);//on va chercher le parent de articleImg pour savoir ou le positionner//
       articleImg.src = data.imageUrl;//on recupere la source de api//
       articleImg.alt = data.altTxt; //on recup le alt de api//
-        console.log(articleImg)//on verifie//
+        console.log(articleImg);//on verifie//
 }
-const articleDescription = (document.getElementById("description").innerText = data.description) //on cree une variable pour recuperer la description//
+const articleDescription = (document.getElementById("description").innerText = data.description); //on cree une variable pour recuperer la description//
 
 
 function optionColorskanap() {
       //on va cree une variable avec les differentes options de couleurs//
-      const articleOptionsColors = document.getElementById("colors")
+      const articleOptionsColors = document.getElementById("colors");
         for (color in data.colors){ //on utilise la boucle for in pour recuperer les couleurs dans le data //
         //je reprend la constance articleOptionsColors ou je lui ajoute du html , on reprend le code html ou on y integre une possibilité de couleurs dans les couleurs du data//
-          articleOptionsColors.innerHTML += `<option value = "${data.colors[color]}">${data.colors[color]}</option>`
+          articleOptionsColors.innerHTML += `<option value = "${data.colors[color]}">${data.colors[color]}</option>`;
       }
-  console.log(articleOptionsColors)
+  console.log(articleOptionsColors);
 } 
 })
 }
 
-fetchArticle()
+fetchArticle();
 
-localStorageToCart()
+localStorageToCart();
 
 
 
 
 function localStorageToCart (){
   //on créé une variable pour acceder au bouton du panier // 
-  const addToCart = document.getElementById("addToCart")
+  const addToCart = document.getElementById("addToCart");
   //des on clique sur le bouton ca enregistre les evenment//
   addToCart.addEventListener ("click",() =>{
     const productsToCart = {
