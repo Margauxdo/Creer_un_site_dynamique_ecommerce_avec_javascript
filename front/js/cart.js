@@ -23,13 +23,15 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
           .then((data) => {
             showProductsCart(data, product);
             editCart();
-         
+            getTotalQuantity();
+            calculateTotalPrice();
+            deleteCart();
         });
     
       })
       //Appel des functions pour initialiser le panier//
 
-deleteCart();
+
 validationForms();
 orderConfirmation();
 placeOrder();
@@ -182,8 +184,7 @@ function editCart() {
         }
       });   
     }
-    getTotalQuantity();
-    calculateTotalPrice();
+    
   }
   
 
