@@ -1,5 +1,6 @@
  //Recuperer les donnees du localstorage//
  let productsLocalStorage = JSON.parse(localStorage.getItem('addToCart')) || [];
+ console.log(productsLocalStorage);
  
      const cartProduct = document.querySelector("#cart__items");
      console.log(cartProduct);
@@ -16,7 +17,7 @@ cartProduct.appendChild(infoUsers);
   }else {
     console.log("mon panier n'est pas vide!!");//sinon mon panier n'est pas vide//
 //je cree une fonction en utilisant foreach pour parcourir le tableau du localstorage et recupéré id, la couleur et la quantité//
-productsLocalStorage.forEach(product => {
+productsLocalStorage.forEach( product => {
   //recup les infos depuis API//
 fetch(`http://localhost:3000/api/products/${product.id}`)   
       .then ((response) => response.json())
@@ -26,16 +27,14 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
             getTotalQuantity();
             calculateTotalPrice();
             deleteCart();
-        });
+        }
+        );
     
       })
-      //Appel des functions pour initialiser le panier//
-
-
 validationForms();
 orderConfirmation();
 placeOrder();
-    };  
+    }  
      
   
 
@@ -145,47 +144,58 @@ cartContentSetting.classList.add('cart__item__content__settings');
 
 
 function editCart() {
+    //Selectionner element entree de la quantite//
+  
+    const quantityInput = document.querySelectorAll('.itemQuantity');
+    console.log(quantityInput);
 
-  //Selectionner tous les element du panier avec la class cart//
-   const editContent = document.querySelectorAll('.cart__item');
-   console.log(editContent);
-
-     
-           //Selectionner element entree de la quantite//
-           const quantityInput = document.querySelector('.itemQuantity');
-           console.log(quantityInput);
-           
-           //Parcourir chaque element dans le panier(le DOM)//
-     for (let a = 0; a < quantityInput.length; a++){
-        //element actuel du panier//
-        console.log(quantityInput);
-
-
-
-        //Ajouter un evenement pour le changement de quantité//
-        quantityInput.addEventListener('change',(event)=>{
+    //element actuel du panier//
+    console.log(quantityInput);
+  
+   quantityInput.forEach(quantityOneInput => {
+  
+   quantityOneInput.addEventListener('change', (event) => {
+  
         //recuperer la quantité en tant que nombre//
-        if(quantityInput){
-        const newQuantity = parseInt(event.target.value);
-        console.log(newQuantity)
-        //Recuperer ID du produit a partir de attribut data//
-        const productId = cartItem.dataset.productId;
-        console.log(productId);
-      //mettre a jour la quantité dans le localstorage avec une cle basé sur ID//
-      localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
+  
+        if (quantityInput) {
+  
+          const newQuantity = parseInt(event.target.value);
+          console.log(newQuantity);
 
-      // Sélectionner l'élément d'affichage de la quantité dans le DOM//
-      const quantityDisplay = document.querySelector('.itemQuantity');
-      //const quantityDisplay = cartItem.querySelector('.itemQuantity');
-      quantityDisplay.textContent = ` Quantité : ${newQuantity}`;
-      console.log(quantityDisplay);
-        
+          console.log(quantityInput);
 
+  
+          //mettre a jour la quantité dans le localstorage avec une cle basé sur ID//
+  
+          localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
+
+          
+  
+          // Sélectionner l'élément d'affichage de la quantité dans le DOM//
+  
+          const quantityDisplay = document.querySelector('.itemQuantity');
+  
+          quantityDisplay.textContent = ` Quantité : ${newQuantity}`;
+  
+          console.log(quantityDisplay);
+
+          
+   
+  
+  
+
+  
         }
-      });   
-    }
-    
+  
+
+  
+ 
+      });
+  
+})
   }
+
   
 
   
@@ -201,16 +211,19 @@ console.log(deleteElements);
    deleteElement.addEventListener("click",(event) => {
     event.preventDefault();
 
-
+    //reference a element parent//
+    const cartItem = deleteElement.closest('.cart__item');
 
     //verifier si l'élement parent existe//
      if(cartItem){
-      //je recup id et sa couleur depuis le data-productId//
-       const productId = cartItem.dataset.productId;
-       console.log(productId);
-       const productColor = cartItem.dataset.productColor;
-       console.log(productColor);
+      //je recup id et sa couleur depuis le DOM//
+       ////jfais une boucle foreach je cherche tous les element input de la page web et non le html//
 
+
+        const productId = cartItem.dataset.productId;
+        console.log(productId);
+        const productColor = cartItem.dataset.productColor;
+        console.log(productColor);
        //Recup les donnees du panier depuis le localstorage//
       JSON.parse(localStorage.getItem("addToCart"));
        //console.log(productsLocalStorage);
@@ -219,12 +232,16 @@ console.log(deleteElements);
       cartItem.remove();
 
       //Filtrer les produits du panier pour supprimer celui ou ceux qui correspondt à ID//
-      productsLocalStorage = productsLocalStorage.filter(product => product.productId !== productId && product.productColor !== productColor);
-      //Mettre a jour les données du panier dans le localstorage//
+       JSON.parse(localStorage.getItem('addToCart'));
+      
+       const updateProducts= productsLocalStorage.filter(product => product.productId !== productId && product.productColor !== productColor);
+      console.log(updateProducts);
+       //Mettre a jour les données du panier dans le localstorage//
       localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
   
 
-  }
+  
+}
   
        });
        
@@ -245,8 +262,7 @@ function getTotalQuantity() {
   cartItems.forEach(item => {
 
     //recup la qtite de article//
-    const quantityElement = document.querySelector('.itemQuantity');
-    //const quantityElement = item.querySelector('.itemQuantity');
+    const quantityElement = item.querySelector('.itemQuantity');
     console.log(quantityElement);
     const quantity = parseInt(quantityElement.value);
     console.log(quantity);
@@ -255,6 +271,8 @@ function getTotalQuantity() {
     //Ajouter la quantité de chaque article a la quantité totale//
     totalQuantity +=  quantity;
     console.log(totalQuantity);
+
+
     
     
     //Mettre a jour le HTML qui correspondt a la qtite//
@@ -263,6 +281,8 @@ function getTotalQuantity() {
     totalQuantityElement.textContent = totalQuantity;
     console.log(quantity);
     console.log(totalQuantityElement);
+
+  
   });
 }
 
@@ -273,52 +293,57 @@ function getTotalQuantity() {
 
 
 function calculateTotalPrice() {
-  //Selectionner tous les element du panier//
-  const cartItems = document.querySelectorAll('.cart__item');
-  //Initialiser la variable totalPrice à 0//
-  let totalPrice = 0;
-  console.log(totalPrice);
-  cartItems.forEach(item => {
-
-    //Selectionner le prix dans la description de chaque produit//
-    const priceElement = document.querySelector('.cart__item__content__description p:last-child');
-    //const priceElement = item.querySelector('.cart__item__content__description p:last-child');
-    console.log(priceElement);
-    //Recup le texte du prix à partir de element selectionne//
-    const priceText = priceElement.textContent;
-    console.log(priceText);
-    //Convertir le texte du prix en nombre en supprimant le symbole € + les espaces supplémentaires//
-    const price = parseFloat(priceText);
-    console.log(price);
-
-    //Selectionne element de la quantite de chaque produit//
-    const quantityElement = document.querySelector('.itemQuantity');
-    //const quantityElement = item.querySelector('.itemQuantity');
-    console.log(quantityElement);
-    //Recuperer la valeur de la quantite //
-    const quantity = quantityElement ? parseInt(quantityElement.value): 0;
-    console.log(quantity);
-
-    //calcul du prix en multipliant le prix par la quantiite//
-    const productTotal = price * quantity;
-    console.log(productTotal);
-    //Ajouter le prix total//
-    totalPrice += productTotal;
-    console.log(totalPrice);
-    
-  });
-
- 
-
-//Selectionner le prix total dans le HTML
-  const totalPriceElement = document.querySelector('#totalPrice');
-  console.log(totalPriceElement);
-  //Mettre a jour le contenur le element prix avec le prix total arrondi a deux decimal//
-  totalPriceElement.textContent = totalPrice.toFixed(2);
-  console.log(totalPriceElement);
-
   
-}
+ //Selectionner tous les elements du panier//
+  const cartItems = document.querySelectorAll('.cart__item');
+  console.log(cartItems);
+  //initialiser la variable a 0 pour stocker le prix total//  
+  let totalPrice = 0;
+  
+  //utiliser array.from() pour convertir en un tableau et utiliser reduce()//
+  const productTotals = Array.from(cartItems).reduce((totals, item) => {
+    //slectionner element contenant le prix de article//
+    const priceElement = item.querySelector('.cart__item__content__description p:last-child');
+    console.log(priceElement);  
+  
+    //extraire le prix du texte//
+  const priceText = priceElement.textContent;
+  console.log(priceText);
+
+    //covertir le texte du prix en nombre//
+      const price = parseFloat(priceText);
+      console.log(price);
+  
+      //selectionner element de la quantité de l'article//
+  const quantityElement = item.querySelector('.itemQuantity');
+  console.log(quantityElement);  
+  
+  //Extraire la valeur de la quantité (0 par defaut)//
+  const quantity = quantityElement ? parseInt(quantityElement.value) : 0;
+  console.log(quantity);
+   
+  //calculer le prix total en multipliant le prix par la quantite //
+  const productTotal = price * quantity;
+  console.log(productTotal);
+
+  //ajouter le total du produit au tableau total//
+      totals.push(productTotal); 
+  
+      //ajouter le total du produit a la variable totalprice
+      totalPrice += productTotal;
+  
+      //Retourner le tableau des totaux de chaque produit//
+    return totals;
+    }, []);
+  
+    //Sélectionner l'élément où afficher le prix total//
+    const totalPriceElement = document.querySelector('#totalPrice');
+    console.log(totalPriceElement);
+    //Mettre à jour le contenu de l'élément avec le prix total arrondi à 2 décimales
+    totalPriceElement.textContent = totalPrice.toFixed(2);
+    // Tableau des totaux de chaque produit dans la console
+      console.log(productTotals); 
+  }
 
 
 function validationForms() {
@@ -597,5 +622,5 @@ function placeOrder() {
 
 
 
-
+//editcart ma newQuantite est egal a la quantite du localstorage avec
 //lien vers la page confirmation le numero de confirmation dans url ne s'affiche pas//z
