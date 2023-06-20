@@ -27,13 +27,14 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
             getTotalQuantity();
             calculateTotalPrice();
             deleteCart();
+            
         }
         );
     
       })
-validationForms();
-orderConfirmation();
-placeOrder();
+      validationForms();
+      orderConfirmation();
+      placeOrder();
     }  
      
   
@@ -144,7 +145,7 @@ cartContentSetting.classList.add('cart__item__content__settings');
 
 
 function editCart() {
-    //Selectionner element entree de la quantite//
+    //Selectionner tous les element de quantité dans le panier//
   
     const quantityInput = document.querySelectorAll('.itemQuantity');
     console.log(quantityInput);
@@ -152,49 +153,45 @@ function editCart() {
     //element actuel du panier//
     console.log(quantityInput);
   
-   quantityInput.forEach(quantityOneInput => {
+   //Parcourir chaque element de quantité//
+    quantityInput.forEach(quantityOneInput => {
   
-   quantityOneInput.addEventListener('change', (event) => {
+   //Ajouter un écouteur d'événement pour le changement de valeur//
+      quantityOneInput.addEventListener('change', (event) => {
   
-        //recuperer la quantité en tant que nombre//
-  
-        if (quantityInput) {
+        //recuperer la nouvelle quantité en tant que nombre//
   
           const newQuantity = parseInt(event.target.value);
           console.log(newQuantity);
 
-          console.log(quantityInput);
+          //Récuperer id du produit et la couleur a partie de l'élément parent dans le DOM//
+          const productId = quantityOneInput.closest('.cart__item').dataset.productId;
+          console.log(productId);
+          const productColor = quantityOneInput.closest('.cart__item').dataset.productColor;
+          console.log(productColor);
+
+          //Rechercher le produit dans le tableau productslocalStorage//
+          const product = productsLocalStorage.find(item => item.id === productId && item.colors === productColor);
+          console.log(product);
+
+        //Vérifier si le produit a été trouvé dans le tableau//
+          if(product){
+
+            //mettre a jour la quantite du produit dans l'objet product//
+            product.quantity = newQuantity;
+            
+          }
 
   
-          //mettre a jour la quantité dans le localstorage avec une cle basé sur ID//
+          //mettre a jour la quantité dans le localstorage //
   
           localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
 
-          
-  
-          // Sélectionner l'élément d'affichage de la quantité dans le DOM//
-  
-          const quantityDisplay = document.querySelector('.itemQuantity');
-  
-          quantityDisplay.textContent = ` Quantité : ${newQuantity}`;
-  
-          console.log(quantityDisplay);
+        });
 
-          
-   
-  
-  
-
-  
-        }
-  
-
-  
- 
       });
   
-})
-  }
+}
 
   
 
@@ -217,16 +214,20 @@ console.log(deleteElements);
     //verifier si l'élement parent existe//
      if(cartItem){
       //je recup id et sa couleur depuis le DOM//
-       ////jfais une boucle foreach je cherche tous les element input de la page web et non le html//
+      
 
 
         const productId = cartItem.dataset.productId;
         console.log(productId);
         const productColor = cartItem.dataset.productColor;
         console.log(productColor);
-       //Recup les donnees du panier depuis le localstorage//
-      JSON.parse(localStorage.getItem("addToCart"));
-       //console.log(productsLocalStorage);
+
+        //Mettre a jour le tableau productsLocalStorage en filtrant les produits//
+        productsLocalStorage = productsLocalStorage.filter(product =>
+          product.id !== productId || product.colors !== productColor);
+
+          //Mettre a jour le localStorage avec le tableai mis a jour//
+          localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
 
       //Supprimer le produit du DOM//
       cartItem.remove();
@@ -238,7 +239,7 @@ console.log(deleteElements);
       console.log(updateProducts);
        //Mettre a jour les données du panier dans le localstorage//
       localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
-  
+
 
   
 }
@@ -533,7 +534,8 @@ if (!productsLocalStorage || productsLocalStorage.length === 0) {
   console.log(infoUsers);
   cartProduct.appendChild(infoUsers);
   infoUsers.style;textAlign = "center";
-} else {
+} 
+else {
   //Si le panier n'est pas vide on passe la commande//
 
   //Extraire les identifiants des produits du panier//
@@ -600,27 +602,23 @@ if (!productsLocalStorage || productsLocalStorage.length === 0) {
 
 
 function placeOrder() {
- //fonction pour enregistrer la commande//
- //Code pour enregistrer la commande et obtenir ID de commande//
- const orderId = 'c4bb5df0-0609-11ee-9d50-fdb7c9e1bf6d';
- console.log(orderId);
+//Fonction pour enregistrer la commande//
+//Code pour enregistrer la commande et obtenir ID de la commande//
 
- //Selectionner l'element envoyer//
- const orderSubmit = document.getElementById('order');
- console.log(orderSubmit);
- //Ajouter un gestionnaire d'evenement au clic sur le bouton commander//
- orderSubmit.addEventListener('click', function(event){
+const orderId = 'c4bb5df0-0609-11ee-9d50-fdb7c9e1bf6d';
+console.log(orderId);
+
+//Selectionner element envoyer//
+
+const orderSubmit = document.getElementById('order');
+console.log(orderSubmit);
+
+//Ajouter un gestionnaire d'événement au clic sur le bouton commander//
+orderSubmit.addEventListener('click', function(event) {
   event.preventDefault();
- 
- 
- //redirection vers la page web avec Id de la commande//
- window.location.href = 'http://127.0.0.1:5500/front/html/confirmation.html?id=${orderId}';
+
+  //Redirection vers la page web avec l'ID de commande//
+  window.location.href = `http://127.0.0.1:5500/front/html/confirmation.html?id=${orderId}`;
 })
 
 }
-
-
-
-
-//editcart ma newQuantite est egal a la quantite du localstorage avec
-//lien vers la page confirmation le numero de confirmation dans url ne s'affiche pas//z
