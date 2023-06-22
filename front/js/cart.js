@@ -409,7 +409,7 @@ function validationForms() {
         //le prenom ne respecte pas les trois lettres, je recupere le message erreur//
         firstNameErrorMsg.textContent = 'Le prénom doit contenir au moins 3 lettres.';
         console.log(firstNameErrorMsg);  
-        false; 
+        return false; 
       }
   
   //Je recupere la valeur du nom saisi//
@@ -423,7 +423,7 @@ function validationForms() {
   }else{
   lastNameErrorMsg.textContent = 'Le nom doit contenir au moins 5 lettres. ';
   console.log(lastNameErrorMsg);
-  false;
+  return false;
   }
 
   //je recup adress postale//
@@ -435,7 +435,7 @@ function validationForms() {
   } else {
       addressErrorMsg.textContent = 'Adresse postale doit être complete';
       console.log(addressErrorMsg);
-      false;
+      return false;
   }
 
   //je recup le code postale et nom de la ville//
@@ -447,7 +447,7 @@ function validationForms() {
   } else {
     cityErrorMsg.textContent = 'La ville a un minimum de 2 lettres. ';
     console.log(cityErrorMsg);
-    false;
+    return false;
   }
 
   //je recupere le mail//
@@ -459,7 +459,7 @@ function validationForms() {
   } else {
     emailErrorMsg.textContent = 'Adresse email doit être complete. ';
     console.log(emailErrorMsg);
-    false;
+    return false;
   }
   
     })
