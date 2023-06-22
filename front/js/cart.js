@@ -186,6 +186,9 @@ function editCart() {
           //mettre a jour la quantité dans le localstorage //
   
           localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
+          //appel a la function pour que le changement se fasse automatiquement//
+          getTotalQuantity();
+          calculateTotalPrice();
 
         });
 
@@ -239,6 +242,9 @@ console.log(deleteElements);
       console.log(updateProducts);
        //Mettre a jour les données du panier dans le localstorage//
       localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
+
+      calculateTotalPrice();
+      getTotalQuantity();
 
 
   
@@ -458,9 +464,6 @@ function validationForms() {
   
     })
 
-//Recuperer les produits depuis le loclstorage//
-//const contactFromLocalStorage = JSON.parse(localStorage.getItem('contact'));
-//console.log(contactFromLocalStorage);
 //Création de l'objet contact en récupérant les valeurs des champs du formulaire//
 const contact = {
   firstName : firstNameInput.value,
@@ -512,6 +515,9 @@ const order = {
   products: products
 };
 console.log(order);
+
+
+
 
 }
 
@@ -622,3 +628,8 @@ orderSubmit.addEventListener('click', function(event) {
 })
 
 }
+
+
+//si le formulaire a des erreur alors il ne renvoie pas sur la page de confirmation//
+
+//Appel au function pour calculer le prix total et la quantite totale dans editCart et deletecart sinon quand on modifie ou supprime il faut actualiser la page//

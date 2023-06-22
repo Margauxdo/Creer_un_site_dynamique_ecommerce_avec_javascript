@@ -66,7 +66,7 @@ function localStorageToCart (){
     //variable fenetre pop up pour la confirmation de la commande afin acceder a la page panier//
   
 let productsLocalStorage = [];//on a cree un tableau productsLocalStorage//
-if(localStorage.getItem("addToCart") !==null )
+if(localStorage.getItem("addToCart") !== null )
   //si ce qu'on recupere par le bouton dans le,localstorage est nul //
   {
     productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
