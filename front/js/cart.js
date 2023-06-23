@@ -630,6 +630,9 @@ orderSubmit.addEventListener('click', function(event) {
 }
 
 
-//si le formulaire a des erreur alors il ne renvoie pas sur la page de confirmation//
+//si le formulaire a des erreur alors il ne renvoie pas sur la page de confirmation et si il n'ya pas de produit il ne devrais pas envoye a la page confirmation//
 
 //Appel au function pour calculer le prix total et la quantite totale dans editCart et deletecart sinon quand on modifie ou supprime il faut actualiser la page//
+
+
+//enlever l91 quantity: enleve le chiffre 
