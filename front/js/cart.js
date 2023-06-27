@@ -488,7 +488,7 @@ function validationForms() {
 
     //Passer à la suite si le formulaire est valide//
 if (isValid) {
-  orderConfirmation();
+  //orderConfirmation();
 } 
 else {
   //Formulaire invalide//
