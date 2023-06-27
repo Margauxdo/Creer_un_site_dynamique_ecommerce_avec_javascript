@@ -361,10 +361,7 @@ function validationForms() {
   //Selection du formulaire//
   const form = document.querySelector('.cart__order__form');
   console.log(form);
-    form.addEventListener('submit', function(event){
-      event.preventDefault();
-   
-
+ 
   //variable pour vérifier la validité du formulaire//
   let isValid = true; 
 
@@ -376,10 +373,7 @@ function validationForms() {
   const firstNameErrorMsg = document.querySelector('#firstNameErrorMsg');
   console.log(firstNameErrorMsg);
 
-   //Ajouter un gestionnaire evenement a la soumission du formulaire //
-   form.addEventListener('submit', (event) =>{
-    //empeche le comportement par defaut du formulaire(soumission)//
-    event.preventDefault();
+
     //Recupere la valeur du prenom saisi//
     const firstName = firstNameInput.value;
     console.log(firstName);
@@ -394,7 +388,7 @@ function validationForms() {
         firstNameErrorMsg.textContent = 'Le prénom doit contenir au moins 3 lettres.';
         console.log(firstNameErrorMsg);  
         isValid =  false; 
-      }})
+      }
   }
 
   function lastName() {
@@ -404,13 +398,7 @@ function validationForms() {
   //Je recup le message erreur du nom//
   const lastNameErrorMsg = document.querySelector('#lastNameErrorMsg');
   console.log(lastNameErrorMsg);
-
-    //Ajouter un gestionnaire evenement a la soumission du formulaire //
-    form.addEventListener('submit', (event) =>{
-      //empeche le comportement par defaut du formulaire(soumission)//
-      event.preventDefault();
-  
-    
+   
     //Je recupere la valeur du nom saisi//
     const lastName = lastNameInput.value;
     console.log(lastName);
@@ -423,7 +411,7 @@ function validationForms() {
     lastNameErrorMsg.textContent = 'Le nom doit contenir au moins 5 lettres. ';
     console.log(lastNameErrorMsg);
     isValid = false;
-    }})
+    }
   }
 
   function adress() {
@@ -432,11 +420,6 @@ function validationForms() {
   console.log(addressInput);
   const addressErrorMsg = document.querySelector('#addressErrorMsg');
   console.log(addressErrorMsg);
-
-    //Ajouter un gestionnaire evenement a la soumission du formulaire //
-    form.addEventListener('submit', (event) =>{
-      //empeche le comportement par defaut du formulaire(soumission)//
-      event.preventDefault();
   
     //je recup adress postale//
     const address = addressInput.value;
@@ -448,7 +431,7 @@ function validationForms() {
         addressErrorMsg.textContent = 'Adresse postale doit être complete';
         console.log(addressErrorMsg);
         isValid =  false;
-    }})
+    }
   }
   
   function city() {
@@ -457,12 +440,6 @@ function validationForms() {
   console.log(cityInput);
   const cityErrorMsg = document.querySelector('#cityErrorMsg');
   console.log(cityErrorMsg); 
-
-    //Ajouter un gestionnaire evenement a la soumission du formulaire //
-    form.addEventListener('submit', (event) =>{
-      //empeche le comportement par defaut du formulaire(soumission)//
-      event.preventDefault();
-  
   
     //je recup le code postale et nom de la ville//
     const city = cityInput.value;
@@ -474,7 +451,7 @@ function validationForms() {
       cityErrorMsg.textContent = 'La ville a un minimum de 2 lettres. ';
       console.log(cityErrorMsg);
       isValid =  false;
-    }})
+    }
   }
 
   function email() {
@@ -484,12 +461,6 @@ function validationForms() {
   const emailErrorMsg = document.querySelector('#emailErrorMsg');
   console.log(emailErrorMsg); 
 
-    //Ajouter un gestionnaire evenement a la soumission du formulaire //
-    form.addEventListener('submit', (event) =>{
-      //empeche le comportement par defaut du formulaire(soumission)//
-      event.preventDefault();
-  
-  
     //je recupere le mail//
     const email = emailInput.value;
     const regexEmail = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
@@ -500,29 +471,31 @@ function validationForms() {
       emailErrorMsg.textContent = 'Adresse email doit être complete. ';
       console.log(emailErrorMsg);
       isValid = false;
-    }})
+    }
   }
 
-  //Appeler les fonctions de validations//
-  firstName();
-  lastName();
-  adress();
-  city();
-  email();
+  form.addEventListener('submit', function(event){
+    event.preventDefault();
+  
+    isValid = true;
+
+    firstName();
+    lastName();
+    adress();
+    city();
+    email();
 
 
     //Passer à la suite si le formulaire est valide//
 if (isValid) {
   orderConfirmation();
-} else {
+} 
+else {
   //Formulaire invalide//
   console.log('le formulaire est invalide. Veuillez corriger les erreurs');
 }
 
-  })
-
-
-
+  });
 
 }
 
@@ -530,113 +503,85 @@ if (isValid) {
 
 function orderConfirmation(){
  
+  const orderBtn = document.querySelector('#order');
 
-  const firstName = document.querySelector('#firstName').value;
-  console.log(firstName);
-  const lastName = document.querySelector('#lastName').value;
-  console.log(lastName);
-  const address = document.querySelector('#address').value;
-  console.log(address);
-  const city = document.querySelector('#city').value;
-  console.log(city);
-  const email = document.querySelector('#email').value;
-  console.log(email);
-
-  //verifier si tous les champs sont remplis//
-  if (firstName && lastName && address && city && email){
-  
-   const selectedProducts = [];
-    console.log(selectedProducts);
-  const cartItems = document.querySelectorAll('.cart__item');
-    console.log(cartItems);
-    cartItems.forEach((item) => {
-      const productId = item.dataset.productId;
-
-      console.log(productId);
-      const productName = item.querySelector('h2').textContent;
-      const quantity = parseInt(item.querySelector('.itemQuantity').value);
-      console.log(quantity);
-      const colors = item.dataset.productColor;
-      console.log(colors);
-      selectedProducts.push({ 
-        id: productId,
-        name: productName,
-        quantity: quantity,
-        color: colors
+  orderBtn.addEventListener("click", () => {
+    const firstName = document.querySelector('#firstName').value;
+    console.log(firstName);
+    const lastName = document.querySelector('#lastName').value;
+    console.log(lastName);
+    const address = document.querySelector('#address').value;
+    console.log(address);
+    const city = document.querySelector('#city').value;
+    console.log(city);
+    const email = document.querySelector('#email').value;
+    console.log(email);
+// Vérifier si tous les champs sont remplis
+   if (firstName && lastName && address && city && email) {
+      const selectedProducts = [];
+      console.log(selectedProducts);
+const cartItems = document.querySelectorAll('.cart__item');
+      console.log(cartItems);
+      cartItems.forEach((item) => {
+        const productId = item.dataset.productId;
+        console.log(productId);
+        const productName = item.querySelector('h2').textContent;
+        const quantity = parseInt(item.querySelector('.itemQuantity').value);
+        console.log(quantity);
+        const colors = item.dataset.productColor;
+        console.log(colors);
+        selectedProducts.push({
+          id: productId,
+          name: productName,
+          quantity: quantity,
+          color: colors
+        });
       });
-    });
-  const orderTable = [firstName, lastName, address, city, email];
-    console.log(orderTable);
-    //orderTable.push([firstName, lastName, address, city, email]);
-  
-    const orderData = {
-      customer: orderTable,
-      products: selectedProducts
-    };
-  console.log(orderData);
+const orderData = {
+        customer: {
+          firstName: firstName,
+          lastName: lastName,
+          address: address,
+          city: city,
+          email: email
+        },
+        products: selectedProducts
+      }
+console.log(orderData);
 
-  //Envoyer les données au serveur//
-  fetch('http://localhost:3000/api/products',{
-
+// Envoyer les données au serveur
+  fetch("http://localhost:3000/api/products/order", {
       method: 'POST',
       headers: {
-        'Content-type': 'application/json'
-      },
+       'Content-Type': 'application/json'
+        },
       body: JSON.stringify(orderData)
+      })
+        .then(response => response.json())
+          .then(data => {
+// Rediriger vers la page de confirmation avec l'ID de commande dans l'URL
+  window.location.href = `http://127.0.0.1:5500/front/html/confirmation.html?id=${orderNumber}`;
+        })
+        .catch(error => {
+          console.log("Erreur lors de l'envoi des données au serveur :", error);
+        });
+    } else {
+// Afficher un message d'erreur ou effectuer une autre action si des champs sont manquants
+  console.log("Veuillez remplir tous les champs du formulaire.");
+    }
 
-  })
+    const orderNumber = Math.floor(Math.random() * 1000000) + 1;
+    console.log(orderNumber);
 
-  .then(response => response.json())
-  .then(data => {
-    //Recuperer ID de commande généré par le serveur//
-    const orderId = data.orderId;
-    console.log(orderId);
-
-    //Rediriger vers la page de confirmation avec ID de commande dans url//
-    window.location.href=`http://127.0.0.1:5500/front/html/confirmation.html?id=${data.orderId}`;
-  
-  })
-  .catch(error =>{
-    console.log(`Erreur lors de l'envoie des données au serveur `, error);
+    // Affichage du numéro de commande à l'utilisateur
+    const orderConfirmationElement = document.querySelector('#orderConfirmation');
+    orderConfirmationElement.textContent = `Numéro de commande : ${orderNumber}`;
+    // Supprimer les produits du panier et du localStorage
+    cartProduct.innerHTML = '';
+    localStorage.removeItem('addToCart');
   });
-}else{
-  // Afficher un message d'erreur ou effectuer une autre action si des champs sont manquants
-    
-   
-console.log("Veuillez remplir tous les champs du formulaire.");
 }
-  
-  }
 
-
-
-//Code pour enregistrer la commande et obtenir ID de la commande//
-
-
-//Selectionner element envoyer//
-
-//const orderSubmit = document.getElementById('order');
-//console.log(orderSubmit);
-
-//Ajouter un gestionnaire d'événement au clic sur le bouton commander//
-//orderSubmit.addEventListener('click', function(event) {
-  //event.preventDefault();
-
-  //Redirection vers la page web avec l'ID de commande//
-  //window.location.href = `http://127.0.0.1:5500/front/html/confirmation.html?id=${orderId}`;
-
-
-
-
-
-
-
-
-
-
-//id et color indefinir envoyer le formulaire et recupere id de chaque commande orderID 
-
-//orderconfirmation  recupere url window avec orderId
 
 
 //10 a 15 lignes plan acceptation il manque ---resultat observe ok ---page produit souvre avec information//selection qtite et couleur et validation quantite max 100----paier calcul se fait si on veut ajoute des produits ----------selectionne qtite couleur je me repete l5 et l4----dans plan test un ligen chaque action ajouter une couleur un action, supprimer une action , total des produits cets une cation, remplir le formulaire cets une action, envoye les donnees a api cets une action     ---
