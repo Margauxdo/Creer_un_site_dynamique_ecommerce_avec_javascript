@@ -7,7 +7,8 @@
 //je cree une variable pour preciser que les element se situeront dans la class "cart" dans le html
 
 if (!productsLocalStorage || productsLocalStorage.length === 0) {
-    console.log("mon panier est vide");//si le localstorage est null ce qui equivaut a 0 alors le panier est vide//
+  //le panier est vide//  
+  console.log("mon panier est vide");//si le localstorage est null ce qui equivaut a 0 alors le panier est vide//
 const infoUsers = document.createElement("p");
 infoUsers.textContent = "Votre  panier est vide";
 cartProduct.appendChild(infoUsers);
@@ -15,7 +16,7 @@ cartProduct.appendChild(infoUsers);
 
 //message pour informer utilisateur que le panier est vide//
   }else {
-    console.log("mon panier n'est pas vide!!");//sinon mon panier n'est pas vide//
+    //console.log("mon panier n'est pas vide!!");//sinon mon panier n'est pas vide//
 //je cree une fonction en utilisant foreach pour parcourir le tableau du localstorage et recupéré id, la couleur et la quantité//
 productsLocalStorage.forEach( product => {
   //recup les infos depuis API//
@@ -27,14 +28,13 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
             getTotalQuantity();
             calculateTotalPrice();
             deleteCart();
-            
+            orderConfirmation();
         }
         );
     
       })
       validationForms();
-      orderConfirmation();
-      placeOrder();
+     
     }  
      
   
@@ -89,7 +89,7 @@ cartContentSetting.classList.add('cart__item__content__settings');
   productEdit.classList.add('cart__item__content__settings__quantity');
   //afficher la quantité du produit//
   const productQuantity = document.createElement('p');
-  productQuantity.textContent = `Quantité : ${product.quantity}`;
+  productQuantity.textContent = `Quantité : `;
   cartItem.appendChild(productQuantity);
     //creer un input pour modifier la quantité du produit//
     const valueQtity = document.createElement('input');
@@ -353,47 +353,31 @@ function calculateTotalPrice() {
   }
 
 
+
+
+
+
 function validationForms() {
   //Selection du formulaire//
   const form = document.querySelector('.cart__order__form');
   console.log(form);
+    form.addEventListener('submit', function(event){
+      event.preventDefault();
+   
 
+  //variable pour vérifier la validité du formulaire//
+  let isValid = true; 
 
-  //Je selectionne le champ de saisie du prenom//
+  function firstName() {
+    //Je selectionne le champ de saisie du prenom//
   const firstNameInput = document.querySelector('#firstName');
   console.log(firstNameInput);
   //selection element du message erreur//
   const firstNameErrorMsg = document.querySelector('#firstNameErrorMsg');
   console.log(firstNameErrorMsg);
 
-  //je selectionne le champ du nom//
-  const lastNameInput = document.querySelector('#lastName');
-  console.log(lastNameInput);
-  //Je recup le message erreur du nom//
-  const lastNameErrorMsg = document.querySelector('#lastNameErrorMsg');
-  console.log(lastNameErrorMsg);
-
-  //je selectionne le champ de l'adresse postale//
-  const addressInput = document.querySelector('#address');
-  console.log(addressInput);
-  const addressErrorMsg = document.querySelector('#addressErrorMsg');
-  console.log(addressErrorMsg);
-
-  //je selectionne le champ de la ville//
-  const cityInput = document.querySelector('#city');
-  console.log(cityInput);
-  const cityErrorMsg = document.querySelector('#cityErrorMsg');
-  console.log(cityErrorMsg);
-
-  //Je selectionne adresse-email //
-  const emailInput = document.querySelector('#email');
-  console.log(emailInput);
-  const emailErrorMsg = document.querySelector('#emailErrorMsg');
-  console.log(emailErrorMsg);
-
-
-  //Ajouter un gestionnaire evenement a la soumission du formulaire //
-  form.addEventListener('submit', (event) =>{
+   //Ajouter un gestionnaire evenement a la soumission du formulaire //
+   form.addEventListener('submit', (event) =>{
     //empeche le comportement par defaut du formulaire(soumission)//
     event.preventDefault();
     //Recupere la valeur du prenom saisi//
@@ -409,112 +393,133 @@ function validationForms() {
         //le prenom ne respecte pas les trois lettres, je recupere le message erreur//
         firstNameErrorMsg.textContent = 'Le prénom doit contenir au moins 3 lettres.';
         console.log(firstNameErrorMsg);  
-        return false; 
-      }
-  
-  //Je recupere la valeur du nom saisi//
-  const lastName = lastNameInput.value;
-  console.log(lastName);
-  //Definir l'expression reguliere il y a minimum 5 lettres//
-  const regexLastName = /^[a-zA-Z]{5,}$/;
-  console.log(regexLastName);
-  if(regexLastName.test(lastName)){
-    lastNameErrorMsg.textContent = 'Valide';
-  }else{
-  lastNameErrorMsg.textContent = 'Le nom doit contenir au moins 5 lettres. ';
+        isValid =  false; 
+      }})
+  }
+
+  function lastName() {
+    //je selectionne le champ du nom//
+  const lastNameInput = document.querySelector('#lastName');
+  console.log(lastNameInput);
+  //Je recup le message erreur du nom//
+  const lastNameErrorMsg = document.querySelector('#lastNameErrorMsg');
   console.log(lastNameErrorMsg);
-  return false;
+
+    //Ajouter un gestionnaire evenement a la soumission du formulaire //
+    form.addEventListener('submit', (event) =>{
+      //empeche le comportement par defaut du formulaire(soumission)//
+      event.preventDefault();
+  
+    
+    //Je recupere la valeur du nom saisi//
+    const lastName = lastNameInput.value;
+    console.log(lastName);
+    //Definir l'expression reguliere il y a minimum 5 lettres//
+    const regexLastName = /^[a-zA-Z]{5,}$/;
+    console.log(regexLastName);
+    if(regexLastName.test(lastName)){
+      lastNameErrorMsg.textContent = 'Valide';
+    }else{
+    lastNameErrorMsg.textContent = 'Le nom doit contenir au moins 5 lettres. ';
+    console.log(lastNameErrorMsg);
+    isValid = false;
+    }})
   }
 
-  //je recup adress postale//
-  const address = addressInput.value;
-  const regexAddress = /([0-9]{1,}) ?([a-zA-Z,\. ]*)$/;
-  console.log(regexAddress); 
-  if (regexAddress.test(address)) {
-    addressErrorMsg.textContent = 'Valide';
-  } else {
-      addressErrorMsg.textContent = 'Adresse postale doit être complete';
-      console.log(addressErrorMsg);
-      return false;
-  }
+  function adress() {
+      //je selectionne le champ de l'adresse postale//
+  const addressInput = document.querySelector('#address');
+  console.log(addressInput);
+  const addressErrorMsg = document.querySelector('#addressErrorMsg');
+  console.log(addressErrorMsg);
 
-  //je recup le code postale et nom de la ville//
-  const city = cityInput.value;
-  const regexCity = /^[a-zA-Z]{2,}$/;
-  console.log(regexCity);
-  if (regexCity.test(city)) {
-    cityErrorMsg.textContent = 'Valide';
-  } else {
-    cityErrorMsg.textContent = 'La ville a un minimum de 2 lettres. ';
-    console.log(cityErrorMsg);
-    return false;
-  }
-
-  //je recupere le mail//
-  const email = emailInput.value;
-  const regexEmail = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-  console.log(regexEmail);
-  if (regexEmail.test(email)) {
-    emailErrorMsg.textContent = 'Valide';
-  } else {
-    emailErrorMsg.textContent = 'Adresse email doit être complete. ';
-    console.log(emailErrorMsg);
-    return false;
+    //Ajouter un gestionnaire evenement a la soumission du formulaire //
+    form.addEventListener('submit', (event) =>{
+      //empeche le comportement par defaut du formulaire(soumission)//
+      event.preventDefault();
+  
+    //je recup adress postale//
+    const address = addressInput.value;
+    const regexAddress = /([0-9]{1,}) ?([a-zA-Z,\. ]*)$/;
+    console.log(regexAddress); 
+    if (regexAddress.test(address)) {
+      addressErrorMsg.textContent = 'Valide';
+    } else {
+        addressErrorMsg.textContent = 'Adresse postale doit être complete';
+        console.log(addressErrorMsg);
+        isValid =  false;
+    }})
   }
   
-    })
+  function city() {
+   //je selectionne le champ de la ville//
+  const cityInput = document.querySelector('#city');
+  console.log(cityInput);
+  const cityErrorMsg = document.querySelector('#cityErrorMsg');
+  console.log(cityErrorMsg); 
 
-//Création de l'objet contact en récupérant les valeurs des champs du formulaire//
-const contact = {
-  firstName : firstNameInput.value,
-  lastName : lastNameInput.value,
-  address : addressInput.value,
-  city : cityInput.value,
-  email : emailInput.value
-};
-console.log(contact);
+    //Ajouter un gestionnaire evenement a la soumission du formulaire //
+    form.addEventListener('submit', (event) =>{
+      //empeche le comportement par defaut du formulaire(soumission)//
+      event.preventDefault();
+  
+  
+    //je recup le code postale et nom de la ville//
+    const city = cityInput.value;
+    const regexCity = /^[a-zA-Z]{2,}$/;
+    console.log(regexCity);
+    if (regexCity.test(city)) {
+      cityErrorMsg.textContent = 'Valide';
+    } else {
+      cityErrorMsg.textContent = 'La ville a un minimum de 2 lettres. ';
+      console.log(cityErrorMsg);
+      isValid =  false;
+    }})
+  }
 
-//Ajout de l'objet contact au local storage//
-//localStorage.setItem('contact', JSON.stringify(contact));
+  function email() {
+     //Je selectionne adresse-email //
+  const emailInput = document.querySelector('#email');
+  console.log(emailInput);
+  const emailErrorMsg = document.querySelector('#emailErrorMsg');
+  console.log(emailErrorMsg); 
+
+    //Ajouter un gestionnaire evenement a la soumission du formulaire //
+    form.addEventListener('submit', (event) =>{
+      //empeche le comportement par defaut du formulaire(soumission)//
+      event.preventDefault();
+  
+  
+    //je recupere le mail//
+    const email = emailInput.value;
+    const regexEmail = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+    console.log(regexEmail);
+    if (regexEmail.test(email)) {
+      emailErrorMsg.textContent = 'Valide';
+    } else {
+      emailErrorMsg.textContent = 'Adresse email doit être complete. ';
+      console.log(emailErrorMsg);
+      isValid = false;
+    }})
+  }
+
+  //Appeler les fonctions de validations//
+  firstName();
+  lastName();
+  adress();
+  city();
+  email();
 
 
+    //Passer à la suite si le formulaire est valide//
+if (isValid) {
+  orderConfirmation();
+} else {
+  //Formulaire invalide//
+  console.log('le formulaire est invalide. Veuillez corriger les erreurs');
+}
 
-//Creer le tableau de produits//
-const products = [];
-console.log(products);
-
-
-// Sélectionner tous les éléments avec la classe 'cart__item'
-const cartItems = document.querySelectorAll('.cart__item');
-console.log(cartItems);
-// Parcourir chaque élément du panier (cartItems) pour récupérer les informations nécessaires//
-cartItems.forEach((item) => {
-  // Récupérer l'ID du produit à partir de l'attribut 'data-product-id'
-  const productId = item.dataset.productId;
-  console.log(productId);
-  // Récupérer l'ID du produit à partir de l'attribut 'data-product-id'
-  const productColor = item.dataset.productColor;
-  console.log(productColor);
-  // Récupérer la quantité du produit à partir de l'élément avec la classe 'itemQuantity'
-  const productQuantity = document.querySelector('.itemQuantity').value;
-  //const productQuantity = item.querySelector('.itemQuantity').value;
-
-  // Ajouter les informations du produit récupérées dans un nouvel objet et le pousser dans le tableau 'products'//
-  products.push({
-    id: productId,
-    color: productColor,
-    quantity: parseInt(productQuantity)
-  });
-  console.log(productQuantity);
-
-});
-
-//Création de l'objet order//
-const order = {
-  contact: contact,
-  products: products
-};
-console.log(order);
+  })
 
 
 
@@ -524,39 +529,8 @@ console.log(order);
 
 
 function orderConfirmation(){
-//Recup des produits du local storage//
-JSON.parse(localStorage.getItem("addToCart"));
-console.log(productsLocalStorage);
+ 
 
-//Recup l'élement DOM pour afficher les produits du panier(section pour ensemble des articles)//
-const cartProducts = document.querySelector('#cart__items');
-console.log(cartProducts);
-
-//verifier si le panier est vide//
-if (!productsLocalStorage || productsLocalStorage.length === 0) {
-  //si le panier est vide afficher un msge approprié à l'utilisateur//
-  const infoUsers = document.createElement("p");
-  infoUsers.textContent = " Votre panier est vide. ";
-  console.log(infoUsers);
-  cartProduct.appendChild(infoUsers);
-  infoUsers.style;textAlign = "center";
-} 
-else {
-  //Si le panier n'est pas vide on passe la commande//
-
-  //Extraire les identifiants des produits du panier//
-  const productIds = productsLocalStorage.map(product => product.id);
-  console.log(productIds);
-
-  //Envoyer la commande au serveur lors de la soumission fu formulaire//
-  const orderForm = document.querySelector('.cart__order__form');
-  console.log(orderForm);
-  orderForm.addEventListener('submit', function(event){
-    event.preventDefault();
-    //Empeche le rechargement de la page lors de la soumission//
-
-
-  //Recup les valeurs du formulaire//
   const firstName = document.querySelector('#firstName').value;
   console.log(firstName);
   const lastName = document.querySelector('#lastName').value;
@@ -568,71 +542,101 @@ else {
   const email = document.querySelector('#email').value;
   console.log(email);
 
-  //Creer objet "order" contenant les infos de contact et les identifiants des produits//
-  const order = {
-    contact: {
-      firstName: firstName,
-      lastName: lastName,
-      address: address,
-      city: city,
-      email: email
-    },
-    products: productIds
-  };
-  console.log(order);
+  //verifier si tous les champs sont remplis//
+  if (firstName && lastName && address && city && email){
+  
+   const selectedProducts = [];
+    console.log(selectedProducts);
+  const cartItems = document.querySelectorAll('.cart__item');
+    console.log(cartItems);
+    cartItems.forEach((item) => {
+      const productId = item.dataset.productId;
 
-  //Envoyer la commande au serveur//
-  fetch("http://localhost:3000/api/products/order" , {
-    method:"POST",
-    headers: {
-      "Content-type": "application/json"
-    },
-    body: JSON.stringify(order)
+      console.log(productId);
+      const productName = item.querySelector('h2').textContent;
+      const quantity = parseInt(item.querySelector('.itemQuantity').value);
+      console.log(quantity);
+      const colors = item.dataset.productColor;
+      console.log(colors);
+      selectedProducts.push({ 
+        id: productId,
+        name: productName,
+        quantity: quantity,
+        color: colors
+      });
+    });
+  const orderTable = [firstName, lastName, address, city, email];
+    console.log(orderTable);
+    //orderTable.push([firstName, lastName, address, city, email]);
+  
+    const orderData = {
+      customer: orderTable,
+      products: selectedProducts
+    };
+  console.log(orderData);
+
+  //Envoyer les données au serveur//
+  fetch('http://localhost:3000/api/products',{
+
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(orderData)
+
   })
+
   .then(response => response.json())
   .then(data => {
-    //Recup identifiant de la commande a partir de la reponse//
+    //Recuperer ID de commande généré par le serveur//
     const orderId = data.orderId;
     console.log(orderId);
-    console.log(" Numero de la commande :", orderId);
+
+    //Rediriger vers la page de confirmation avec ID de commande dans url//
+    window.location.href=`http://127.0.0.1:5500/front/html/confirmation.html?id=${data.orderId}`;
+  
   })
   .catch(error =>{
-    //Gerer les erreur lors de l'envoi de la commande//
-    console.error("Erreur:", error);
+    console.log(`Erreur lors de l'envoie des données au serveur `, error);
   });
-});
+}else{
+  // Afficher un message d'erreur ou effectuer une autre action si des champs sont manquants
+    
+   
+console.log("Veuillez remplir tous les champs du formulaire.");
 }
+  
+  }
 
-}
 
 
-
-function placeOrder() {
-//Fonction pour enregistrer la commande//
 //Code pour enregistrer la commande et obtenir ID de la commande//
 
-const orderId = 'c4bb5df0-0609-11ee-9d50-fdb7c9e1bf6d';
-console.log(orderId);
 
 //Selectionner element envoyer//
 
-const orderSubmit = document.getElementById('order');
-console.log(orderSubmit);
+//const orderSubmit = document.getElementById('order');
+//console.log(orderSubmit);
 
 //Ajouter un gestionnaire d'événement au clic sur le bouton commander//
-orderSubmit.addEventListener('click', function(event) {
-  event.preventDefault();
+//orderSubmit.addEventListener('click', function(event) {
+  //event.preventDefault();
 
   //Redirection vers la page web avec l'ID de commande//
-  window.location.href = `http://127.0.0.1:5500/front/html/confirmation.html?id=${orderId}`;
-})
-
-}
+  //window.location.href = `http://127.0.0.1:5500/front/html/confirmation.html?id=${orderId}`;
 
 
-//si le formulaire a des erreur alors il ne renvoie pas sur la page de confirmation et si il n'ya pas de produit il ne devrais pas envoye a la page confirmation//
-
-//Appel au function pour calculer le prix total et la quantite totale dans editCart et deletecart sinon quand on modifie ou supprime il faut actualiser la page//
 
 
-//enlever l91 quantity: enleve le chiffre 
+
+
+
+
+
+
+//id et color indefinir envoyer le formulaire et recupere id de chaque commande orderID 
+
+//orderconfirmation  recupere url window avec orderId
+
+
+//10 a 15 lignes plan acceptation il manque ---resultat observe ok ---page produit souvre avec information//selection qtite et couleur et validation quantite max 100----paier calcul se fait si on veut ajoute des produits ----------selectionne qtite couleur je me repete l5 et l4----dans plan test un ligen chaque action ajouter une couleur un action, supprimer une action , total des produits cets une cation, remplir le formulaire cets une action, envoye les donnees a api cets une action     ---
