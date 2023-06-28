@@ -506,6 +506,7 @@ function orderConfirmation(){
   const orderBtn = document.querySelector('#order');
 
   orderBtn.addEventListener("click", () => {
+    //Recuperer les valeurs des champs du formulaire de contact//
     const firstName = document.querySelector('#firstName').value;
     console.log(firstName);
     const lastName = document.querySelector('#lastName').value;
@@ -516,71 +517,149 @@ function orderConfirmation(){
     console.log(city);
     const email = document.querySelector('#email').value;
     console.log(email);
-// Vérifier si tous les champs sont remplis
-   if (firstName && lastName && address && city && email) {
-      const selectedProducts = [];
-      console.log(selectedProducts);
-const cartItems = document.querySelectorAll('.cart__item');
-      console.log(cartItems);
-      cartItems.forEach((item) => {
-        const productId = item.dataset.productId;
-        console.log(productId);
-        const productName = item.querySelector('h2').textContent;
-        const quantity = parseInt(item.querySelector('.itemQuantity').value);
-        console.log(quantity);
-        const colors = item.dataset.productColor;
-        console.log(colors);
-        selectedProducts.push({
-          id: productId,
-          name: productName,
-          quantity: quantity,
-          color: colors
-        });
-      });
-const orderData = {
-        customer: {
-          firstName: firstName,
-          lastName: lastName,
-          address: address,
-          city: city,
-          email: email
-        },
-        products: selectedProducts
-      }
-console.log(orderData);
 
-// Envoyer les données au serveur
+    //Stocker les infos de contact dans un objet//
+    const contact = {
+      firstName: firstName,
+      lastName: lastName,
+      address: address,
+      city: city,
+      email: email
+    };
+    console.log(contact);
+
+    //Recuperer les produits du panier//
+    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    console.log(cartItems);
+
+    //Map les articles du panier à un tableau de produit avec identifiant et la quantité //
+    const products = cartItems.map(item => {
+      return{
+        id: item.id,
+        quantity: item.quantity
+      };
+    });
+    console.log(contact);
+    console.log(products);
+
+    //Envoyer les donnees au serveur//
+    const data = {
+      contact: contact,
+      products: products
+    };
+    console.log(data);
+
+    // Envoyer les données au serveur
   fetch("http://localhost:3000/api/products/order", {
-      method: 'POST',
-      headers: {
+    method: 'POST',
+    headers: {
        'Content-Type': 'application/json'
-        },
-      body: JSON.stringify(orderData)
+       },
+    body: JSON.stringify(data)
       })
         .then(response => response.json())
           .then(data => {
-// Rediriger vers la page de confirmation avec l'ID de commande dans l'URL
-  window.location.href = `http://127.0.0.1:5500/front/html/confirmation.html?id=${orderNumber}`;
-        })
-        .catch(error => {
-          console.log("Erreur lors de l'envoi des données au serveur :", error);
-        });
-    } else {
-// Afficher un message d'erreur ou effectuer une autre action si des champs sont manquants
-  console.log("Veuillez remplir tous les champs du formulaire.");
-    }
+            //traiter la réponse du serveur//
+            console.log(data);
 
-    const orderNumber = Math.floor(Math.random() * 1000000) + 1;
-    console.log(orderNumber);
+            //effacer le panier apres avoir passé la commande//
+            localStorage.removeItem('addToCart');
+
+            //Rediriger utilisateur vers la page de confirmation de commande//
+            window.location.href = `http://127.0.0.1:5500/front/html/confirmation.html?id=${data.orderId}`;
+          });
+
+          })
+          .catch(error => {
+            console.log('Error:', error);
+          })
+        }
+// Rediriger vers la page de confirmation avec l'ID de commande dans l'URL
+  //window.location.href = `http://127.0.0.1:5500/front/html/confirmation.html?id=${orderNumber}`;
+       // })
+        //.catch(error => {
+        //  console.log("Erreur lors de l'envoi des données au serveur :", error);
+       // });
+
+  
+
+// Vérifier si tous les champs sont remplis
+   //if (firstName && lastName && address && city && email) {
+
+      //const selectedProducts = [];
+      //console.log(selectedProducts);
+
+ 
+
+//const cartItems = document.querySelectorAll('.cart__item');
+      //console.log(cartItems);
+
+      //cartItems.forEach((item) => {
+        //const productId = item.dataset.productId;
+        //console.log(productId);
+
+        //const productName = item.querySelector('h2').textContent;
+
+        //const quantity = parseInt(item.querySelector('.itemQuantity').value);
+        //console.log(quantity);
+
+        //const colors = item.dataset.productColor;
+        //console.log(colors);
+
+        //const price = item.querySelector('.cart__item__content__description p:nth-child(3)').textContent;
+        //console.log(price);
+        //selectedProducts.push({
+          //id: productId,
+          //name: productName,
+          //quantity: quantity,
+          //price: price,
+          //color: colors
+        //});
+      //});
+
+//const orderData = {
+      //  customer: {
+      //  firstName: firstName,
+      //  lastName: lastName,
+      //  address: address,
+      //  city: city,
+      //  email: email
+      // },
+     // products: selectedProducts
+     // }
+//console.log(orderData);
+//console.log(cartItems)
+
+// Envoyer les données au serveur
+  //fetch("http://localhost:3000/api/products/order", {
+      //method: 'POST',
+      //headers: {
+       //'Content-Type': 'application/json'
+       // },
+      //body: JSON.stringify(orderData)
+      //})
+        //.then(response => response.json())
+        //  .then(data => {
+// Rediriger vers la page de confirmation avec l'ID de commande dans l'URL
+  //window.location.href = `http://127.0.0.1:5500/front/html/confirmation.html?id=${orderNumber}`;
+       // })
+        //.catch(error => {
+        //  console.log("Erreur lors de l'envoi des données au serveur :", error);
+       // });
+   // } else {
+// Afficher un message d'erreur ou effectuer une autre action si des champs sont manquants
+  //console.log("Veuillez remplir tous les champs du formulaire.");
+   // }
+
+  
 
     // Affichage du numéro de commande à l'utilisateur
-    const orderConfirmationElement = document.querySelector('#orderConfirmation');
-    orderConfirmationElement.textContent = `Numéro de commande : ${orderNumber}`;
+    
     // Supprimer les produits du panier et du localStorage
-    cartProduct.innerHTML = '';
-    localStorage.removeItem('addToCart');
-  });
-}
+    //cartProduct.innerHTML = '';
+    //localStorage.removeItem('addToCart');
+ // });
+
 
 
 
