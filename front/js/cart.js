@@ -566,8 +566,10 @@ function orderConfirmation(){
             localStorage.removeItem('addToCart');
 
             //Rediriger utilisateur vers la page de confirmation de commande//
-            window.location.href = `http://127.0.0.1:5500/front/html/confirmation.html?id=${data.orderId}`;
+            window.location.href = `confirmation.html?id=${data.orderId}`;
           });
 
           })
         }
+
+        //plan acceptation test chaque champ avec la methode regex  a modifier -un bouton supprimer pour chaque article devient possibilité de supprimer un article de la page panier idem pour modifier, la fonctionnalité de ce que je peut faire //
