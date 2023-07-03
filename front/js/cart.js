@@ -4,19 +4,18 @@
  
      const cartProduct = document.querySelector("#cart__items");
      console.log(cartProduct);
-//je cree une variable pour preciser que les element se situeront dans la class "cart" dans le html
 
-if (!productsLocalStorage || productsLocalStorage.length === 0) {
+     //je cree une variable pour preciser que les element se situeront dans la class "cart" dans le html
+///si le localstorage est null ce qui equivaut a 0 alors le panier est vide//
+     if (!productsLocalStorage || productsLocalStorage.length === 0) {
   //le panier est vide//  
-  console.log("mon panier est vide");//si le localstorage est null ce qui equivaut a 0 alors le panier est vide//
+  console.log("mon panier est vide");
 const infoUsers = document.createElement("p");
 infoUsers.textContent = "Votre  panier est vide";
 cartProduct.appendChild(infoUsers);
 
-
-//message pour informer utilisateur que le panier est vide//
   }else {
-    //console.log("mon panier n'est pas vide!!");//sinon mon panier n'est pas vide//
+    console.log("mon panier n'est pas vide!!");//sinon mon panier n'est pas vide//
 //je cree une fonction en utilisant foreach pour parcourir le tableau du localstorage et recupéré id, la couleur et la quantité//
 productsLocalStorage.forEach( product => {
   //recup les infos depuis API//
@@ -33,24 +32,19 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
         );
     
       })
-      validationForms();
-     
+      validationForms(); 
     }  
-     
-  
-
 
 
 function showProductsCart(data, product) {
 //cree une div pour afficher le produit//
-const cartItem = document.createElement('article');
-cartItem.classList.add('cart__item');
-cartItem.dataset.productId = product.id;
-cartItem.dataset.productColor = product.colors;
-console.log(cartItem);
+  const cartItem = document.createElement('article');
+  cartItem.classList.add('cart__item');
+  cartItem.dataset.productId = product.id;
+  cartItem.dataset.productColor = product.colors;
+  console.log(cartItem);
 
-
-  //afficher image//
+//afficher image//
   const cartItemImg = document.createElement('div');
   cartItemImg.classList.add('cart__item__img');
   const image = document.createElement('img');
@@ -58,12 +52,11 @@ console.log(cartItem);
   image.alt = data.altTxt;
   cartItem.appendChild(cartItemImg);
 
-
-  //cree la div qui comprend le titre, couleur, prix quantité et bouton supprimer//
+//cree la div qui comprend le titre, couleur, prix quantité et bouton supprimer//
   const cartContent = document.createElement('div');
   cartContent.classList.add('cart__item__content');
 
-    //je cree une variable pour mettre dans la description le nom, la couleur et le prix//
+ //je cree une variable pour mettre dans la description le nom, la couleur et le prix//
     const cartContentDescription = document.createElement('div');
     cartContentDescription.classList.add('cart__item__content__description');
   
@@ -94,7 +87,6 @@ cartContentSetting.classList.add('cart__item__content__settings');
     //creer un input pour modifier la quantité du produit//
     const valueQtity = document.createElement('input');
     document.querySelector('.cart__item__content__settings__quantity');
-    //valueQtity.querySelector('.cart__item__content__settings__quantity');
     valueQtity.classList.add('cart__item__content__settings__quantity');
     //cree un element input de ty^pe number en ajoutant les valeurs//
     valueQtity.setAttribute("type","number");
@@ -149,18 +141,15 @@ function editCart() {
   
     const quantityInput = document.querySelectorAll('.itemQuantity');
     console.log(quantityInput);
-
     //element actuel du panier//
     console.log(quantityInput);
   
    //Parcourir chaque element de quantité//
     quantityInput.forEach(quantityOneInput => {
-  
-   //Ajouter un écouteur d'événement pour le changement de valeur//
+    //Ajouter un écouteur d'événement pour le changement de valeur//
       quantityOneInput.addEventListener('change', (event) => {
   
         //recuperer la nouvelle quantité en tant que nombre//
-  
           const newQuantity = parseInt(event.target.value);
           console.log(newQuantity);
 
@@ -179,16 +168,14 @@ function editCart() {
 
         //Vérifier si le produit a été trouvé dans le tableau//
           if(product){
-
             //mettre a jour la quantite du produit dans l'objet product//
             product.quantity = newQuantity;
-            
-          }
+           }
 
   
           //mettre a jour la quantité dans le localstorage //
-  
           localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
+
           //appel a la function pour que le changement se fasse automatiquement//
           getTotalQuantity();
           calculateTotalPrice();
@@ -205,11 +192,10 @@ function editCart() {
 
   
 
-  
-       
+         
 function deleteCart() {
   
-  //Slectionner tous les elements de suppression//
+  //Selectionner tous les elements de suppression//
 const deleteElements = document.querySelectorAll('.deleteItem');
 console.log(deleteElements);
 
@@ -220,13 +206,9 @@ console.log(deleteElements);
 
     //reference a element parent//
     const cartItem = deleteElement.closest('.cart__item');
-
     //verifier si l'élement parent existe//
      if(cartItem){
       //je recup id et sa couleur depuis le DOM//
-      
-
-
         const productId = cartItem.dataset.productId;
         console.log(productId);
         const productColor = cartItem.dataset.productColor;
@@ -252,9 +234,6 @@ console.log(deleteElements);
 
       calculateTotalPrice();
       getTotalQuantity();
-
-
-  
 }
   
        });
@@ -281,28 +260,18 @@ function getTotalQuantity() {
     const quantity = parseInt(quantityElement.value);
     console.log(quantity);
     
-
     //Ajouter la quantité de chaque article a la quantité totale//
     totalQuantity +=  quantity;
     console.log(totalQuantity);
 
-
-    
-    
-    //Mettre a jour le HTML qui correspondt a la qtite//
+  //Mettre a jour le HTML qui correspondt a la qtite//
     const totalQuantityElement = document.querySelector('#totalQuantity');
     console.log(totalQuantityElement);
     totalQuantityElement.textContent = totalQuantity;
     console.log(quantity);
     console.log(totalQuantityElement);
-
-  
   });
 }
-
-
-
-
 
 
 
@@ -342,11 +311,9 @@ function calculateTotalPrice() {
 
   //ajouter le total du produit au tableau total//
       totals.push(productTotal); 
-  
-      //ajouter le total du produit a la variable totalprice
+    //ajouter le total du produit a la variable totalprice
       totalPrice += productTotal;
-  
-      //Retourner le tableau des totaux de chaque produit//
+    //Retourner le tableau des totaux de chaque produit//
     return totals;
     }, []);
   
@@ -358,9 +325,6 @@ function calculateTotalPrice() {
     // Tableau des totaux de chaque produit dans la console
       console.log(productTotals); 
   }
-
-
-
 
 
 
@@ -390,6 +354,7 @@ function validationForms() {
     //Je test si le prenom respecte bien expression reguliere //
         if(regexFirstName.test(firstName)){
         firstNameErrorMsg.textContent ='Valide';
+        isValid = true;
         }else{
         //le prenom ne respecte pas les trois lettres, je recupere le message erreur//
         firstNameErrorMsg.textContent = 'Le prénom doit contenir au moins 3 lettres.';
@@ -414,6 +379,7 @@ function validationForms() {
     console.log(regexLastName);
     if(regexLastName.test(lastName)){
       lastNameErrorMsg.textContent = 'Valide';
+      isValid = true;
     }else{
     lastNameErrorMsg.textContent = 'Le nom doit contenir au moins 5 lettres. ';
     console.log(lastNameErrorMsg);
@@ -434,6 +400,7 @@ function validationForms() {
     console.log(regexAddress); 
     if (regexAddress.test(address)) {
       addressErrorMsg.textContent = 'Valide';
+      isValid = true;
     } else {
         addressErrorMsg.textContent = 'Adresse postale doit être complete';
         console.log(addressErrorMsg);
@@ -454,6 +421,7 @@ function validationForms() {
     console.log(regexCity);
     if (regexCity.test(city)) {
       cityErrorMsg.textContent = 'Valide';
+      isValid = true;
     } else {
       cityErrorMsg.textContent = 'La ville a un minimum de 2 lettres. ';
       console.log(cityErrorMsg);
@@ -493,9 +461,20 @@ function validationForms() {
     city();
     email();
 
+    //Vérifier la condition pour continuer ou bloquer//
+    if(lastName && firstName && adress && city && email){
+      //continuer vers orderConfirmation//
+      console.log("Continuer vers orderConfirmation");
+      orderConfirmation();
+
+    }
+    else {
+      console.log("bloquer");
+      isValid = false;
+      errorSection.innerHTML = 'Veuillez corriger les erreurs dans le formulaire.';
+    }
 
   });
-//dans eventlistener   if firstname lastname ... = true isvalid = true alors je contineu execution orderConfirmation sinon ca bloque//
 }
 
 

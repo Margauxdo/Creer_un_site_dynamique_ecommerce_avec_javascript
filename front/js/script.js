@@ -1,49 +1,59 @@
-//* fonction fetchAPI avec fetch et uen promise then  -etape 2-*//
+//* fonction fetchAPI avec fetch et une promise then//
 function fetchAPI() {
+
+  //etape 1, effectue une requête GET vers la data//
 fetch("http://localhost:3000/api/products")
+
+  //etape 2, recup la reponse au format json//
 .then ((response) => response.json())
+
+  //etape 3, appel de la function showProducts avec les donnees recupéré//
 .then((data) => {
   showProducts(data)
 })
 }
-
-fetchAPI();
- //*fonction qui relie les produits au data -etape 3-*//
+//appel de la fonction fetchAPI pour recup les produits//
+  fetchAPI();
+ 
  function showProducts(data) {
+
+  //etape 4, parcourt des produits dans le data//
   for (products of data){
 
-
-    const lienElement = document.createElement("a"); //**ajout du lien qui englobe les infos */
-    lienElement.href = "./product.html?id=" + products._id; //* url du lien du produit + _id pcq id varie *//
-    const appendArticle = document.getElementById('items').appendChild(lienElement);/*items est enfant du lien a */
+    //créé un element <a> pour le lien du produit//
+    const lienElement = document.createElement("a"); 
+    lienElement.href = "./product.html?id=" + products._id; 
+    //Récupère l'élément avec l'ID "items" et ajoute le lien en tant qu'enfant//
+    const appendArticle = document.getElementById('items').appendChild(lienElement);
+    //affiche ID du produit dans la console//
     console.log(products._id);
-
-    
-
-
-    const articleElement = document.createElement("article"); /*cree article */
-    appendArticle.appendChild(articleElement);/*article est enfant de apenarticle*/
-   
-    const imageElement = document.createElement("img"); /* creation de image */
-    imageElement.src = products.imageUrl;/*on relie la source de image */
-    imageElement.width="300";/*on modifie la largeur de image*/
+    //Crée un élément <article> pour contenir les informations du produit//
+    const articleElement = document.createElement("article"); 
+    //Ajoute l'élément <article> en tant qu'enfant de l'élément <a>//
+    appendArticle.appendChild(articleElement);
+    //Crée un élément <img> pour afficher l'image du produit//
+    const imageElement = document.createElement("img"); 
+    //Crée un élément <img> pour afficher l'image du produit//
+    imageElement.src = products.imageUrl;
+    //Définit la largeur et la hauteur de l'image//
+    imageElement.width="300";
     imageElement.height = "200";
-    /*on modifie la hauteur de image*/
- 
-
-
-    articleElement.appendChild(imageElement);/*image est enfant de article*/
+    //Ajoute l'élément <img> en tant qu'enfant de l'élément <article>//
+    articleElement.appendChild(imageElement);
     console.log(products.imageUrl);
-
-    const productNameElement = document.createElement("h3"); /* creation du titre */
+    //Crée un élément <h3> pour afficher le nom du produit//
+    const productNameElement = document.createElement("h3"); 
+    //Définit le texte du titre en utilisant le nom du produit dans les données//
     productNameElement.innerText = products.name; 
-    articleElement.appendChild(productNameElement);/*le titre est enfant de article*/
+    // Ajoute l'élément <h3> en tant qu'enfant de l'élément <article>//
+    articleElement.appendChild(productNameElement);
 
-    const productDescriptionElement = document.createElement("p");/*creation de la description*/
+    //Crée un élément <p> pour afficher la description du produit//
+    const productDescriptionElement = document.createElement("p");
+    // Définit le texte de la description en utilisant la description du produit dans les données//
     productDescriptionElement.innerText = products.description;
-    articleElement.appendChild(productDescriptionElement);/* la description est enfant de article*/
-
-
+    // Ajoute l'élément <p> en tant qu'enfant de l'élément <article>//
+    articleElement.appendChild(productDescriptionElement);
   }
  }
 

@@ -1,41 +1,47 @@
-const paramsProduct = new URL (document.location).searchParams; // creation new url avec search params
-const id = paramsProduct.get("id");//cree une variable id, jenvoie ma constante paramproducts vers id pour recupere id de ma page//
-const url = `http://localhost:3000/api/products/${id}`; // on cree une variable url on y met le lien de api avec ${id}, id varie en fonction des produits//
-console.log(url); // on constate url de la page avec le id a cote 
+//Étape 1 : Récupérez les paramètres de l'URL actuelle//
+const paramsProduct = new URL (document.location).searchParams; 
+//Étape 2 : Obtient la valeur de l'ID à partir des paramètres de l'URL//
+const id = paramsProduct.get("id");
+//Étape 3 : Construit l'URL de l'API en utilisant l'ID récupéré//
+const url = `http://localhost:3000/api/products/${id}`; 
+console.log(url);  
 
-const  fetchArticle = () => {     //**variable pour recuperer un seul produit en faisant appel a api */
-    fetch(url)        //on fait appel a api//
-    .then (function(response) { // on utilise then pour avoir une reponse //
+//Étape 4 : Définir une fonction fetchArticle pour récupérer les détails du produit à partir de l'API.//
+const  fetchArticle = () => {     
+    fetch(url)        
+    .then (function(response) { 
 
-     return response.json();   //on fait un retour a la reponse en json//
-    })  // on utilise une deuxieme fois then pour acceder au data de api //
+     return response.json();   
+    })  
     .then(function(data)  {
+      //Traiter les données ici//
       imageKanap(data);
       optionColorskanap(data);
       
       
       
-const appendProduct = document.getElementsByClassName('item'); //on cree une variable afin de recuperer emplacement des elements//
+const appendProduct = document.getElementsByClassName('item'); 
       
-const articleTitle = (document.getElementById("title").innerText = data.name); //on cree une variable pour recuperer le titre qui est appele title en html et data.name, dans le date il est appele name//
-const articlePrice = (document.getElementById("price").innerText = data.price);  //on cree une variable pour recup le prix//
+const articleTitle = (document.getElementById("title").innerText = data.name); 
+const articlePrice = (document.getElementById("price").innerText = data.price); 
 
-//on doit crée la balise de image qui n'existe pas//
+//Créez et affichez l'image du produit //
 function imageKanap(data){
-    const articleImg = document.createElement("img");//on créé image elle n'existe pas//
-      document.querySelector(".item__img").appendChild(articleImg);//on va chercher le parent de articleImg pour savoir ou le positionner//
-      articleImg.src = data.imageUrl;//on recupere la source de api//
-      articleImg.alt = data.altTxt; //on recup le alt de api//
-        console.log(articleImg);//on verifie//
+    const articleImg = document.createElement("img");
+      document.querySelector(".item__img").appendChild(articleImg);
+      articleImg.src = data.imageUrl;
+      articleImg.alt = data.altTxt; 
+        console.log(articleImg);
 }
-const articleDescription = (document.getElementById("description").innerText = data.description); //on cree une variable pour recuperer la description//
+const articleDescription = (document.getElementById("description").innerText = data.description); 
 
 
+//Créez les options de couleur du produit //
 function optionColorskanap(data) {
-      //on va cree une variable avec les differentes options de couleurs//
+     
       const articleOptionsColors = document.getElementById("colors");
-        for (color in data.colors){ //on utilise la boucle for in pour recuperer les couleurs dans le data //
-        //je reprend la constance articleOptionsColors ou je lui ajoute du html , on reprend le code html ou on y integre une possibilité de couleurs dans les couleurs du data//
+        for (color in data.colors){ 
+       
           articleOptionsColors.innerHTML += `<option value = "${data.colors[color]}">${data.colors[color]}</option>`;
       }
   console.log(articleOptionsColors);
@@ -68,48 +74,43 @@ else {
 
 
 function localStorageToCart (){
-  //on créé une variable pour acceder au bouton du panier // 
-  const addToCart = document.getElementById("addToCart");
 
+  const addToCart = document.getElementById("addToCart");
   const quantityInput = document.getElementById("quantity");
-  //des on clique sur le bouton ca enregistre les evenment//
+
   addToCart.addEventListener ("click",() =>{
 const quantityValue = parseInt(quantityInput.value);
 if(quantityValue >= 1 && quantityValue <= 100){
 
-
-
-    const productsToCart = {
+  //Créez un objet productsToCart pour stocker les informations du produit sélectionné//
+  const productsToCart = {
       quantity : quantityValue,
-      colors : document.getElementById("colors").value, //on veut recup la valeur renseigner dans le panier par utilisateur de la couleur du canape//
-      id : id //on veut recup id du produit//
+      colors : document.getElementById("colors").value, 
+      id : id 
     };
     console.log(productsToCart);
 
-    
-    //variable fenetre pop up pour la confirmation de la commande afin acceder a la page panier//
-  
-let productsLocalStorage = [];//on a cree un tableau productsLocalStorage//
+    //Vérifiez si le localstorage contient déjà des produits//
+let productsLocalStorage = [];
 if(localStorage.getItem("addToCart") !== null )
-  //si ce qu'on recupere par le bouton dans le,localstorage est nul //
   {
     productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
     //si le localstorage contient deja des produits on le recupere dans un tableau//
   }
+  //Initialisez une variable productFind pour savoir si le produit est déjà dans le localstorage//
   let productFind = false;
-    //on initialise une variable pour savoir si il est deja dans le tableau du localstorage //
-  
+
+  //Parcourez les produits du localstorage pour vérifier s'ils correspondent au produit actuel//
   productsLocalStorage.forEach(function(productsLocalStorage){
     if(
-      productsLocalStorage.id === productsToCart.id && //id du tableau du local est egal a id du panier//
+      productsLocalStorage.id === productsToCart.id && 
       productsLocalStorage.colors === productsToCart.colors
     ){
+//Si le produit est déjà dans le localstorage, mettez à jour la quantité//
 const newQuantity = parseInt(productsLocalStorage.quantity) + parseInt(productsToCart.quantity);
-
+//Vérifiez que la nouvelle quantité est entre 1 et 100//
 if(newQuantity <= 100 && newQuantity >= 1){
-
   productsLocalStorage.quantity = newQuantity.toString();
-
   localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage));
   productFind = true;
 }else{
@@ -118,31 +119,14 @@ if(newQuantity <= 100 && newQuantity >= 1){
 
   }
 });
+//Si le produit n'est pas déjà dans le localstorage, ajoutez-le//
 if(!productFind){
-  //si le produit n'a pas été trouve dans le localstorage on l'ajoute au tableau//
-productsLocalStorage.push(productsToCart);
+ productsLocalStorage.push(productsToCart);
 }
-
+//Stockez les produits mis à jour dans le localstorage//
 localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
-//on ajoute une ligne dans  le tableau du localstorage//
 console.log(localStorage);
-
-
-  }})
+ }})
   
   }
    
-
-
-
-
-   //getItem = obtenir ce qu'il y a dans le localStorage//
-  //setItem = ajouter une nouvelle ligne(produit) dans le localStorage//
-  //local.push() = rajouter dans un tableau//
-  //JSON.stringify = transformer un objet javascript en chaine json//
-  //JSON.parse = transformer un chaine JSON en objet JSON//
-  //parse()=>objet// 
-  //parseInt = transformer en chiffre pour un calcul//
-
-  //quand on clique sur le bouton panier on acceder directement a la page panier//
-  //window.location.href ="cart.html";
