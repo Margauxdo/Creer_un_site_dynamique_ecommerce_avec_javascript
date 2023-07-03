@@ -164,6 +164,9 @@ function editCart() {
           const newQuantity = parseInt(event.target.value);
           console.log(newQuantity);
 
+          //verifier si la quantité est valide (entre 1 et 100)//
+          if(newQuantity >= 1 && newQuantity <= 100){
+
           //Récuperer id du produit et la couleur a partie de l'élément parent dans le DOM//
           const productId = quantityOneInput.closest('.cart__item').dataset.productId;
           console.log(productId);
@@ -189,6 +192,10 @@ function editCart() {
           //appel a la function pour que le changement se fasse automatiquement//
           getTotalQuantity();
           calculateTotalPrice();
+        }else{
+          //la qunatité est inférieure à 1 et superieur à 100, afficher message erreur//
+          console.log('la quantité doit être comprise entre 1 et 100');
+        }
 
         });
 
@@ -467,6 +474,7 @@ function validationForms() {
     console.log(regexEmail);
     if (regexEmail.test(email)) {
       emailErrorMsg.textContent = 'Valide';
+      isValid = true;
     } else {
       emailErrorMsg.textContent = 'Adresse email doit être complete. ';
       console.log(emailErrorMsg);
@@ -486,17 +494,8 @@ function validationForms() {
     email();
 
 
-    //Passer à la suite si le formulaire est valide//
-if (isValid) {
-  //orderConfirmation();
-} 
-else {
-  //Formulaire invalide//
-  console.log('le formulaire est invalide. Veuillez corriger les erreurs');
-}
-
   });
-
+//dans eventlistener   if firstname lastname ... = true isvalid = true alors je contineu execution orderConfirmation sinon ca bloque//
 }
 
 
@@ -562,14 +561,17 @@ function orderConfirmation(){
             //traiter la réponse du serveur//
             console.log(data);
 
-            //effacer le panier apres avoir passé la commande//
-            localStorage.removeItem('addToCart');
+
 
             //Rediriger utilisateur vers la page de confirmation de commande//
             window.location.href = `confirmation.html?id=${data.orderId}`;
+
+          //effacer le panier apres avoir passé la commande//
+          localStorage.clear('addToCart');
           });
 
           })
         }
 
-        //plan acceptation test chaque champ avec la methode regex  a modifier -un bouton supprimer pour chaque article devient possibilité de supprimer un article de la page panier idem pour modifier, la fonctionnalité de ce que je peut faire //
+        
+        

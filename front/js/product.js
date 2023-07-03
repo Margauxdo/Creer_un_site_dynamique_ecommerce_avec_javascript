@@ -21,7 +21,7 @@ const articleTitle = (document.getElementById("title").innerText = data.name); /
 const articlePrice = (document.getElementById("price").innerText = data.price);  //on cree une variable pour recup le prix//
 
 //on doit crée la balise de image qui n'existe pas//
-function imageKanap(){
+function imageKanap(data){
     const articleImg = document.createElement("img");//on créé image elle n'existe pas//
       document.querySelector(".item__img").appendChild(articleImg);//on va chercher le parent de articleImg pour savoir ou le positionner//
       articleImg.src = data.imageUrl;//on recupere la source de api//
@@ -31,7 +31,7 @@ function imageKanap(){
 const articleDescription = (document.getElementById("description").innerText = data.description); //on cree une variable pour recuperer la description//
 
 
-function optionColorskanap() {
+function optionColorskanap(data) {
       //on va cree une variable avec les differentes options de couleurs//
       const articleOptionsColors = document.getElementById("colors");
         for (color in data.colors){ //on utilise la boucle for in pour recuperer les couleurs dans le data //
@@ -47,19 +47,43 @@ fetchArticle();
 
 localStorageToCart();
 
+quantityProduct();
 
+
+function quantityProduct() {
+  
+  const addToCart = document.getElementById("addToCart");
+  const quantityInput = document.getElementById("quantity");
+
+  addToCart.addEventListener("click", () => {
+    const quantityValue = parseInt(quantityInput.value);
+if (quantityValue >= 1 && quantityValue <= 100) {
+    localStorageToCart();
+    } 
+else {
+ console.log("La quantité doit être comprise entre 1 et 100.");
+    }
+  });
+}
 
 
 function localStorageToCart (){
   //on créé une variable pour acceder au bouton du panier // 
   const addToCart = document.getElementById("addToCart");
+
+  const quantityInput = document.getElementById("quantity");
   //des on clique sur le bouton ca enregistre les evenment//
   addToCart.addEventListener ("click",() =>{
+const quantityValue = parseInt(quantityInput.value);
+if(quantityValue >= 1 && quantityValue <= 100){
+
+
+
     const productsToCart = {
-      quantity : document.getElementById("quantity").value , //on veut recup la valeur renseigner dans le panier par utilisateur du nombre de canape en recuperant id du html//
+      quantity : quantityValue,
       colors : document.getElementById("colors").value, //on veut recup la valeur renseigner dans le panier par utilisateur de la couleur du canape//
       id : id //on veut recup id du produit//
-    }
+    };
     console.log(productsToCart);
 
     
@@ -80,18 +104,18 @@ if(localStorage.getItem("addToCart") !== null )
       productsLocalStorage.id === productsToCart.id && //id du tableau du local est egal a id du panier//
       productsLocalStorage.colors === productsToCart.colors
     ){
-      //si un produit avec la meme id et l meme couleur dans le localstorage dans le tableau//
-      let quantityToAdd = parseInt(productsToCart.quantity) + parseInt(productsLocalStorage.quantity);
-      //on a une variable qui additionne la quantoté du panier + la quantité du tableau du localstorage / parseInt il s'agit de nombre et pas de lettre//
-      productsLocalStorage.quantity = quantityToAdd.toString();
-      //la quantite du tableau du localstorage = la variable quantityToAdd on a tranforme en chaine de caractere//
-      console.log(quantityToAdd);
-      productsLocalStorage.quantity = quantityToAdd;
-      console.log(productsLocalStorage.quantity);
-      localStorage.setItem('addToCart',JSON.stringify(productsLocalStorage));
-      //on ajoute une ligne "addtocart"dans  le tableau du localstorage//
-      productFind=true;
-      //setitem addtocart//
+const newQuantity = parseInt(productsLocalStorage.quantity) + parseInt(productsToCart.quantity);
+
+if(newQuantity <= 100 && newQuantity >= 1){
+
+  productsLocalStorage.quantity = newQuantity.toString();
+
+  localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage));
+  productFind = true;
+}else{
+  console.log('la quantité totale doit être comprise entre 1 et 100');
+}
+
   }
 });
 if(!productFind){
@@ -104,7 +128,7 @@ localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
 console.log(localStorage);
 
 
-  })
+  }})
   
   }
    
