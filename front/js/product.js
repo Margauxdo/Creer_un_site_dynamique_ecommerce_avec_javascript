@@ -63,7 +63,7 @@ function localStorageToCart (){
 
   addToCart.addEventListener ("click",() =>{
 const quantityValue = parseInt(quantityInput.value);
-//if(quantityValue >= 1 && quantityValue <= 100){
+
 
   //Créez un objet productsToCart pour stocker les informations du produit sélectionné//
   const productsToCart = {
@@ -84,17 +84,17 @@ if(localStorage.getItem("addToCart") !== null )
   let productFind = false;
 
   //Parcourez les produits du localstorage pour vérifier s'ils correspondent au produit actuel//
-  productsLocalStorage.forEach(function(productsLocalStorage){
+  productsLocalStorage.forEach(function(product){
     if(
-      productsLocalStorage.id === productsToCart.id && 
-      productsLocalStorage.colors === productsToCart.colors
+      product.id === productsToCart.id && 
+      product.colors === productsToCart.colors
     ){
 //Si le produit est déjà dans le localstorage, mettez à jour la quantité//
-const newQuantity = parseInt(productsLocalStorage.quantity) + parseInt(productsToCart.quantity);       ///erreur quand joute une quantite j ajoute la meme quantite du meme produit il ajoute + 1 +2 +3 +4 +5
+const newQuantity = parseInt(product.quantity) + parseInt(productsToCart.quantity);       ///erreur quand joute une quantite j ajoute la meme quantite du meme produit il ajoute + 1 +2 +3 +4 +5
 //Vérifiez que la nouvelle quantité est entre 1 et 100//
 if(newQuantity <= 100 && newQuantity >= 0){
-  productsLocalStorage.quantity = newQuantity.toString();
-  localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage));
+  product.quantity = newQuantity.toString();
+  //localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage));
   productFind = true;
 }else{
   alert('la quantité totale doit être comprise entre 1 et 100');
@@ -109,9 +109,8 @@ if(!productFind){
 //Stockez les produits mis à jour dans le localstorage//
 localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
 console.log(localStorage);
-}
-
-)}
-
+ //}
+})
+  
+  }
    
-
