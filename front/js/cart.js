@@ -334,7 +334,10 @@ function validationForms() {
   console.log(form);
  
   //variable pour vérifier la validité du formulaire//
-  let isValid = true; 
+  //return = true; 
+
+  form.addEventListener('submit', function(event){
+    event.preventDefault();
 
   function firstName() {
     //Je selectionne le champ de saisie du prenom//
@@ -354,12 +357,12 @@ function validationForms() {
     //Je test si le prenom respecte bien expression reguliere //
         if(regexFirstName.test(firstName)){
         firstNameErrorMsg.textContent ='Valide';
-        isValid = true;
+        return true;
         }else{
         //le prenom ne respecte pas les trois lettres, je recupere le message erreur//
         firstNameErrorMsg.textContent = 'Le prénom doit contenir au moins 3 lettres.';
         console.log(firstNameErrorMsg);  
-        isValid =  false; 
+        return false; 
       }
   }
 
@@ -379,11 +382,11 @@ function validationForms() {
     console.log(regexLastName);
     if(regexLastName.test(lastName)){
       lastNameErrorMsg.textContent = 'Valide';
-      isValid = true;
+      return true;
     }else{
     lastNameErrorMsg.textContent = 'Le nom doit contenir au moins 5 lettres. ';
     console.log(lastNameErrorMsg);
-    isValid = false;
+    return false;
     }
   }
 
@@ -400,11 +403,11 @@ function validationForms() {
     console.log(regexAddress); 
     if (regexAddress.test(address)) {
       addressErrorMsg.textContent = 'Valide';
-      isValid = true;
+      return true;
     } else {
         addressErrorMsg.textContent = 'Adresse postale doit être complete';
         console.log(addressErrorMsg);
-        isValid =  false;
+        return false;
     }
   }
   
@@ -421,11 +424,11 @@ function validationForms() {
     console.log(regexCity);
     if (regexCity.test(city)) {
       cityErrorMsg.textContent = 'Valide';
-      isValid = true;
+      return true;
     } else {
       cityErrorMsg.textContent = 'La ville a un minimum de 2 lettres. ';
       console.log(cityErrorMsg);
-      isValid =  false;
+      return false;
     }
   }
 
@@ -442,18 +445,17 @@ function validationForms() {
     console.log(regexEmail);
     if (regexEmail.test(email)) {
       emailErrorMsg.textContent = 'Valide';
-      isValid = true;
+      return true;
     } else {
       emailErrorMsg.textContent = 'Adresse email doit être complete. ';
       console.log(emailErrorMsg);
-      isValid = false;
+      return false;
     }
   }
 
-  form.addEventListener('submit', function(event){
-    event.preventDefault();
+
   
-    isValid = true;
+    
 
     firstName();
     lastName();
@@ -461,8 +463,7 @@ function validationForms() {
     city();
     email();
 
-    //Vérifier la condition pour continuer ou bloquer//
-    if(lastName && firstName && adress && city && email){
+    if(lastName && firstName && adress && city && email === true){
       //continuer vers orderConfirmation//
       console.log("Continuer vers orderConfirmation");
       orderConfirmation();
@@ -470,12 +471,15 @@ function validationForms() {
     }
     else {
       console.log("bloquer");
-      isValid = false;
-      errorSection.innerHTML = 'Veuillez corriger les erreurs dans le formulaire.';
+      return false;
     }
 
   });
 }
+    
+
+
+  
 
 
 
@@ -543,7 +547,7 @@ function orderConfirmation(){
 
 
             //Rediriger utilisateur vers la page de confirmation de commande//
-            window.location.href = `confirmation.html?id=${data.orderId}`;
+            //window.location.href = `confirmation.html?id=${data.orderId}`;
 
           //effacer le panier apres avoir passé la commande//
           localStorage.clear('addToCart');

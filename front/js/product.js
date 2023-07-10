@@ -53,24 +53,7 @@ fetchArticle();
 
 localStorageToCart();
 
-quantityProduct();
 
-
-function quantityProduct() {
-  
-  const addToCart = document.getElementById("addToCart");
-  const quantityInput = document.getElementById("quantity");
-
-  addToCart.addEventListener("click", () => {
-    const quantityValue = parseInt(quantityInput.value);
-if (quantityValue >= 1 && quantityValue <= 100) {
-    localStorageToCart();
-    } 
-else {
- console.log("La quantité doit être comprise entre 1 et 100.");
-    }
-  });
-}
 
 
 function localStorageToCart (){
@@ -80,7 +63,7 @@ function localStorageToCart (){
 
   addToCart.addEventListener ("click",() =>{
 const quantityValue = parseInt(quantityInput.value);
-if(quantityValue >= 1 && quantityValue <= 100){
+//if(quantityValue >= 1 && quantityValue <= 100){
 
   //Créez un objet productsToCart pour stocker les informations du produit sélectionné//
   const productsToCart = {
@@ -107,14 +90,14 @@ if(localStorage.getItem("addToCart") !== null )
       productsLocalStorage.colors === productsToCart.colors
     ){
 //Si le produit est déjà dans le localstorage, mettez à jour la quantité//
-const newQuantity = parseInt(productsLocalStorage.quantity) + parseInt(productsToCart.quantity);
+const newQuantity = parseInt(productsLocalStorage.quantity) + parseInt(productsToCart.quantity);       ///erreur quand joute une quantite j ajoute la meme quantite du meme produit il ajoute + 1 +2 +3 +4 +5
 //Vérifiez que la nouvelle quantité est entre 1 et 100//
-if(newQuantity <= 100 && newQuantity >= 1){
+if(newQuantity <= 100 && newQuantity >= 0){
   productsLocalStorage.quantity = newQuantity.toString();
   localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage));
   productFind = true;
 }else{
-  console.log('la quantité totale doit être comprise entre 1 et 100');
+  alert('la quantité totale doit être comprise entre 1 et 100');
 }
 
   }
@@ -126,7 +109,9 @@ if(!productFind){
 //Stockez les produits mis à jour dans le localstorage//
 localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
 console.log(localStorage);
- }})
-  
-  }
+}
+
+)}
+
    
+
