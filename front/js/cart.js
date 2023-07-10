@@ -333,11 +333,6 @@ function validationForms() {
   const form = document.querySelector('.cart__order__form');
   console.log(form);
  
-  //variable pour vérifier la validité du formulaire//
-  //return = true; 
-
-  form.addEventListener('submit', function(event){
-    event.preventDefault();
 
   function firstName() {
     //Je selectionne le champ de saisie du prenom//
@@ -463,7 +458,7 @@ function validationForms() {
     city();
     email();
 
-    if(lastName && firstName && adress && city && email === true){
+    if(lastName() && firstName() && adress() && city() && email() === true){
       //continuer vers orderConfirmation//
       console.log("Continuer vers orderConfirmation");
       orderConfirmation();
@@ -474,8 +469,7 @@ function validationForms() {
       return false;
     }
 
-  });
-}
+  }
     
 
 
@@ -547,7 +541,7 @@ function orderConfirmation(){
 
 
             //Rediriger utilisateur vers la page de confirmation de commande//
-            //window.location.href = `confirmation.html?id=${data.orderId}`;
+            window.location.href = `confirmation.html?id=${data.orderId}`;
 
           //effacer le panier apres avoir passé la commande//
           localStorage.clear('addToCart');
