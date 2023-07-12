@@ -98,7 +98,9 @@ if(newQuantity <= 100 && newQuantity >= 0){
   productFind = true;
 }else{
   alert('la quantité totale doit être comprise entre 1 et 100');
+return;
 }
+
 
   }
 });

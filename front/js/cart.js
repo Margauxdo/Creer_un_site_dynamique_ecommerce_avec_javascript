@@ -448,6 +448,21 @@ function validationForms() {
     }
   }
 
+  const orderBtn = document.querySelector('#order');
+  console.log(orderBtn);
+
+  orderBtn.addEventListener("click",() => {
+    //Recuperer les valeurs des champs du formulaire de contact//
+    const contact = {
+      firstName: document.querySelector('#firstName').value,
+      lastName: document.querySelector('#lastName').value,
+      adress: document.querySelector('#address').value,
+      city: document.querySelector('#city').value,
+      email: document.querySelector('#email').value
+    };
+    console.log(contact);
+  //})
+
 
   
     
@@ -458,7 +473,10 @@ function validationForms() {
     city();
     email();
 
-    if(lastName() && firstName() && adress() && city() && email() === true){
+  })
+
+
+    if(firstName && lastName() && adress() && city() && email() ){
       //continuer vers orderConfirmation//
       console.log("Continuer vers orderConfirmation");
       orderConfirmation();
@@ -466,6 +484,7 @@ function validationForms() {
     }
     else {
       console.log("bloquer");
+    
       return false;
     }
 
