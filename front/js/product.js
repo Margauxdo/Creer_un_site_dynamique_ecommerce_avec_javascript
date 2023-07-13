@@ -106,13 +106,17 @@ return;
 });
 //Si le produit n'est pas déjà dans le localstorage, ajoutez-le//
 if(!productFind){
+  if(quantityValue + productsToCart.quantity > 100){
+    alert("La quantité totale doit être inférieure ou égale à 100");
+    return;
+  }
  productsLocalStorage.push(productsToCart);
 }
 //Stockez les produits mis à jour dans le localstorage//
 localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
 console.log(localStorage);
- //}
-})
+ 
+});
   
   }
    
