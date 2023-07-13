@@ -27,12 +27,13 @@ fetch(`http://localhost:3000/api/products/${product.id}`)
             getTotalQuantity();
             calculateTotalPrice();
             deleteCart();
-            orderConfirmation();
+            
         }
         );
     
       })
       validationForms(); 
+     
     }  
 
 
@@ -451,44 +452,34 @@ function validationForms() {
   const orderBtn = document.querySelector('#order');
   console.log(orderBtn);
 
-  orderBtn.addEventListener("click",() => {
-    //Recuperer les valeurs des champs du formulaire de contact//
-    const contact = {
-      firstName: document.querySelector('#firstName').value,
-      lastName: document.querySelector('#lastName').value,
-      adress: document.querySelector('#address').value,
-      city: document.querySelector('#city').value,
-      email: document.querySelector('#email').value
-    };
-    console.log(contact);
-  //})
+  orderBtn.addEventListener("click",(event) => {
+    event.preventDefault();
+
+    const isFirstNameValid = firstName();
+    const isLastNameValid = lastName();
+    const isAddressValid = adress();
+    const isCityValid = city();
+    const isEmailValid = email();
 
 
-  
-    
-
-    firstName();
-    lastName();
-    adress();
-    city();
-    email();
-
-  })
 
 
-    if(firstName && lastName() && adress() && city() && email() ){
-      //continuer vers orderConfirmation//
+
+    if(isFirstNameValid && isLastNameValid && isAddressValid && isCityValid && isEmailValid ){
+      //redirection vers la page de confirmation//
       console.log("Continuer vers orderConfirmation");
       orderConfirmation();
+      
 
     }
     else {
-      console.log("bloquer");
-    
-      return false;
+      //console.log("bloquer");
+      console.log("Le formulaire contient des erreurs.");
     }
+  });
+}
 
-  }
+
     
 
 
