@@ -1,7 +1,9 @@
 //Étape 1 : Récupérez les paramètres de l'URL actuelle//
 const paramsProduct = new URL (document.location).searchParams; 
+
 //Étape 2 : Obtient la valeur de l'ID à partir des paramètres de l'URL//
 const id = paramsProduct.get("id");
+
 //Étape 3 : Construit l'URL de l'API en utilisant l'ID récupéré//
 const url = `http://localhost:3000/api/products/${id}`; 
 console.log(url);  
@@ -23,6 +25,7 @@ const  fetchArticle = () => {
 const appendProduct = document.getElementsByClassName('item'); 
       
 const articleTitle = (document.getElementById("title").innerText = data.name); 
+
 const articlePrice = (document.getElementById("price").innerText = data.price); 
 
 //Créez et affichez l'image du produit //
