@@ -59,64 +59,96 @@ localStorageToCart();
 function localStorageToCart (){
 
   const addToCart = document.getElementById("addToCart");
+
   const quantityInput = document.getElementById("quantity");
 
-  addToCart.addEventListener ("click",() =>{
-const quantityValue = parseInt(quantityInput.value);
-
-
-  //Créez un objet productsToCart pour stocker les informations du produit sélectionné//
-  const productsToCart = {
-      quantity : quantityValue,
-      colors : document.getElementById("colors").value, 
-      id : id 
-    };
-    console.log(productsToCart);
-
-    //Vérifiez si le localstorage contient déjà des produits//
-let productsLocalStorage = [];
-if(localStorage.getItem("addToCart") !== null )
-  {
-    productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
-    //si le localstorage contient deja des produits on le recupere dans un tableau//
-  }
-  //Initialisez une variable productFind pour savoir si le produit est déjà dans le localstorage//
-  let productFind = false;
-
-  //Parcourez les produits du localstorage pour vérifier s'ils correspondent au produit actuel//
-  productsLocalStorage.forEach(function(product){
-    if(
-      product.id === productsToCart.id && 
-      product.colors === productsToCart.colors
-    ){
-//Si le produit est déjà dans le localstorage, mettez à jour la quantité//
-const newQuantity = parseInt(product.quantity) + parseInt(productsToCart.quantity);       ///erreur quand joute une quantite j ajoute la meme quantite du meme produit il ajoute + 1 +2 +3 +4 +5
-//Vérifiez que la nouvelle quantité est entre 1 et 100//
-if(newQuantity <= 100 && newQuantity >= 0){
-  product.quantity = newQuantity.toString();
-  //localStorage.setItem("addToCart", JSON.stringify(productsLocalStorage));
-  productFind = true;
-}else{
-  alert('la quantité totale doit être comprise entre 1 et 100');
-return;
-}
-
-
-  }
-});
-//Si le produit n'est pas déjà dans le localstorage, ajoutez-le//
-if(!productFind){
-  if(quantityValue + productsToCart.quantity > 100){
-    alert("La quantité totale doit être inférieure ou égale à 100");
-    return;
-  }
- productsLocalStorage.push(productsToCart);
-}
-//Stockez les produits mis à jour dans le localstorage//
-localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
-console.log(localStorage);
  
-});
+
+  addToCart.addEventListener("click", (e) => {
+
+    const quantityValue = parseInt(quantityInput.value);
+
+ 
+
+    const productsToCart = {
+
+      quantity: quantityValue,
+
+      colors: document.getElementById("colors").value,
+
+      id: id
+
+    };
+
+ 
+
+    let productsLocalStorage = [];
+
+    if (localStorage.getItem("addToCart") !== null) {
+
+      productsLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
+
+    }
+
+ 
+
+    let productIndex = false;
+
+    for (let i = 0; i < productsLocalStorage.length; i++) {
+
+      if (
+
+        productsLocalStorage[i].id === productsToCart.id &&
+
+        productsLocalStorage[i].colors === productsToCart.colors
+
+      ) {
+
+        productIndex = i;
+
+        break;
+
+      }
+
+    }
+
+ 
+
+    if (productIndex !== false) {
+
+      const newQuantity =
+
+        parseInt(productsLocalStorage[productIndex].quantity) +
+
+        parseInt(productsToCart.quantity);
+
+ 
+
+      if (newQuantity >= 1 && newQuantity <= 100) {
+
+        productsLocalStorage[productIndex].quantity = newQuantity;
+
+      } else {
+
+        alert('La quantité totale doit être comprise entre 1 et 100');
+
+        return;
+
+      }
+
+    } else {
+
+      productsLocalStorage.push(productsToCart);
+
+    }
+
+ 
+
+    localStorage.setItem('addToCart', JSON.stringify(productsLocalStorage));
+
+    console.log(localStorage);
+
+  });
   
   }
    
