@@ -28,6 +28,8 @@ fetch("http://localhost:3000/api/products")
     appendArticle.appendChild(articleElement);
     //Crée un élément <img> pour afficher l'image du produit//
     const imageElement = document.createElement("img"); 
+    //ajout du texte alternatif de l'image du produit//
+    imageElement.alt = products.altTxt;
     //Crée un élément <img> pour afficher l'image du produit//
     imageElement.src = products.imageUrl;
     //Définit la largeur et la hauteur de l'image//
